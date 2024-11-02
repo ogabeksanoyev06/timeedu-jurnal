@@ -1,0 +1,166 @@
+@import "./fonts/stylesheet.css";
+@import "./icomoon/style.css";
+@import "vue-toastification/dist/index.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply text-sm antialiased text-dark;
+    font-family: "GolosText", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Utility classes */
+@layer utils {
+  /* Transitions */
+  .transition-300 {
+    @apply duration-300 transition-all ease-in-out;
+  }
+  .transition-200 {
+    @apply transition-all duration-200;
+  }
+
+  /* Positioning */
+  .absolute-x {
+    @apply absolute !-translate-x-1/2 !left-1/2;
+  }
+  .absolute-y {
+    @apply absolute !-translate-y-1/2 !top-1/2;
+  }
+  .absolute-center {
+    @apply absolute-x absolute-y;
+  }
+
+  /* Flex utilities */
+  .flex-y-center {
+    @apply flex items-center;
+  }
+  .flex-x-center {
+    @apply flex justify-center;
+  }
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+  .flex-center-between {
+    @apply flex justify-between items-center;
+  }
+  .flex-between {
+    @apply flex justify-between;
+  }
+  .flex-end {
+    @apply flex justify-end;
+  }
+}
+
+/* Loading animations */
+.shimmer {
+  background-color: #f6f7f8;
+  background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  animation: placeholderShimmer 1s linear infinite forwards;
+  cursor: progress;
+}
+
+.image-loading {
+  position: relative;
+  overflow: hidden;
+
+  &:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f6f7f8;
+    background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    animation: placeholderShimmer 1s linear infinite forwards;
+  }
+}
+
+/* Typography */
+.section-title {
+  @apply text-[40px] font-bold leading-[110%] tracking-normal text-secondary;
+
+  @media screen and (max-width: 768px) {
+    @apply text-2xl;
+  }
+}
+
+.section-subtitle {
+  @apply text-base font-medium leading-[19px] tracking-normal;
+
+  @media screen and (max-width: 768px) {
+    @apply text-base;
+  }
+}
+
+/* Animations */
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes placeholderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+/* Transitions */
+.fade-enter-active {
+  animation: fade 0.3s ease-in-out;
+}
+.fade-leave-active {
+  animation: fade 0.3s ease-in-out reverse;
+}
+.fade-fast-enter-active {
+  animation: fade 0.1s ease-in-out;
+}
+.fade-fast-leave-active {
+  animation: fade 0.1s ease-in-out reverse;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+}
+
+.layout-enter-active,
+.layout-leave-active {
+  transition: all 0.4s;
+}
+
+.layout-enter-from,
+.layout-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
