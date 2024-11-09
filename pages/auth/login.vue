@@ -28,7 +28,7 @@
         </div>
         <div class="w-full flex max-sm:flex-col sm:justify-end gap-3">
           <UIButton text="Bekor qilish" variant="outline" wrapper-class="sm:max-w-[167px] w-full" />
-          <UIButton type="submit" text="Kirish" wrapper-class="sm:max-w-[167px] w-full" />
+          <UIButton :loading type="submit" text="Kirish" wrapper-class="sm:max-w-[167px] w-full" />
         </div>
       </div>
     </VForm>
@@ -41,6 +41,17 @@ definePageMeta({
   layout: 'auth',
 })
 
+const localePath = useLocalePath()
+const router = useRouter()
+
+const { showToast } = useCustomToast()
+
+const authStore = useAuthStore()
+
+const { login } = authStore
+const { loading, accessTokenCookie, refreshTokenCookie } = storeToRefs(authStore)
+
+
 const form = reactive({
   email: '',
   password: '',
@@ -49,4 +60,18 @@ const form = reactive({
 const showPassword = ref(false)
 
 const isModal = ref(false)
+
+const loginToSystem = async () => {
+  loading.value = true
+  try {
+    const response = await login(form)
+    accessTokenCookie.value = response.accessToken
+    refreshTokenCookie.value = response.refreshToken
+    router.push(localePath('/'))
+  } catch (error) {
+    showToast(error, 'error')
+  } finally {
+    loading.value = false
+  }
+}
 </script>

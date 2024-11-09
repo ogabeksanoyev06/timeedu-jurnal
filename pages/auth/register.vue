@@ -5,6 +5,7 @@
       <div class="grid gap-10">
         <div class="grid gap-6">
           <h3 class="text-xl font-medium text-secondary">Profilingiz ma'lumotlari</h3>
+
           <div class="grid grid-cols-12 gap-6">
             <div class="col-span-12 sm:col-span-6">
               <VField name="firstName" rules="required" v-model="form.firstName">
@@ -21,16 +22,16 @@
               </VField>
             </div>
             <div class="col-span-12 sm:col-span-6">
-              <VField name="organization" rules="required" v-model="form.organization">
-                <FormGroup label="Tashkilotingiz" for-id="organization">
-                  <FormInput placeholder="Tashkilotingizni kiriting" id="organization" v-model="form.organization" :error="errors.organization" />
+              <VField name="companyName" rules="required" v-model="form.companyName">
+                <FormGroup label="Tashkilotingiz" for-id="companyName">
+                  <FormInput placeholder="Tashkilotingizni kiriting" id="companyName" v-model="form.companyName" :error="errors.companyName" />
                 </FormGroup>
               </VField>
             </div>
             <div class="col-span-12 sm:col-span-6">
-              <VField name="country" rules="required" v-model="form.country">
-                <FormGroup label="Mamlakatingiz" for-id="country">
-                  <FormSelect :options="selectData" label-key="title" value-key="id" placeholder="Mamlakatingizni tanlang" id="country" v-model="form.country" :error="errors.country" />
+              <VField name="countryId" rules="required" v-model="form.countryId">
+                <FormGroup label="Mamlakatingiz" for-id="countryId">
+                  <FormSelect :options="countries?.content" label-key="name" value-key="id" placeholder="Mamlakatingizni tanlang" id="countryId" v-model="form.countryId" :error="errors.countryId" />
                 </FormGroup>
               </VField>
             </div>
@@ -68,9 +69,9 @@
               </VField>
             </div>
             <div class="col-span-12 sm:col-span-6">
-              <VField name="confirmPassword" rules="required|confirmed:@password" v-model="form.confirmPassword">
-                <FormGroup label="Parolni takrorlang" for-id="confirmPassword">
-                  <FormInput suffix placeholder="Parolni takrorlang" id="confirmPassword" :type="showConfirmPassword ? 'text' : 'password'" v-model="form.confirmPassword" :error="errors.confirmPassword">
+              <VField name="passwordConfirm" rules="required|confirmed:@password" v-model="form.passwordConfirm">
+                <FormGroup label="Parolni takrorlang" for-id="passwordConfirm">
+                  <FormInput suffix placeholder="Parolni takrorlang" id="passwordConfirm" :type="showConfirmPassword ? 'text' : 'password'" v-model="form.passwordConfirm" :error="errors.passwordConfirm">
                     <template #suffix>
                       <span :class="['icon', showConfirmPassword ? 'icon-eye' : 'icon-eye-off']" @click="showConfirmPassword = !showConfirmPassword"></span>
                     </template>
@@ -81,88 +82,45 @@
           </div>
         </div>
 
-        <div class="grid gap-6">
-          <h3 class="text-xl font-medium text-secondary">Bu saytdagi qaysi jurnallarda ro'yxatdan o'tishni xohlaysiz?</h3>
-
-          <div class="grid gap-6">
-            <div class="grid gap-4">
-              <h4 class="text-base font-medium text-dark">Iqtisodiy taraqqiyot va tahlil</h4>
-              <VField name="journal1" rules="required|requiredArray" v-model="form.journal1">
-                <FormCheckbox :checked="form.journal1.includes('reader')" label="Reader" value="reader" @update:model-value="updateJournal('journal1', $event, 'reader')" />
-                <FormCheckbox :checked="form.journal1.includes('reviewer')" label="Reviewer" value="reviewer" @update:model-value="updateJournal('journal1', $event, 'reviewer')" />
-                <FormCheckbox
-                  :checked="form.journal1.includes('consent')"
-                  label="Ha, men o'z ma'lumotimni ushbu jurnalning maxfiylik bayonnomasiga muvofiq yig'ish va saqlashga roziman."
-                  value="consent"
-                  @update:model-value="updateJournal('journal1', $event, 'consent')"
-                />
-              </VField>
-            </div>
-            <div class="grid gap-4">
-              <h4 class="text-base font-medium text-dark">Ilgʻor iqtisodiyot va pedagogik texnologiyalar</h4>
-              <VField name="journal2" rules="required|requiredArray" v-model="form.journal2">
-                <FormCheckbox :checked="form.journal2.includes('reader')" label="Reader" value="reader" @update:model-value="updateJournal('journal2', $event, 'reader')" />
-                <FormCheckbox :checked="form.journal2.includes('reviewer')" label="Reviewer" value="reviewer" @update:model-value="updateJournal('journal2', $event, 'reviewer')" />
-                <FormCheckbox
-                  :checked="form.journal2.includes('consent')"
-                  label="Ha, men o'z ma'lumotimni ushbu jurnalning maxfiylik bayonnomasiga muvofiq yig'ish va saqlashga roziman."
-                  value="consent"
-                  @update:model-value="updateJournal('journal2', $event, 'consent')"
-                />
-              </VField>
-            </div>
-            <div class="grid gap-4">
-              <h4 class="text-base font-medium text-dark">Nashrlar</h4>
-              <VField name="journal3" rules="required|requiredArray" v-model="form.journal3">
-                <FormCheckbox :checked="form.journal3.includes('reader')" label="Reader" value="reader" @update:model-value="updateJournal('journal3', $event, 'reader')" />
-                <FormCheckbox :checked="form.journal3.includes('reviewer')" label="Reviewer" value="reviewer" @update:model-value="updateJournal('journal3', $event, 'reviewer')" />
-                <FormCheckbox
-                  :checked="form.journal3.includes('consent')"
-                  label="Ha, men o'z ma'lumotimni ushbu jurnalning maxfiylik bayonnomasiga muvofiq yig'ish va saqlashga roziman."
-                  value="consent"
-                  @update:model-value="updateJournal('journal3', $event, 'consent')"
-                />
-              </VField>
-            </div>
-          </div>
-          <div class="grid gap-2">
-            <VField name="interests">
-              <FormGroup label="Qiziqishingiz" for-id="interests">
-                <FormTextarea placeholder="Qiziqishingizni yozing..." id="interests" rows="6" v-model="form.interests" />
-              </FormGroup>
-            </VField>
-            <p class="text-sm text-neutral">Agar siz biron bir jurnalda sharhlovchi bo'lishni so'rasangiz, iltimos, o'z qiziqishlaringizni kiriting.</p>
-          </div>
-        </div>
-
         <div class="w-full flex max-sm:flex-col sm:justify-end gap-3">
           <UIButton type="button" text="Bekor qilish" variant="outline" wrapper-class="sm:max-w-[167px] w-full" />
-          <UIButton type="submit" text="Ro'yhatdan o'tish" wrapper-class="sm:max-w-[167px] w-full" />
+          <UIButton :loading type="submit" text="Ro'yhatdan o'tish" wrapper-class="sm:max-w-[167px] w-full" />
         </div>
       </div>
     </VForm>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { reactive } from 'vue'
+import { useAuthStore } from '@/stores/auth.js'
+import { useCountriesStore } from '@/stores/countries.js'
+import { useCustomToast } from '@/composables/useCustomToast.js'
 
 definePageMeta({
   layout: 'auth',
 })
+const localePath = useLocalePath()
+const router = useRouter()
+
+const { showToast } = useCustomToast()
+
+const authStore = useAuthStore()
+const countriesStore = useCountriesStore()
+
+const { register } = authStore
+const { loading, accessTokenCookie, refreshTokenCookie } = storeToRefs(authStore)
+const { countries } = storeToRefs(countriesStore)
 
 const form = reactive({
   firstName: '',
   lastName: '',
-  organization: '',
-  country: '',
+  companyName: '',
   phone: '',
   email: '',
   password: '',
-  confirmPassword: '',
-  journal1: [],
-  journal2: [],
-  journal3: [],
+  passwordConfirm: '',
+  countryId: '',
   interests: '',
 })
 
@@ -175,16 +133,35 @@ const selectData = [
   { id: 'USA', title: 'AQSh' },
 ]
 
-const updateJournal = (journal, value, id) => {
-  if (value) {
-    form[journal].push(id)
-  } else {
-    form[journal] = form[journal].filter((item) => item !== id)
+const registerToSystem = async () => {
+  loading.value = true
+  try {
+    const response = await register({
+      firstName: form.firstName,
+      lastName: form.lastName,
+      companyName: form.companyName,
+      phone: '+998' + form.phone,
+      email: form.email,
+      password: form.password,
+      passwordConfirm: form.passwordConfirm,
+      countryId: form.countryId,
+      interests: form.interests,
+    })
+    accessTokenCookie.value = response.accessToken
+    refreshTokenCookie.value = response.refreshToken
+    router.push(localePath('/auth/login'))
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.error) {
+      const errorMessages = error.response.data.error
+      Object.values(errorMessages).forEach((message) => {
+        showToast(message, 'error')
+      })
+    } else {
+      showToast('Anqlanmgan xatolik', 'error')
+    }
+    console.log(error)
+  } finally {
+    loading.value = false
   }
-}
-
-const registerToSystem = () => {
-  // Foydalanuvchini ro'yhatga olish funktsiyasi
-  console.log(form.value)
 }
 </script>

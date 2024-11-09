@@ -1,8 +1,8 @@
 <template>
   <div class="bg-secondary py-3 hidden-on-print overflow-x-hidden">
     <div class="container flex items-center gap-3 md:overflow-hidden">
-      <NuxtLink :to="localePath('/')" class="flex items-center gap-1.5 text-white leading-130 text-sm transition-300 hover:text-white/20 font-medium group">
-        <span class="icon-home text-base leading-4 text-white transition-300 group-hover:text-blue"></span>
+      <NuxtLink :to="localePath('/')" class="flex items-center gap-1.5 text-white leading-130 text-sm hover:text-white/50 font-medium group">
+        <span class="icon-home text-base leading-4 text-white group-hover:text-blue"></span>
         <p class="transition-300 group-hover:text-blue leading-4">Bosh sahifa</p>
       </NuxtLink>
       <div v-for="(item, index) in breadcrumb" :key="index" class="flex items-center gap-3 last:max-w-[150px] sm:last:max-w-[300px] overflow-hidden group font-medium shrink-0">

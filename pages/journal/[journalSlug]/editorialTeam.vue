@@ -26,15 +26,7 @@
         </div>
       </section>
     </div>
-    <div class="lg:col-span-4 lg:sticky top-40 h-max bg-gray-1 p-4 shadow-section rounded-xl">
-      <UIButton text="Maqolani yuborish" wrapper-class="w-full !bg-secondary rounded-none" />
-      <nav class="mt-6">
-        <h3 class="bg-secondary py-2 text-white px-4">Axborot</h3>
-        <NuxtLink :to="localePath('/journal/slug/information/slug1')" class="py-3 px-4 block border-b">O'quvchilar uchun</NuxtLink>
-        <NuxtLink :to="localePath('/journal/slug/information/slug2')" class="py-3 px-4 block border-b">Mualliflar uchun</NuxtLink>
-        <NuxtLink :to="localePath('/journal/slug/information/slug3')" class="py-3 px-4 block border-b">Kutubxonachilar uchun</NuxtLink>
-      </nav>
-    </div>
+    <CommonAboutSidebar :slug="route.params.journalSlug"/>
   </div>
 </template>
 
@@ -47,4 +39,6 @@ const breadcrumb = [
 ]
 
 const localePath = useLocalePath()
+
+const route = useRoute()
 </script>

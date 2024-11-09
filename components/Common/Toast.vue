@@ -1,6 +1,6 @@
 <template>
   <div class="relative flex items-center justify-between bg-white overflow-hidden p-4 rounded-xl z-50">
-    <span class="absolute top-1/2 -translate-y-1/2 left-0 -translate-x-1/2 h-7 w-1.5 rounded-full bg-destructive" v-if="type === 'error'"></span>
+    <span class="absolute top-1/2 -translate-y-1/2 left-0 -translate-x-1/2 h-7 w-1.5 rounded-full bg-red-600" v-if="type === 'error'"></span>
     <span class="absolute top-1/2 -translate-y-1/2 left-0 -translate-x-1/2 h-7 w-1.5 rounded-full bg-blue-600" v-if="type === 'info'"></span>
     <span class="absolute top-1/2 -translate-y-1/2 left-0 -translate-x-1/2 h-7 w-1.5 rounded-full bg-green-600" v-if="type === 'success'"></span>
     <span class="absolute top-1/2 -translate-y-1/2 left-0 -translate-x-1/2 h-7 w-1.5 rounded-full bg-yellow-600" v-if="type === 'warning'"></span>
@@ -11,7 +11,7 @@
       <img src="/assets/svg/toast/warning.svg" alt="icon" v-if="type === 'warning'" />
       <img src="/assets/svg/toast/info.svg" alt="icon" v-if="type === 'info'" />
       <div class="ml-2">
-        <h2 class="text-foreground font-semibold text-sm pr-7">{{ text }}</h2>
+        <h2 class=" text-black font-semibold text-sm pr-7">{{ text }}</h2>
       </div>
     </div>
     <div id="countdown" class="relative h-7 w-7 text-center bg-transparent rounded-full flex items-center justify-center">

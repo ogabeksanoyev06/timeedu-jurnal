@@ -1,22 +1,23 @@
 <template>
   <div>
-    <UIStepper />
     <section class="mb-[120px]">
-      <SectionHeroBanner />
+      <SectionHeroBanner :hidden="true" />
     </section>
     <section class="container grid gap-6">
-      <CardJournal v-for="key in 3" :key />
+      <CardJournal v-for="(journal, i) in data?.journals?.content" :key="i" :journal="journal" />
     </section>
   </div>
 </template>
 
 <script setup>
-const steps = [
-  { id: 1, name: 'Boshlang‘ich' },
-  { id: 2, name: 'O‘rta' },
-  { id: 3, name: 'Yakuniy' },
-  { id: 4, name: 'Tekshirish' },
-]
+import { useJournalStore } from '@/stores/journals.js'
 
-const currentStep = ref(1)
+const journalStore = useJournalStore()
+
+const { getJournals } = journalStore
+
+const { data } = await useAsyncData('home', async () => {
+  const [journals] = await Promise.all([getJournals()])
+  return { journals }
+})
 </script>

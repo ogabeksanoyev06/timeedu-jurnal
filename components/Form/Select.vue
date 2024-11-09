@@ -3,7 +3,7 @@
     <!--  SELECTED OPTION  -->
     <div
       class="bg-white border border-gray-4 transition-300 rounded-lg px-3 py-2.5 cursor-pointer flex items-center justify-between gap-3"
-      :class="[selectedOptionStyles, { '!border-red-500': error }, { '!border-primary': showOptions }]"
+      :class="[selectedOptionStyles, { '!border-red-500 bg-red-500/10': error }, { '!border-primary': showOptions }]"
       @click="toggleSelect(!showOptions)"
     >
       <slot name="selectedOption" :value="value">

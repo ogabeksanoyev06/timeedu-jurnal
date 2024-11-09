@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white border border-gray-4 transition-300 focus-within:!border-primary overflow-hidden flex items-center rounded-xl" :class="[wrapperClass, { '!border-red-500 focus-within:!border-red-500': error }]">
+  <div class="bg-white border border-gray-4 transition-300 focus-within:!border-primary overflow-hidden flex items-center rounded-xl" :class="[wrapperClass, { '!border-red-500 focus-within:!border-red-500 bg-red-500/10': error }]">
     <div class="pl-4 h-max pointer-events-none flex-center cursor-pointer transition-300" v-if="prefix">
       <slot name="prefix"> </slot>
     </div>

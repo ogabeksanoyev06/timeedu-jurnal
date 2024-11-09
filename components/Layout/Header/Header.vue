@@ -2,7 +2,7 @@
   <div class="sticky top-0 z-[90]">
     <header class="relative bg-secondary z-[100] w-full py-4 transition-300">
       <div class="container flex-y-center gap-16">
-        <NuxtLink to="/" class="header-left">
+        <NuxtLink :to="localePath('/')" class="header-left">
           <img src="/assets/svg/logo.svg" class="w-full max-w-[150px] flex-shrink-0" alt="timeedu.uz" />
         </NuxtLink>
         <div class="header-right flex-1">
@@ -37,21 +37,13 @@
               <NuxtLink to="/" class="transition-300 text-white hover:text-gray-5">Joriy nashr</NuxtLink>
               <NuxtLink to="/" class="transition-300 text-white hover:text-gray-5">Arxivlar</NuxtLink>
               <NuxtLink to="/" class="transition-300 text-white hover:text-gray-5">Ilm-fan</NuxtLink>
-              <LayoutHeaderNavbarDropdown
-                title="Biz haqimizda"
-                :items="[
-                  { title: 'Jurnal haqida', path: '/about-journal' },
-                  { title: 'Tahririyat jamoasi', path: '/editorial-team' },
-                  { title: 'Maxfiylik bayonoti', path: '/privacy-policy' },
-                  { title: 'Kontaktlar', path: '/contacts' },
-                ]"
-              />
+
               <LayoutHeaderNavbarDropdown
                 title="Mualliflar uchun"
                 :items="[
-                  { title: 'Talablar', path: '/requirements' },
-                  { title: 'Tarqiz', path: '/review' },
-                  { title: 'To\'lov', path: '/payment' },
+                  { title: 'Talablar', path: '/' },
+                  { title: 'Tarqiz', path: '/' },
+                  { title: 'To\'lov', path: '/' },
                 ]"
               />
               <LayoutHeaderNavbarDropdown
@@ -76,4 +68,9 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRouter } from 'vue-router'
+
+const localePath = useLocalePath()
+const router = useRouter()
+</script>
