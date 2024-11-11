@@ -40,11 +40,33 @@ export const useAuthStore = defineStore('auth', () => {
   const refreshAccessToken = async () => {
     try {
       const response = await api.post('/auth/refresh', { refreshToken: refreshTokenCookie.value })
-      accessTokenCookie.value = response.data.access_token
-      refreshTokenCookie.value = response.data.refresh_token
-      return response.data.access_token
+      return response.data
     } catch (error) {
       throw error
+    }
+  }
+
+  const resetPassword = async (form) => {
+    loading.value = true
+    try {
+      const response = await api.patch(`/auth/resetPassword`, form)
+      return response.data
+    } catch (error) {
+      throw error
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const confirmEmail = async (slug) => {
+    loading.value = true
+    try {
+      const response = await api.patch(`/auth/confirmEmail/${slug}`)
+      return response.data
+    } catch (error) {
+      throw error
+    } finally {
+      loading.value = false
     }
   }
 
@@ -65,6 +87,8 @@ export const useAuthStore = defineStore('auth', () => {
     refreshTokenCookie,
     refreshAccessToken,
     checkAuth,
+    resetPassword,
+    confirmEmail,
     loading,
   }
 })

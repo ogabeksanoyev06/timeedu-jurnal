@@ -1,9 +1,10 @@
 <template>
   <div class="sticky top-0 z-[90]">
     <header class="relative bg-secondary z-[100] w-full py-4 transition-300">
-      <div class="container flex-y-center gap-16">
-        <NuxtLink :to="localePath('/')" class="header-left">
-          <img src="/assets/svg/logo.svg" class="w-full max-w-[150px] flex-shrink-0" alt="timeedu.uz" />
+      <div class="container flex-y-center gap-4">
+        <NuxtLink :to="localePath('/')" class="header-left flex flex-col gap-1 max-w-[150px]">
+          <img src="/assets/svg/logo.svg" class="w-full flex-shrink-0" alt="timeedu.uz" />
+          <span v-if="!isHiddenPage" class=" text-center text-[12px] text-white">Menejment va iqtisodiyot ilmiy-tadqiqot jurnali</span>
         </NuxtLink>
         <div class="header-right flex-1">
           <div class="header-top flex items-center justify-between pb-4 border-b border-accent-1 gap-6">
@@ -24,7 +25,7 @@
               </a>
             </nav>
             <div class="flex-y-center justify-end gap-6 flex-1">
-              <FormInput suffix inputClass="!text-gray-3 placeholder:text-white" wrapperClass="!bg-[#3E3F7A] !border-accent-1 !max-w-[460px] w-full" placeholder="Qidiring yoki toping">
+              <FormInput v-if="!isHiddenPage" suffix inputClass="!text-gray-3 placeholder:text-white" wrapperClass="!bg-[#3E3F7A] !border-accent-1 !max-w-[460px] w-full" placeholder="Qidiring yoki toping">
                 <template #suffix>
                   <span class="icon-search text-xl leading-5 text-white"></span>
                 </template>
@@ -33,12 +34,12 @@
             </div>
           </div>
           <div class="header-bottom pt-4 flex items-center justify-between">
-            <nav class="flex-y-center space-x-8 sm:text-base">
-              <NuxtLink to="/" class="transition-300 text-white hover:text-gray-5">Joriy nashr</NuxtLink>
-              <NuxtLink to="/" class="transition-300 text-white hover:text-gray-5">Arxivlar</NuxtLink>
-              <NuxtLink to="/" class="transition-300 text-white hover:text-gray-5">Ilm-fan</NuxtLink>
-
+            <nav class="flex-y-center space-x-8 sm:text-base flex-1">
+              <NuxtLink to="/" class="transition-300 text-white hover:text-gray-5" v-if="!isHiddenPage">Joriy nashr</NuxtLink>
+              <NuxtLink :to="localePath(`/archive/${route.params.journalSlug}`)" class="transition-300 text-white hover:text-gray-5 [&.router-link-active]:text-gray-5" v-if="!isHiddenPage">Arxivlar</NuxtLink>
+              <NuxtLink to="/" class="transition-300 text-white hover:text-gray-5" v-if="!isHiddenPage">Ilm-fan</NuxtLink>
               <LayoutHeaderNavbarDropdown
+                v-if="!isHiddenPage"
                 title="Mualliflar uchun"
                 :items="[
                   { title: 'Talablar', path: '/' },
@@ -46,9 +47,15 @@
                   { title: 'To\'lov', path: '/' },
                 ]"
               />
+
               <LayoutHeaderNavbarDropdown
+                :reversePosition="true"
                 title="Saytdagi Jurnallar"
                 :items="[
+                  {
+                    title: 'Iqtisodiy taraqqiyot va tahlil',
+                    path: '/journals/publications',
+                  },
                   {
                     title: 'Ilg\'or iqtisodiyot va pedagogik texnologiyalar',
                     path: '/journals/economics-pedagogy',
@@ -59,6 +66,12 @@
                   },
                 ]"
               />
+
+              <FormInput v-if="isHiddenPage" suffix inputClass="!text-gray-3  placeholder:text-white" wrapperClass="!bg-[#3E3F7A] !border-accent-1  !max-w-[460px] !w-full" placeholder="Qidiring yoki toping">
+                <template #suffix>
+                  <span class="icon-search text-xl leading-5 text-white"></span>
+                </template>
+              </FormInput>
             </nav>
             <LayoutHeaderAuthorization />
           </div>
@@ -69,8 +82,14 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const localePath = useLocalePath()
 const router = useRouter()
+const route = useRoute()
+
+const isHiddenPage = computed(() => {
+  const path = router.currentRoute.value.path
+  return path === localePath('/profile') || path === localePath('/profile/change-password') || path === localePath('/')
+})
 </script>

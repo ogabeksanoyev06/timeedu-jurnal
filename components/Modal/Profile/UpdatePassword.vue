@@ -44,24 +44,6 @@ function timeout() {
       <Transition name="fade" mode="out-in">
         <VForm @submit="updatePassword" v-slot="{ errors }" v-if="step === 1">
           <div class="flex flex-col gap-4">
-            <VField name="password" rules="required" v-model="form.password">
-              <FormGroup label="Yangi parol" for-id="password">
-                <FormInput suffix placeholder="Parol" id="password" :type="showPassword ? 'text' : 'password'" v-model="form.password" :error="errors.password">
-                  <template #suffix>
-                    <span :class="['icon', showPassword ? 'icon-eye' : 'icon-eye-off']" @click="showPassword = !showPassword"></span>
-                  </template>
-                </FormInput>
-              </FormGroup>
-            </VField>
-            <VField name="confirmPassword" rules="required|confirmed:@password" v-model="form.confirmPassword">
-              <FormGroup label="Yangi parolni takrorlang" for-id="confirmPassword">
-                <FormInput suffix placeholder="Parolni takrorlang" id="confirmPassword" :type="showConfirmPassword ? 'text' : 'password'" v-model="form.confirmPassword" :error="errors.confirmPassword">
-                  <template #suffix>
-                    <span :class="['icon', showConfirmPassword ? 'icon-eye' : 'icon-eye-off']" @click="showConfirmPassword = !showConfirmPassword"></span>
-                  </template>
-                </FormInput>
-              </FormGroup>
-            </VField>
             <VField name="email" rules="required|email" v-model="form.email">
               <FormGroup label="Elektron pochtangizni kiriting" for-id="email">
                 <FormInput id="email" v-model="form.email" placeholder="Elektron pochtangizni kiriting" type="email" />

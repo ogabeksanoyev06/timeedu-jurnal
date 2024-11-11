@@ -1,5 +1,5 @@
 <template>
-  <div class="relative overflow-hidden bg-cover bg-no-repeat p-12 min-h-[500px] z-10" :class="hidden ? 'bg-[url(\'@/assets/images/background.png\')]' : ''" :style="!hidden ? { backgroundImage: `url(${backgroundImage})` } : {}">
+  <div class="relative overflow-hidden bg-cover bg-no-repeat p-12 min-h-[500px] z-10" :style="{ backgroundImage: `url(${backgroundImage})` }">
     <div class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed z-[5]">
       <div class="container h-full" v-if="!hidden">
         <div class="flex flex-col h-full items-start justify-center gap-6 max-w-[650px] text-white">

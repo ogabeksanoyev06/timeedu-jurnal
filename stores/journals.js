@@ -12,7 +12,17 @@ export const useJournalStore = defineStore('journals', () => {
       throw error
     }
   }
+
   const getJournalInner = async (slug) => {
+    try {
+      const response = await api.get(`/journals/${slug}`)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const getArxive = async (slug) => {
     try {
       const response = await api.get(`/journals/${slug}`)
       return response.data

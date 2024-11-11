@@ -4,7 +4,7 @@
       <slot name="head"></slot>
     </div>
     <Transition name="dropdown" mode="out-in">
-      <div v-if="showBody" class="absolute right-0 w-max min-w-full translate-y-full border border-transparent bg-white rounded-lg overflow-hidden z-[11] shadow-dropdown -bottom-1" :class="[bodyClass]" data-dropdown-body>
+      <div v-if="showBody" class="absolute  w-max min-w-full translate-y-full border border-transparent bg-white rounded-lg overflow-hidden z-[11] shadow-dropdown -bottom-1" :class="[bodyClass, positionClasses]" data-dropdown-body>
         <slot name="body" />
       </div>
     </Transition>
@@ -33,6 +33,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  reversePosition: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['toggle'])
@@ -48,6 +52,18 @@ const toggleShow = () => {
     }
   }
 }
+
+const positionClasses = computed(() => {
+  // Default position is right-0 and left-auto
+  let classes = ['right-0', 'left-auto']
+
+  if (props.reversePosition) {
+    // If reversePosition is true, use left-0 and right-auto
+    classes = ['left-0', 'right-auto']
+  }
+
+  return classes
+})
 
 watch(
   () => props.show,

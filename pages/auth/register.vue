@@ -109,7 +109,7 @@ const authStore = useAuthStore()
 const countriesStore = useCountriesStore()
 
 const { register } = authStore
-const { loading, accessTokenCookie, refreshTokenCookie } = storeToRefs(authStore)
+const { loading } = storeToRefs(authStore)
 const { countries } = storeToRefs(countriesStore)
 
 const form = reactive({
@@ -127,12 +127,6 @@ const form = reactive({
 const showConfirmPassword = ref(false)
 const showPassword = ref(false)
 
-const selectData = [
-  { id: 'UZ', title: 'O‘zbekiston' },
-  { id: 'RU', title: 'Rossiya' },
-  { id: 'USA', title: 'AQSh' },
-]
-
 const registerToSystem = async () => {
   loading.value = true
   try {
@@ -147,9 +141,10 @@ const registerToSystem = async () => {
       countryId: form.countryId,
       interests: form.interests,
     })
-    accessTokenCookie.value = response.accessToken
-    refreshTokenCookie.value = response.refreshToken
-    router.push(localePath('/auth/login'))
+    console.log(response)
+    // accessTokenCookie.value = response.accessToken
+    // refreshTokenCookie.value = response.refreshToken
+    // router.push(localePath('/auth/login'))
   } catch (error) {
     if (error.response && error.response.data && error.response.data.error) {
       const errorMessages = error.response.data.error

@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="mb-[120px]">
-      <SectionHeroBanner :hidden="true" />
+      <SectionHeroBanner :hidden="true" :background-image="'/images/background.png'" />
     </section>
     <section class="container grid gap-6">
       <CardJournal v-for="(journal, i) in data?.journals?.content" :key="i" :journal="journal" />

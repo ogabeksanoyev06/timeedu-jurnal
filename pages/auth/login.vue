@@ -51,7 +51,6 @@ const authStore = useAuthStore()
 const { login } = authStore
 const { loading, accessTokenCookie, refreshTokenCookie } = storeToRefs(authStore)
 
-
 const form = reactive({
   email: '',
   password: '',
@@ -69,7 +68,14 @@ const loginToSystem = async () => {
     refreshTokenCookie.value = response.refreshToken
     router.push(localePath('/'))
   } catch (error) {
-    showToast(error, 'error')
+    if (error.response && error.response.data && error.response.data.error) {
+      const errorMessages = error.response.data.error
+      Object.values(errorMessages).forEach((message) => {
+        showToast(message, 'error')
+      })
+    } else {
+      showToast('Anqlanmgan xatolik', 'error')
+    }
   } finally {
     loading.value = false
   }

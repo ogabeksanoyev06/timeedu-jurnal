@@ -16,15 +16,16 @@ export const useApi = () => {
   })
 
   const isRefreshing = ref(false)
-  let subscribers = []
+  const subscribers = []
 
   const onAccessTokenFetched = (newToken) => {
     subscribers.forEach((callback) => callback(newToken))
-    subscribers = []
+    subscribers.length = 0
   }
 
   const addSubscriber = (callback) => {
     subscribers.push(callback)
+    console.log(callback)
   }
 
   api.interceptors.request.use(
@@ -38,45 +39,37 @@ export const useApi = () => {
     (error) => Promise.reject(error),
   )
 
-  // api.interceptors.response.use(
-  //   (response) => response,
-  //   async (error) => {
-  //     const originalRequest = error.config
-  //     if (error.response && error.response.status === 401 && !originalRequest._retry) {
-  //       if (!isRefreshing.value) {
-  //         isRefreshing.value = true
-  //         try {
-  //           const newToken = await refreshAccessToken()
-  //           accessTokenCookie.value = newToken
-  //           isRefreshing.value = false
-  //           onAccessTokenFetched(newToken)
-  //         } catch (refreshError) {
-  //           isRefreshing.value = false
-  //           return Promise.reject(refreshError)
-  //         }
-  //       }
-  //       return new Promise((resolve) => {
-  //         addSubscriber((newToken) => {
-  //           originalRequest.headers['Authorization'] = `Bearer ${newToken}`
-  //           originalRequest._retry = true
-  //           resolve(api(originalRequest))
-  //         })
-  //       })
-  //     }
-
-  //     return Promise.reject(error)
-  //   },
-  // )
-
   api.interceptors.response.use(
-    (response) => {
-      return response
-    },
-    (error) => {
-      if (error.response && error.response.status === 401) {
-        // logout()
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config
+      if (error.response && error.response.status === 401 && accessTokenCookie.value && !originalRequest._retry) {
+        if (!isRefreshing.value) {
+          isRefreshing.value = true
+          try {
+            const response = await refreshAccessToken()
+            console.log(response, 'sasasas')
+            accessTokenCookie.value = response.accessToken
+            refreshTokenCookie.value = response.refreshToken
+            isRefreshing.value = false
+            onAccessTokenFetched(response.accessToken)
+          } catch (refreshError) {
+            isRefreshing.value = false
+            logout()
+            return Promise.reject(refreshError)
+          }
+        }
+
+        return new Promise((resolve) => {
+          addSubscriber((newToken) => {
+            originalRequest.headers['Authorization'] = `Bearer ${newToken}`
+            originalRequest._retry = true
+            console.log(originalRequest)
+            resolve(api(originalRequest))
+          })
+        })
       }
-      console.log(error)
+
       return Promise.reject(error)
     },
   )
