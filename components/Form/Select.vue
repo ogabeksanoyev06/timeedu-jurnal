@@ -13,7 +13,7 @@
             {{ placeholder }}
           </div>
           <slot v-else name="selectedOptionInner" :value="value">
-            <div class="w-full text-base sm:text-sm leading-5 text-dark font-medium">
+            <div class="w-full text-base sm:text-sm leading-5 text-dark ">
               {{ value[labelKey] || value }}
             </div>
           </slot>

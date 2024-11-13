@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col gap-2">
     <div class="flex-center-between gap-4">
-      <label :for="forId" class="text-sm leading-5 font-medium text-dark" :class="labelClass">
+      <label :for="forId" class="text-sm leading-5 text-dark" :class="labelClass">
         {{ label }}
       </label>
       <p v-if="infoLabel" class="text-sm leading-5 font-normal text-dark">

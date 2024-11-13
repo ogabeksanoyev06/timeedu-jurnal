@@ -37,6 +37,9 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.js'
+
 definePageMeta({
   layout: 'auth',
 })

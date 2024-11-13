@@ -39,6 +39,8 @@ const props = defineProps({
   },
 })
 
+const route = useRoute()
+
 const showDropdown = ref(false)
 
 const menuItems = computed(() => props.items)
@@ -46,4 +48,8 @@ const menuItems = computed(() => props.items)
 function handleDropdownToggle(val) {
   showDropdown.value = val
 }
+
+watch(route, () => {
+  showDropdown.value = false
+})
 </script>

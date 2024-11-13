@@ -44,11 +44,7 @@
           <div class="col-span-12 sm:col-span-6">
             <VField name="email" rules="required|email" v-model="form.email">
               <FormGroup label="Elektron pochtangiz" for-id="email">
-                <FormInput disabled suffix placeholder="E-pochtangizni kiriting" id="email" type="email" v-model="form.email" :error="errors.email">
-                  <template #suffix>
-                    <span class="icon-edit text-xl leading-5" @click="isModal = true"></span>
-                  </template>
-                </FormInput>
+                <FormInput disabled placeholder="E-pochtangizni kiriting" id="email" type="email" v-model="form.email" :error="errors.email"> </FormInput>
               </FormGroup>
             </VField>
           </div>

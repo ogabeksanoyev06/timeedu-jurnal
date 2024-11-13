@@ -1,7 +1,7 @@
 <template>
   <div class="relative" @dragover.prevent="handleDragOver" @drop.prevent="handleDrop" @dragenter.prevent="handleDragEnter" @dragleave.prevent="handleDragLeave">
     <div
-      class="flex items-center cursor-pointer gap-2 border border-dashed border-yellow bg-white rounded-lg p-2.5 relative"
+      class="flex items-center cursor-pointer gap-2 border border-dashed border-primary bg-white rounded-lg p-2.5 relative"
       :class="[
         {
           '!border-danger': error,
@@ -12,8 +12,8 @@
       @click="getFile"
     >
       <Transition name="fade" mode="out-in">
-        <span v-if="media.file" class="icon-file text-xl leading-6 text-yellow" />
-        <span v-else class="icon-upload text-xl leading-6 text-yellow" />
+        <span v-if="media.file" class="icon-file text-xl leading-6 text-primary" />
+        <span v-else class="icon-upload text-xl leading-6 text-primary" />
       </Transition>
       <div class="flex-center-between flex-1 gap-2">
         <div v-if="media.file" class="flex-y-center">

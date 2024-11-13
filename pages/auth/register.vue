@@ -5,7 +5,6 @@
       <div class="grid gap-10">
         <div class="grid gap-6">
           <h3 class="text-xl font-medium text-secondary">Profilingiz ma'lumotlari</h3>
-
           <div class="grid grid-cols-12 gap-6">
             <div class="col-span-12 sm:col-span-6">
               <VField name="firstName" rules="required" v-model="form.firstName">
@@ -37,7 +36,6 @@
             </div>
           </div>
         </div>
-
         <div class="grid gap-6">
           <h3 class="text-xl font-medium text-secondary">Kirish uchun ma'lumotlari</h3>
           <div class="grid grid-cols-12 gap-6">
@@ -81,7 +79,6 @@
             </div>
           </div>
         </div>
-
         <div class="w-full flex max-sm:flex-col sm:justify-end gap-3">
           <UIButton type="button" text="Bekor qilish" variant="outline" wrapper-class="sm:max-w-[167px] w-full" />
           <UIButton :loading type="submit" text="Ro'yhatdan o'tish" wrapper-class="sm:max-w-[167px] w-full" />
@@ -127,6 +124,8 @@ const form = reactive({
 const showConfirmPassword = ref(false)
 const showPassword = ref(false)
 
+const status = ref(false)
+
 const registerToSystem = async () => {
   loading.value = true
   try {
@@ -142,9 +141,11 @@ const registerToSystem = async () => {
       interests: form.interests,
     })
     console.log(response)
-    // accessTokenCookie.value = response.accessToken
-    // refreshTokenCookie.value = response.refreshToken
-    // router.push(localePath('/auth/login'))
+    if (response.message === 'success')
+      // accessTokenCookie.value = response.accessToken
+      // refreshTokenCookie.value = response.refreshToken
+      // router.push(localePath('/auth/login'))
+      showToast('Pochtangizga tasdiqlash so`rovi yuborildi', 'success')
   } catch (error) {
     if (error.response && error.response.data && error.response.data.error) {
       const errorMessages = error.response.data.error

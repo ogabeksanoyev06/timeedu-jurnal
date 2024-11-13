@@ -26,8 +26,9 @@
           <li class="flex flex-col gap-4">
             <h3 class="text-base font-semibold text-white">Saytdagi jurnallari</h3>
             <nav class="flex flex-col gap-4 sm:text-base">
-              <NuxtLink :to="localePath('/')" class="footer-link transition-300 text-white transition-300 flex items-center gap-2 hover:text-gray-5">Ilg’or iqtisodiyot va pedagogik texnologiyalar </NuxtLink>
-              <NuxtLink :to="localePath('/')" class="footer-link transition-300 text-white transition-300 flex items-center gap-2 hover:text-gray-5">Nashrlar</NuxtLink>
+              <NuxtLink :to="localePath(`/journal/${item.slug}`)" class="footer-link transition-300 text-white transition-300 flex items-center gap-2 hover:text-gray-5" v-for="item in journals.content" :key="item.id">
+                {{ item.name }}
+              </NuxtLink>
             </nav>
           </li>
           <li class="flex flex-col gap-4">
@@ -65,5 +66,12 @@
 </template>
 
 <script setup>
+import { useJournalStore } from '@/stores/journals.js'
+
 const localePath = useLocalePath()
+const route = useRoute()
+
+const journalStore = useJournalStore()
+
+const { journals } = storeToRefs(journalStore)
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <div class="relative p-1 bg-gray-6 rounded-xl inline-flex overflow-x-scroll invisible-scroll">
-    <div :class="activeClass" class="absolute h-[calc(100%_-_8px)] rounded-xl bg-white shadow-[0px_8px_14px_0px_#C5CFDD] -translate-y-1/2 top-1/2 transition-all duration-300" :style="{ width: `${active.width}px`, left: `${active.left}px` }"></div>
+  <div class="relative p-1 bg-gray-100 rounded-xl inline-flex overflow-x-scroll invisible-scroll">
+    <div :class="activeClass" class="absolute h-[calc(100%_-_8px)] rounded-xl bg-white shadow-[0px_0px_5px_0px_#C5CFDD] -translate-y-1/2 top-1/2 transition-all duration-300" :style="{ width: `${active.width}px`, left: `${active.left}px` }"></div>
     <button
       v-for="(tab, idx) in list"
       :id="`item-${randomNumber}_${tab.id}`"

@@ -45,7 +45,7 @@
         </div>
       </section>
     </div>
-    <CommonAboutSidebar :slug="route.params.journalSlug" />
+    <CommonAboutSidebar />
   </div>
 </template>
 
@@ -66,10 +66,14 @@ const route = useRoute()
 
 const journalStore = useJournalStore()
 
-const { getJournalInner } = journalStore
+const { getJournalInner, getJournalAbout } = journalStore
 
 const { data } = await useAsyncData('journalInner', async () => {
   return await getJournalInner(route.params.journalSlug)
+})
+
+const { data: about } = await useAsyncData('journalAbout', async () => {
+  return await getJournalAbout(route.params.journalSlug)
 })
 
 watchEffect(() => {

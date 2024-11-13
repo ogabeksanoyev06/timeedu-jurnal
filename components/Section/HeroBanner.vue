@@ -5,7 +5,9 @@
         <div class="flex flex-col h-full items-start justify-center gap-6 max-w-[650px] text-white">
           <h2 class="text-2xl md:text-4xl lg:text-5xl xl:text-6xl leading-110 font-bold">{{ title }}</h2>
           <div class="sm:text-base" v-html="description" />
-          <UIButton text="Maqola yuborish" />
+          <NuxtLink :to="`/send-articles/${route.params.journalSlug}`">
+            <UIButton text="Maqola yuborish" />
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -35,4 +37,6 @@ defineProps({
     default: false,
   },
 })
+
+const route = useRoute()
 </script>

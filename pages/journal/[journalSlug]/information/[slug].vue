@@ -10,7 +10,7 @@
           o'quvchilarga ularning nomi va elektron pochta manzili boshqa maqsadlarda ishlatilmasligiga ishonch hosil qiladi.
         </p>
       </div>
-      <CommonAboutSidebar :slug="route.params.journalSlug" />
+      <CommonAboutSidebar />
     </div>
   </div>
 </template>

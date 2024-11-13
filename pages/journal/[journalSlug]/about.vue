@@ -1,11 +1,12 @@
 <template>
-  <UIBreadcrumb :breadcrumb="breadcrumb" class="mb-10" />
+  <UIBreadcrumb :breadcrumb="breadcrumb" />
+  <SectionHeroBanner :background-image="data?.image" :title="data?.name" :description="data?.description" :button-slug="data?.slug" class="mb-10" />
   <div class="container grid lg:grid-cols-12 gap-6">
     <div class="lg:col-span-8">
-      <h3 class="section-title mb-6">{{ data?.name }}</h3>
-      <div class="text-sm mb-4" v-html="data?.description"></div>
+      <h3 class="section-title mb-6">Journal haqida</h3>
+      <div class="text-sm mb-4" v-html="data?.about"></div>
     </div>
-    <CommonAboutSidebar :slug="route.params.journalSlug" />
+    <CommonAboutSidebar />
   </div>
 </template>
 
@@ -23,15 +24,9 @@ const route = useRoute()
 
 const journalStore = useJournalStore()
 
-const { getJournalInner } = journalStore
+const { getJournalAbout } = journalStore
 
-const { data } = await useAsyncData('journalInner', async () => {
-  return await getJournalInner(route.params.journalSlug)
-})
-
-watchEffect(() => {
-  if (data.value) {
-    breadcrumb[0].title = data.value.name
-  }
+const { data } = await useAsyncData('about', async () => {
+  return await getJournalAbout(route.params.journalSlug)
 })
 </script>

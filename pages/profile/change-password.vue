@@ -89,8 +89,10 @@ const handleSubmitForm = async () => {
       newPassword: form.newPassword,
       newPasswordConfirm: form.newConfirmPassword,
     })
-
     showToast('Profile muvaffaqiyatli yangilandi', 'success')
+    form.password = ''
+    form.newPassword = ''
+    form.newPasswordConfirm = ''
   } catch (error) {
     if (error.response && error.response.data && error.response.data.error) {
       const errorMessages = error.response.data.error
