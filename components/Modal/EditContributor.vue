@@ -2,14 +2,21 @@
 import { useJournalStore } from '@/stores/journals.js'
 import { useCustomToast } from '@/composables/useCustomToast.js'
 
-defineProps({
-  modelValue: Boolean,
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
+  userId: {
+    type: [Number, String],
+    required: true,
+  },
 })
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'create-collaborator'])
 
 const journalStore = useJournalStore()
 
-const { createCollaborator, getArticlesView } = journalStore
+const { updateCollaborator, getArticlesView, collaboratorId } = journalStore
 
 const { loading } = storeToRefs(journalStore)
 
@@ -18,14 +25,8 @@ const { showToast } = useCustomToast()
 const cookieId = useCookie('id')
 
 const roleList = [
-  {
-    name: 'Muallif',
-    id: 'AUTHOR',
-  },
-  {
-    name: 'Tahrirchi',
-    id: 'EDITOR',
-  },
+  { name: 'Muallif', id: 'AUTHOR' },
+  { name: 'Tahrirchi', id: 'EDITOR' },
 ]
 
 const form = reactive({
@@ -34,21 +35,32 @@ const form = reactive({
   role: '',
 })
 
+watch(
+  () => props.modelValue,
+  async (newValue) => {
+    if (newValue) {
+      const res = await collaboratorId(props.userId)
+      form.name = res.name || ''
+      form.email = res.email || ''
+      form.role = res.role || ''
+    }
+  },
+  { immediate: true },
+)
+
 const handleSubmitForm = async () => {
   try {
-    const res = await createCollaborator({
-      articleId: cookieId.value,
+    const res = await updateCollaborator(props.userId, {
       name: form.name,
       email: form.email,
       role: form.role,
     })
+    await getArticlesView(cookieId.value, 3)
+    emit('update:modelValue', false)
     showToast('Muvaffaqiyatli', 'success')
     form.name = ''
     form.email = ''
     form.role = ''
-    form.articleId = null
-    await getArticlesView(cookieId.value, 3)
-    emit('update:modelValue', false)
   } catch (error) {
     console.log(error)
   }
@@ -75,7 +87,7 @@ const handleSubmitForm = async () => {
               <FormSelect :options="roleList" label-key="name" value-key="id" placeholder="Foydalanuvchi rolini tanlang" id="role" v-model="form.role" :error="errors.role" />
             </FormGroup>
           </VField>
-          <UIButton :loading type="submit" class="w-full mt-4" text="Qo'shish" />
+          <UIButton :loading="loading" type="submit" class="w-full mt-4" text="Saqlash" />
         </div>
       </VForm>
     </div>

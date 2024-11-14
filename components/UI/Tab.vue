@@ -16,7 +16,7 @@
 
 <script setup>
 const props = defineProps({
-  modelValue: Number,
+  modelValue: [Number, String],
   list: Array,
   itemClass: String,
   activeClass: String,

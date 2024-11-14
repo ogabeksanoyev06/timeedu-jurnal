@@ -1,14 +1,17 @@
 <template>
   <div class="flex-y-center">
-    <label class="group flex items-start select-none" :class="[disabled ? 'cursor-not-allowed' : 'cursor-pointer', wrapperClass]" @click="handleChange">
-      <input v-bind="{ disabled, checked }" type="checkbox" class="absolute opacity-0 invisible h-0 w-0 peer" :value="modelValue" :name="name" @change="handleChange" />
+    <label class="group flex items-start select-none" :class="[disabled ? 'cursor-not-allowed' : 'cursor-pointer', wrapperClass,]">
+      <input v-bind="{ disabled, checked: modelValue, indeterminate }" type="checkbox" class="absolute opacity-0 invisible h-0 w-0 peer" :value="modelValue" :name="name" @change="handleChange" />
       <span
         class="shrink-0 relative duration-200 ease-in-out inline-block h-6 w-6 rounded-[6px] bg-white border-2 border-gray-4 after:border-white peer-disabled:border-gray-1 peer-disabled:after:border-grey-100 after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:w-[6px] after:h-3 after:border-r-[2px] after:border-b-[2px] after:rotate-[45deg] after:opacity-0"
         :class="[
           {
-            'border-red': error,
+            '!border-red-500': error,
             'group-hover:border-blue': !disabled,
-            '!border-primary !bg-primary after:opacity-100 ': checked,
+            '!border-primary !bg-primary after:opacity-100': modelValue,
+            'border-gray-2': !modelValue,
+            'bg-gray-100': !modelValue,
+            'peer-checked:!border-primary peer-checked:!bg-primary': modelValue,
           },
           checkboxStyles,
         ]"
@@ -29,11 +32,9 @@ const props = defineProps({
   modelValue: [String, Number, Boolean],
   label: String,
   name: String,
-  value: [String, Number, Boolean],
   disabled: Boolean,
   error: Boolean,
   labelStyles: String,
-  checked: Boolean,
   indeterminate: Boolean,
   checkboxStyles: String,
   wrapperClass: { type: [String, Array], default: '' },
@@ -42,6 +43,6 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 const handleChange = () => {
-  emit('update:modelValue', !props.checked)
+  emit('update:modelValue', !props.modelValue)
 }
 </script>

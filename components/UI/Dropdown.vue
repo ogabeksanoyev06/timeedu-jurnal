@@ -73,13 +73,13 @@ watch(
 )
 
 const target = ref(null)
-onClickOutside(target, () => {
-  if (props.show === undefined) {
-    showBody.value = false
-  } else {
-    emit('toggle', false)
-  }
-})
+  onClickOutside(target, () => {
+    if (props.show === undefined) {
+      showBody.value = false
+    } else {
+      emit('toggle', false)
+    }
+  })
 </script>
 
 <style scoped>

@@ -15,12 +15,26 @@
         <span class="w-1 h-1 bg-primary rounded-full"></span>
         Taqdim etish uchun yangi material yarating
       </NuxtLink>
-      <NuxtLink to="/" class="flex items-center gap-3 text-primary underline">
+      <NuxtLink :to="localePath('/profile')" class="flex items-center gap-3 text-primary underline">
         <span class="w-1 h-1 bg-primary rounded-full"></span>
         Shaxsiy hisobingizga qayting
       </NuxtLink>
     </nav>
+    <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
+      <UIButton text="Yakunlash" @click="handleComplete" />
+    </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const localePath = useLocalePath()
+
+const cookieId = useCookie('id')
+const cookieStep = useCookie('step')
+
+const handleComplete = () => {
+  cookieId.value = null
+  cookieStep.value = null
+  navigateTo(localePath('/'))
+}
+</script>

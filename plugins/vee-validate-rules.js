@@ -1,6 +1,7 @@
 import { defineRule } from 'vee-validate'
 
 export default defineNuxtPlugin(() => {
+  // required rule for general fields
   defineRule('required', (value) => {
     if (!value) {
       return "Maydon to'ldirilishi shart!"
@@ -8,6 +9,7 @@ export default defineNuxtPlugin(() => {
     return true
   })
 
+  // Email validation
   defineRule('email', (value) => {
     if (!value || !value.length) {
       return true
@@ -26,44 +28,15 @@ export default defineNuxtPlugin(() => {
     return true
   })
 
-  defineRule('min', (value, [length]) => {
-    if (!value || !value.length) {
-      return true
-    }
-    if (value.length < length) {
-      return `Maydon kamida ${length} belgidan iborat bo'lishi kerak!`
+  // Checkbox validation
+  defineRule('checkboxRequired', (value) => {
+    if (!value) {
+      return 'Bu maydonni tanlashingiz shart!'
     }
     return true
   })
 
-  defineRule('max', (value, [length]) => {
-    if (!value || !value.length) {
-      return true
-    }
-    if (value.length > length) {
-      return `Maydon maksimum ${length} belgidan iborat bo'lishi kerak!`
-    }
-    return true
-  })
-
-  defineRule('phone', (value) => {
-    if (!value || !value.length) {
-      return true
-    }
-    const phoneRegex = /^\d{9,15}$/
-    if (!phoneRegex.test(value)) {
-      return "Telefon raqam to'g'ri formatda emas."
-    }
-    return true
-  })
-
-  defineRule('requiredArray', (value) => {
-    if (!Array.isArray(value) || value.length === 0) {
-      return 'Maydon uchun kamida bitta element tanlanishi kerak!'
-    }
-    return true
-  })
-
+  // Password format validation
   defineRule('passwordformat', (value) => {
     if (!value || !value.length) {
       return true
@@ -72,6 +45,7 @@ export default defineNuxtPlugin(() => {
     return true
   })
 
+  // Confirmed password validation
   defineRule('confirmed', (value, [target]) => {
     if (value === target) {
       return true
@@ -79,6 +53,7 @@ export default defineNuxtPlugin(() => {
     return 'Parol mos kelmadi!'
   })
 
+  // Integer validation
   defineRule('integer', (value) => {
     if (value === undefined || value === null || value === '') {
       return true

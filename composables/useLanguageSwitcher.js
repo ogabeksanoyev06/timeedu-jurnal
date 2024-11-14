@@ -4,8 +4,6 @@ import { useI18n } from 'vue-i18n'
 export const useLanguageSwitcher = () => {
   const { locale, setLocale } = useI18n()
 
-  const cookieLocale = useCookie('i18n_redirected')
-
   const languagesList = [
     {
       name: "O'zbekcha",

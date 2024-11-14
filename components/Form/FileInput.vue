@@ -1,10 +1,10 @@
 <template>
   <div class="relative" @dragover.prevent="handleDragOver" @drop.prevent="handleDrop" @dragenter.prevent="handleDragEnter" @dragleave.prevent="handleDragLeave">
     <div
-      class="flex items-center cursor-pointer gap-2 border border-dashed border-primary bg-white rounded-lg p-2.5 relative"
+      class="flex items-center cursor-pointer gap-2 border border-dashed border-primary bg-white rounded-lg py-6 px-6 relative"
       :class="[
         {
-          '!border-danger': error,
+          '!border-red-500': error,
           '!border-dashed': dragging,
           '!border-dashed': dashed,
         },
@@ -12,8 +12,7 @@
       @click="getFile"
     >
       <Transition name="fade" mode="out-in">
-        <span v-if="media.file" class="icon-file text-xl leading-6 text-primary" />
-        <span v-else class="icon-upload text-xl leading-6 text-primary" />
+        <span v-if="media.file" class="icon-file text-2xl leading-6 text-primary" />
       </Transition>
       <div class="flex-center-between flex-1 gap-2">
         <div v-if="media.file" class="flex-y-center">
@@ -21,20 +20,35 @@
             {{ media.media }}
           </p>
         </div>
-        <span
+        <div
           v-else
-          class="font-medium text-dark leading-130 text-sm transition-300"
+          class="font-medium text-primary leading-130 text-sm transition-300 flex flex-col items-center justify-center mx-auto gap-2"
           :class="{
             '!text-red': dragging,
           }"
         >
-          {{ modelValue || dragging ? $t('drop_file_here') : 'Fayl biriktiring' }}
-        </span>
-        <!-- <button v-if="modelValue" type="button" class="duration-200 transition-all group w-5 h-5 bg-gray-2 flex items-center justify-center rounded cursor-pointer border border-transparent hover:scale-110 hover:bg-red-500/20">
-          <svg xmlns="http://www.w3.org/2000/svg" class="transition-300 text-base group-hover:text-red-500" width="1em" height="1em" viewBox="0 0 24 24">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 15.5V12M12 12V8.5M12 12H15.5M12 12H8.5M18.364 18.364C14.8492 21.8787 9.15076 21.8787 5.63604 18.364C2.12132 14.8492 2.12132 9.15076 5.63604 5.63604C9.15076 2.12132 14.8492 2.12132 18.364 5.63604C21.8787 9.15076 21.8787 14.8492 18.364 18.364Z"
+              stroke="#8959C6"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
-        </button> -->
+          {{ modelValue || dragging ? 'Faylni shu yerga torting' : 'Fayl biriktiring' }}
+        </div>
+        <button v-if="modelValue" type="button" class="duration-200 transition-all group w-5 h-5 flex items-center justify-center rounded cursor-pointer border border-transparent hover:scale-110">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+            <path
+              d="M4.16667 5.5L4.16667 12.1667C4.16667 12.9407 4.16667 13.3277 4.20944 13.6526C4.50483 15.8963 6.27037 17.6618 8.51404 17.9572C8.83895 18 9.22597 18 10 18V18C10.774 18 11.1611 18 11.486 17.9572C13.7296 17.6618 15.4952 15.8963 15.7906 13.6526C15.8333 13.3277 15.8333 12.9407 15.8333 12.1667L15.8333 5.5M4.16667 5.5H2.5M4.16667 5.5H7.5M15.8333 5.5H17.5M15.8333 5.5H12.5M7.5 5.5V5.5C7.5 5.03534 7.5 4.80302 7.53843 4.60982C7.69624 3.81644 8.31644 3.19624 9.10982 3.03843C9.30302 3 9.53535 3 10 3V3C10.4647 3 10.697 3 10.8902 3.03843C11.6836 3.19624 12.3038 3.81644 12.4616 4.60982C12.5 4.80302 12.5 5.03534 12.5 5.5V5.5M7.5 5.5L12.5 5.5M7.91667 8.41667L7.91667 14.25M12.0833 8.41667L12.0833 14.25"
+              stroke="#EB5757"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
       </div>
     </div>
     <input id="media" ref="mediaInput" :accept="accept" class="w-0 h-0 absolute opacity-0" :multiple="multiple" name="file" type="file" @change="handleFile" @click="$event.target.value = ''" />
@@ -42,6 +56,8 @@
 </template>
 
 <script setup>
+import { ref, reactive, watch, onMounted } from 'vue'
+
 const props = defineProps({
   label: String,
   placeholder: String,
@@ -59,7 +75,8 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['update:modelValue', 'error'])
+const emit = defineEmits(['update:modelValue', 'error', 'fileUpload'])
+
 
 const isMaxSize = ref(false)
 const mediaInput = ref(null)
@@ -69,9 +86,13 @@ const media = reactive({
   file: null,
 })
 const currentTarget = ref(null)
+const dragging = ref(false)
 
-const handleFile = (event) => {
-  const target = event.target
+const handleFile = async (event) => {
+  const target = event?.target
+  if (target?.files === null) {
+    return
+  }
   if (target?.files) {
     handleUploader(target)
   }
@@ -79,24 +100,34 @@ const handleFile = (event) => {
 
 const handleUploader = (target) => {
   const file = target.files?.[0]
+  console.log(file)
   if (file?.size > props.maxSize) {
     isMaxSize.value = true
     emit('error', true)
     return
   }
   emit('error', false)
-
-  const reader = new FileReader()
-  reader.onload = () => {
-    media.media = file?.name
-    media.file = file
-    emit('update:modelValue', file)
-  }
-  reader.readAsDataURL(file)
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => {
+      resolve(reader.result)
+    }
+    reader.readAsDataURL(target?.files[0])
+    reader.onerror = (error) => reject(error)
+  })
+    .then(() => {
+      media.media = file?.name
+      media.file = file
+      emit('update:modelValue', file)
+      emit('fileUpload', file) // Emit the file for upload
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
 
 const getFile = () => {
-  mediaInput.value?.click()
+  mediaInput?.value?.click()
 }
 
 const clearForm = () => {
@@ -108,21 +139,12 @@ const clearForm = () => {
 const btnHandler = () => {
   if (media.media && media.file) {
     clearForm()
+  } else if (media.media && !media.file) {
+    clearForm()
   } else {
     getFile()
   }
 }
-
-watch(
-  () => media.media,
-  (val) => {
-    if (!val) {
-      clearForm()
-    }
-  },
-)
-
-const dragging = ref(false)
 
 const handleDragOver = (event) => {
   event.preventDefault()
@@ -130,11 +152,11 @@ const handleDragOver = (event) => {
 
 const handleDragEnter = (e) => {
   dragging.value = true
-  currentTarget.value = e.target
+  currentTarget.value = e?.target
 }
 
 const handleDragLeave = (e) => {
-  if (e.target === currentTarget.value) {
+  if (e?.target === currentTarget.value) {
     currentTarget.value = null
     dragging.value = false
   }
@@ -143,10 +165,28 @@ const handleDragLeave = (e) => {
 const handleDrop = (event) => {
   event.preventDefault()
   dragging.value = false
-  if (event.dataTransfer?.items) {
+  const files = event.dataTransfer?.items
+  if (files) {
     handleUploader(event.dataTransfer)
   }
 }
+
+watch(
+  () => media.media,
+  (val) => {
+    if (media.media && media.file) {
+      btnClearer.value = true
+    } else if (media.media && !media.file) {
+      btnClearer.value = true
+      emit('update:modelValue', media.media)
+    } else {
+      btnClearer.value = false
+    }
+    if (!val) {
+      clearForm()
+    }
+  },
+)
 
 onMounted(() => {
   if (typeof props.modelValue === 'object') {
