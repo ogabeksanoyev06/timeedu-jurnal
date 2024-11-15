@@ -1,7 +1,7 @@
 <template>
   <div>
     <Transition name="fade" mode="out-in">
-      <VForm id="200" @submit="handleSubmitForm" v-slot="{ errors }" v-if="isArticles">
+      <VForm id="200" @submit="handleSubmitForm" v-slot="{ errors }" v-if="isArticles || !articlesView.filePath">
         <VField name="file" rules="required" v-model="form.file">
           <!-- <FormGroup info-label="10mb" label="Fayl"> -->
           <FormFileInput v-model="form.file" @error="isMaxSize = $event" :error="errors.file || isMaxSize" />

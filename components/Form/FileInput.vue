@@ -38,7 +38,7 @@
           </svg>
           {{ modelValue || dragging ? 'Faylni shu yerga torting' : 'Fayl biriktiring' }}
         </div>
-        <button v-if="modelValue" type="button" class="duration-200 transition-all group w-5 h-5 flex items-center justify-center rounded cursor-pointer border border-transparent hover:scale-110">
+        <!-- <button v-if="modelValue" type="button" class="duration-200 transition-all group w-5 h-5 flex items-center justify-center rounded cursor-pointer border border-transparent hover:scale-110">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
             <path
               d="M4.16667 5.5L4.16667 12.1667C4.16667 12.9407 4.16667 13.3277 4.20944 13.6526C4.50483 15.8963 6.27037 17.6618 8.51404 17.9572C8.83895 18 9.22597 18 10 18V18C10.774 18 11.1611 18 11.486 17.9572C13.7296 17.6618 15.4952 15.8963 15.7906 13.6526C15.8333 13.3277 15.8333 12.9407 15.8333 12.1667L15.8333 5.5M4.16667 5.5H2.5M4.16667 5.5H7.5M15.8333 5.5H17.5M15.8333 5.5H12.5M7.5 5.5V5.5C7.5 5.03534 7.5 4.80302 7.53843 4.60982C7.69624 3.81644 8.31644 3.19624 9.10982 3.03843C9.30302 3 9.53535 3 10 3V3C10.4647 3 10.697 3 10.8902 3.03843C11.6836 3.19624 12.3038 3.81644 12.4616 4.60982C12.5 4.80302 12.5 5.03534 12.5 5.5V5.5M7.5 5.5L12.5 5.5M7.91667 8.41667L7.91667 14.25M12.0833 8.41667L12.0833 14.25"
@@ -48,7 +48,7 @@
               stroke-linejoin="round"
             />
           </svg>
-        </button>
+        </button> -->
       </div>
     </div>
     <input id="media" ref="mediaInput" :accept="accept" class="w-0 h-0 absolute opacity-0" :multiple="multiple" name="file" type="file" @change="handleFile" @click="$event.target.value = ''" />

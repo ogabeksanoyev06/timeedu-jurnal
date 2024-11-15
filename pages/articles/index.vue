@@ -9,7 +9,7 @@
         </template>
       </FormInput>
       <div v-if="data">
-        <CardArticle />
+        <CardArticle v-for="(article, i) in data?.content" :key="i" :article="article" />
       </div>
     </div>
   </div>
@@ -22,7 +22,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 const breadcrumb = [
   {
-    title: 'Jurnal haqida',
+    title: 'Jurnal haqidsaasa',
     link: '',
   },
 ]
@@ -42,23 +42,9 @@ const { data, refresh } = await useAsyncData(
   { watch: [search] },
 )
 
-watch(
-  search,
-  async (newSearch) => {
-    router.push({ query: { ...route.query, search: newSearch } })
-    await refresh()
-  },
-  { immediate: true },
-)
-
-watch(
-  () => route.query.search,
-  async (newSearch) => {
-    search.value = newSearch || ''
-    await refresh()
-  },
-  { immediate: true },
-)
+watch(search, async (newSearch) => {
+  router.push({ query: { ...route.query, search: newSearch } })
+})
 
 const fetchArticles = () => {
   refresh()

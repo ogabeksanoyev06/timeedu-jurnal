@@ -18,12 +18,14 @@
         </section>
         <section class="mt-10 border-b pb-4">
           <h3 class="text-xl mb-4 font-medium">To'liq son</h3>
-          <UIButton text="Faylni yuklang" icon-left="icon-file text-xl leading-5" wrapper-class=" !bg-secondary" />
+          <a :href="data.file" target="_blank">
+            <UIButton text="Faylni yuklang" icon-left="icon-file text-xl leading-5" wrapper-class=" !bg-secondary" />
+          </a>
         </section>
         <section class="mt-10">
           <h3 class="text-xl mb-4 font-medium">Maqolalar</h3>
           <div class="grid gap-4">
-            <CardArticle v-for="key in 5" :key />
+            <CardArticle v-for="(article, i) in data?.articles?.content" :key="i" :article="article" />
             <UIButton text="Yana yuklash" wrapper-class="mt-10" />
           </div>
         </section>

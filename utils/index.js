@@ -3,7 +3,7 @@ export const clearSpaces = (text) => {
 }
 
 export const removePhonePrefix = (phone) => {
-  return clearSpaces(phone.startsWith('+998') ? phone.slice(4) : phone)
+  return clearSpaces(phone?.startsWith('+998') ? phone?.slice(4) : phone)
 }
 
 export const getInitials = (firstName, lastName) => {

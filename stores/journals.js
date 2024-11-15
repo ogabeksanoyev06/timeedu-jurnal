@@ -31,7 +31,7 @@ export const useJournalStore = defineStore('journals', () => {
   }
 
   const getArticles = async ({ params }) => {
-    return await handleApiRequest('get', '/articles/view/', params)
+    return await handleApiRequest('get', '/articles/view/', { params })
   }
 
   const getArticleInner = async (id) => {
@@ -54,7 +54,7 @@ export const useJournalStore = defineStore('journals', () => {
   // create articles
 
   const getMyArticles = async (slug) => {
-    const response = await api.post(`/articles/create/${slug}/mySubmissions`)
+    const response = await api.get(`/articles/create/${slug}/mySubmissions`)
     return response.data
   }
 

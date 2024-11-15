@@ -7,22 +7,22 @@
     <p>Jurnal sizning materialingizni yuborganingiz to'g'risida xabardor qilindi, yozuvni tasdiqlash sizga yuborildi elektron pochta. Muharrir sizning materialingizni ko'rib chiqqandan so'ng, biz siz bilan bog'lanamiz.</p>
     <p>Ayni paytda siz quyidagilarni qilishingiz mumkin:</p>
     <nav class="flex flex-col gap-2">
-      <NuxtLink to="/" class="flex items-center gap-3 text-primary underline">
+      <NuxtLink :to="localePath(`/send-articles/${route.params.journalSlug}/my-articles`)" class="flex items-center gap-3 text-primary underline">
         <span class="w-1 h-1 bg-primary rounded-full"></span>
         Ushbu tarkibni ko'ring
       </NuxtLink>
-      <NuxtLink to="/" class="flex items-center gap-3 text-primary underline">
+      <div @click="handleComplete" class="cursor-pointer flex items-center gap-3 text-primary underline">
         <span class="w-1 h-1 bg-primary rounded-full"></span>
         Taqdim etish uchun yangi material yarating
-      </NuxtLink>
+      </div>
       <NuxtLink :to="localePath('/profile')" class="flex items-center gap-3 text-primary underline">
         <span class="w-1 h-1 bg-primary rounded-full"></span>
         Shaxsiy hisobingizga qayting
       </NuxtLink>
     </nav>
-    <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
+    <!-- <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
       <UIButton text="Yakunlash" @click="handleComplete" />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -32,9 +32,11 @@ const localePath = useLocalePath()
 const cookieId = useCookie('id')
 const cookieStep = useCookie('step')
 
+const route = useRoute()
+
 const handleComplete = () => {
   cookieId.value = null
-  cookieStep.value = null
-  navigateTo(localePath('/'))
+  cookieStep.value = 1
+  navigateTo(localePath(`/send-articles/${route.params.journalSlug}`))
 }
 </script>

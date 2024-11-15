@@ -17,6 +17,7 @@ const journalStore = useJournalStore()
 const { createArticlesSaveState } = journalStore
 
 const cookieStep = useCookie('step')
+const cookieId = useCookie('id')
 
 const handleSubmitForm = async () => {
   try {
@@ -26,4 +27,6 @@ const handleSubmitForm = async () => {
     console.log(error)
   }
 }
+
+
 </script>

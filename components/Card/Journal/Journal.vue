@@ -9,7 +9,7 @@
         </div>
         <div class="flex max-sm:flex-col gap-3 sm:gap-5 mt-4">
           <UIButton @click="navigateTo(journal.slug)" wrapper-class="bg-secondary hover:bg-secondary/90 max-sm:w-full" text="Jurnalni ko'rish" />
-          <UIButton @click="navigateTo(journal.slug, 'current-edition')" wrapper-class="max-sm:w-full" variant="outline" text="Joriy nashr" icon="icon-file text-xl leading-5" />
+          <UIButton @click="navigateTo(journal.slug, 'currentIssue')" wrapper-class="max-sm:w-full" variant="outline" text="Joriy nashr" icon="icon-file text-xl leading-5" />
         </div>
         <div class="flex items-end justify-between gap-6 mt-6 sm:mt-10 lg:mt-auto">
           <p class="text-neutral sm:text-base">e-ISSN: {{ journal.eissn }}</p>

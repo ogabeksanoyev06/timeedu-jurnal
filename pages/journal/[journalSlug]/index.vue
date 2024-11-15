@@ -2,8 +2,6 @@
   <div>
     <UIBreadcrumb :breadcrumb="breadcrumb" />
     <SectionHeroBanner :background-image="data?.image" :title="data?.name" :description="data?.description" :button-slug="data?.slug" class="mb-10" />
-    {{ data.articles.content }}
-
     <div class="container grid lg:grid-cols-12 gap-6">
       <div class="lg:col-span-8">
         <section class="bg-gray-1 p-4 grid gap-4 rounded-xl">
@@ -38,7 +36,9 @@
         </section>
         <section class="mt-10 border-b pb-4">
           <h3 class="text-xl mb-4 font-medium">To'liq son</h3>
-          <UIButton text="Faylni yuklang" icon-left="icon-file text-xl leading-5" wrapper-class=" !bg-secondary" />
+          <a :href="data?.issue?.file" target="_blank">
+            <UIButton text="Faylni yuklang" icon-left="icon-file text-xl leading-5" wrapper-class=" !bg-secondary" />
+          </a>
         </section>
         <section class="mt-10">
           <h3 class="text-xl mb-4 font-medium">Maqolalar</h3>
@@ -70,15 +70,11 @@ const route = useRoute()
 
 const journalStore = useJournalStore()
 
-const { getJournalInner, getJournalAbout } = journalStore
+const { getJournalInner } = journalStore
 
 const { data } = await useAsyncData('journal-inner', async () => {
   return await getJournalInner(route.params.journalSlug)
 })
-
-// const { data: about } = await useAsyncData('journalAbout', async () => {
-//   return await getJournalAbout(route.params.journalSlug)
-// })
 
 watchEffect(() => {
   if (data.value) {

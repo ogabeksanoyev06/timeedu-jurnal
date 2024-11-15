@@ -33,7 +33,7 @@
           </div>
 
           <div class="col-span-12 sm:col-span-6">
-            <VField name="phone" rules="required|phone" v-model="form.phone">
+            <VField name="phone" rules="required" v-model="form.phone">
               <FormGroup label="Telefon raqamingiz" for-id="phone">
                 <FormInput prefix placeholder="Telefon raqamingizni kiriting" id="phone" v-model="form.phone" :error="errors.phone" v-maska="'#########'">
                   <template #prefix>+998</template>
@@ -70,6 +70,7 @@
 import { useProfileStore } from '@/stores/profile.js'
 import { useCustomToast } from '@/composables/useCustomToast.js'
 import { useCountriesStore } from '@/stores/countries.js'
+import { useJournalStore } from '@/stores/journals.js'
 
 definePageMeta({
   layout: 'profile',
@@ -78,10 +79,12 @@ definePageMeta({
 const { showToast } = useCustomToast()
 const profileStore = useProfileStore()
 const countriesStore = useCountriesStore()
+const journalStore = useJournalStore()
 
 const { getProfile, updateProfile } = profileStore
 const { user, loading } = storeToRefs(profileStore)
 const { countries } = storeToRefs(countriesStore)
+const { getMyArticles } = journalStore
 
 const form = reactive({
   firstName: '',
@@ -129,5 +132,9 @@ const handleSubmitForm = async () => {
     showToast(error || 'Profilni yangilashda xatolik yuz berdi', 'error')
   }
 }
+
+const { data } = await useAsyncData('my-articles', async () => {
+  return await getMyArticles(route.params.journalSlug)
+})
 populateForm()
 </script>

@@ -1,6 +1,5 @@
 <template>
   <div class="grid gap-6">
-    {{ articlesView }}
     <UITab :model-value="tab" :list="tabList" @update:model-value="changeTab" />
     <transition name="fade" mode="out-in">
       <VForm @submit="handleSubmitForm" v-slot="{ errors }" :key="tab">
@@ -121,12 +120,15 @@
 import { ref, reactive } from 'vue'
 import { useJournalStore } from '@/stores/journals.js'
 import { onClickOutside } from '@vueuse/core'
+import { useCustomToast } from '@/composables/useCustomToast.js'
 
 const journalStore = useJournalStore()
 
 const { createArticlesSaveState, getArticlesView, getKeywords } = journalStore
 
 const { loading, keywords, articlesView } = storeToRefs(journalStore)
+
+const { showToast } = useCustomToast()
 
 const cookieId = useCookie('id')
 const cookieStep = useCookie('step')
@@ -255,7 +257,12 @@ const handleSubmitForm = async () => {
     })
     cookieStep.value = res.state + 1
   } catch (error) {
-    console.log(error)
+    if (error.response?.data?.error) {
+      const errors = error.response.data.error
+      Object.keys(errors).forEach((key) => {
+        showToast(`${key}: ${errors[key]}`, 'error')
+      })
+    }
   } finally {
     loading.value = false
   }
