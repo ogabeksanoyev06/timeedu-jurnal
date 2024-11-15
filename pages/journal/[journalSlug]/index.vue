@@ -2,6 +2,8 @@
   <div>
     <UIBreadcrumb :breadcrumb="breadcrumb" />
     <SectionHeroBanner :background-image="data?.image" :title="data?.name" :description="data?.description" :button-slug="data?.slug" class="mb-10" />
+    {{ data.articles.content }}
+
     <div class="container grid lg:grid-cols-12 gap-6">
       <div class="lg:col-span-8">
         <section class="bg-gray-1 p-4 grid gap-4 rounded-xl">
@@ -41,7 +43,7 @@
         <section class="mt-10">
           <h3 class="text-xl mb-4 font-medium">Maqolalar</h3>
           <div class="grid gap-4">
-            <CardArticle v-for="key in 5" :key />
+            <CardArticle v-for="(article, i) in data?.articles?.content" :key="i" :article="article" />
             <UIButton text="Yana yuklash" wrapper-class="mt-10" />
           </div>
         </section>

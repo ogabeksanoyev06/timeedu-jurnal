@@ -143,6 +143,15 @@ export const useJournalStore = defineStore('journals', () => {
     return response.data
   }
 
+  const countDownload = (id) => {
+    try {
+      const response = api.patch(`/articles/view/${id}/countDownload`)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  }
+
   return {
     getJournals,
     getJournalInner,
@@ -170,5 +179,7 @@ export const useJournalStore = defineStore('journals', () => {
     articlesView,
 
     loading,
+
+    countDownload,
   }
 })
