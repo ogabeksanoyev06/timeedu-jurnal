@@ -10,8 +10,8 @@ export const useAuthStore = defineStore('auth', () => {
   const { showToast } = useCustomToast()
 
   const loading = ref(false)
-  const accessTokenCookie = useCookie('access_token', { maxAge: 3600, secure: true })
-  const refreshTokenCookie = useCookie('refresh_token', { maxAge: 7 * 24 * 3600, secure: true })
+  const accessTokenCookie = useCookie('access_token')
+  const refreshTokenCookie = useCookie('refresh_token')
 
   const login = async (data) => {
     loading.value = true

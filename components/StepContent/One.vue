@@ -64,8 +64,10 @@ const cookieStep = useCookie('step')
 const commonStore = useCommonStore()
 const journalStore = useJournalStore()
 
+const { getArticlesView } = journalStore
+
 const { languages } = storeToRefs(commonStore)
-const { loading } = storeToRefs(journalStore)
+const { loading, articlesView } = storeToRefs(journalStore)
 
 const { createArticles } = journalStore
 
@@ -75,6 +77,13 @@ const form = reactive({
   requirements: false,
   privacyConsent: false,
 })
+
+if (articlesView.value) {
+  form.languageId = articlesView.value.languageId
+  form.commnets = articlesView.value.commentForEditor
+  form.requirements = true
+  form.privacyConsent = true
+}
 
 const handleSubmitForm = async () => {
   try {
@@ -88,4 +97,6 @@ const handleSubmitForm = async () => {
     console.log(error)
   }
 }
+
+getArticlesView(cookieId.value, 1)
 </script>

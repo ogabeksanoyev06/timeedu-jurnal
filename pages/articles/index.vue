@@ -22,7 +22,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 const breadcrumb = [
   {
-    title: 'Jurnal haqidsaasa',
+    title: 'Qidiruv',
     link: '',
   },
 ]

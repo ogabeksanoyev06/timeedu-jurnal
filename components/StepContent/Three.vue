@@ -6,22 +6,22 @@
         <div class="grid gap-6">
           <VField :name="`prefiks.${tab}`" rules="required" v-model="form.prefiks[tab]">
             <FormGroup label="Prefiks" for-id="prefiks">
-              <FormInput :placeholder="placeholders[tab].prefiks" id="prefiks" v-model="form.prefiks[tab]" :error="errors[`prefiks.${tab}`]" />
+              <FormInput :placeholder="placeholders[tab]?.prefiks" id="prefiks" v-model="form.prefiks[tab]" :error="errors[`prefiks.${tab}`]" />
             </FormGroup>
           </VField>
           <VField :name="`title.${tab}`" rules="required" v-model="form.title[tab]">
             <FormGroup label="Sarlavha" for-id="title">
-              <FormInput :placeholder="placeholders[tab].title" id="title" v-model="form.title[tab]" :error="errors[`title.${tab}`]" />
+              <FormInput :placeholder="placeholders[tab]?.title" id="title" v-model="form.title[tab]" :error="errors[`title.${tab}`]" />
             </FormGroup>
           </VField>
           <VField :name="`subtitle.${tab}`" rules="required" v-model="form.subtitle[tab]">
             <FormGroup label="Subtitr" for-id="subtitle">
-              <FormInput :placeholder="placeholders[tab].subtitle" id="subtitle" v-model="form.subtitle[tab]" :error="errors[`subtitle.${tab}`]" />
+              <FormInput :placeholder="placeholders[tab]?.subtitle" id="subtitle" v-model="form.subtitle[tab]" :error="errors[`subtitle.${tab}`]" />
             </FormGroup>
           </VField>
           <VField :name="`reference.${tab}`" rules="required" v-model="form.reference[tab]">
             <FormGroup label="Izohlar" for-id="reference">
-              <FormTextarea rows="6" :placeholder="placeholders[tab].reference" id="reference" v-model="form.reference[tab]" :error="errors[`reference.${tab}`]" />
+              <FormTextarea rows="6" :placeholder="placeholders[tab]?.reference" id="reference" v-model="form.reference[tab]" :error="errors[`reference.${tab}`]" />
             </FormGroup>
           </VField>
 
@@ -29,7 +29,7 @@
           <div class="border grid gap-6 p-4 rounded-xl">
             <div class="flex items-center justify-between gap-4">
               <h3 class="text-base font-medium">Mualliflar ro'yxati</h3>
-              <button class="text-primary" @click="isModals = true">Muallif qo‘shish</button>
+              <button type="button" class="text-primary" @click="isModals = true">Muallif qo‘shish</button>
             </div>
             <div class="w-full h-[1px] bg-gray-4"></div>
             <table class="w-full text-primary">
@@ -78,41 +78,28 @@
               </tbody>
             </table>
           </div>
-
           <div class="relative" ref="keywordsContainer">
             <VField :name="`keywords.${tab}`" rules="required" v-model="form.keywords[tab]">
               <FormGroup label="Qo'shimcha tushuntirishlar Kalit so'zlar" for-id="keywords">
-                <FormInputTag suffix :placeholder="placeholders[tab].keywords" id="keywords" v-model="form.keywords[tab]" :error="errors[`keywords.${tab}`]" @focus="showKeywordsDropdown">
+                <FormInputTag suffix :placeholder="placeholders[tab]?.keywords" id="keywords" v-model="form.keywords[tab]" :error="errors[`keywords.${tab}`]" @focus="showKeywordsDropdown">
                   <template #suffix>
                     <transition name="fade">
-                      <span class="" v-if="keywordsDropdownVisible" @click="keywordsDropdownVisible = false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-xicon w-4 h-4">
-                          <path d="M18 6 6 18"></path>
-                          <path d="m6 6 12 12"></path>
-                        </svg>
-                      </span>
+                      <div v-if="showingKeywordsDropdown" class="absolute w-full top-full bg-white border rounded-md shadow-xl z-50">
+                        <ul class="max-h-40 overflow-auto">
+                          <li class="p-3 cursor-pointer hover:bg-gray-1" :key="keyword" v-for="(keyword, i) in keywordsList" :class="{ 'font-medium text-primary': selectedKeyword === keyword }" @click="selectKeyword(keyword)">
+                            {{ keyword }}
+                          </li>
+                        </ul>
+                      </div>
                     </transition>
                   </template>
                 </FormInputTag>
-                <span class="text-neutral">Materialingiz uchun qo'shimcha ma'lumot qo'shing. Har bir muddatdan keyin "Enter" tugmasini bosing.</span>
               </FormGroup>
             </VField>
-            <transition name="fade">
-              <div v-if="keywordsDropdownVisible" class="absolute right-0 w-max min-w-full translate-y-full bg-white rounded-xl overflow-hidden z-[11] shadow-md border border-white-100 bottom-6">
-                <ul class="flex flex-col overflow-y-auto scroll-style transition-300 max-h-[200px]">
-                  <li class="px-3 py-2 border-b cursor-pointer last:border-none border-gray-4 hover:bg-gray-100 transition-300" v-for="key in keywords" :key>kalit sozlar</li>
-                </ul>
-              </div>
-            </transition>
           </div>
-        </div>
-        <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
-          <UIButton text="Bekor qilish" variant="outline" />
-          <UIButton :loading type="submit" text="Saqlash va davom ettirish" />
         </div>
       </VForm>
     </transition>
-    <ModalAddContributor v-model="isModals" />
   </div>
 </template>
 
@@ -154,11 +141,6 @@ const form = reactive({
   keywords: { uz: [], ru: [], en: [] },
 })
 
-// form.prefiks = articlesView.value?.prefiks
-// form.title = articlesView.value?.title
-// form.subtitle = articlesView.value?.subtitle
-// form.reference = articlesView.value?.reference
-
 const placeholders = {
   uz: { prefiks: 'O‘zbek tili prefiks', title: 'O‘zbek tili sarlavha', subtitle: 'O‘zbek tili subtitr', reference: 'O‘zbek tili izohlar', keywords: 'O‘zbek tili kalit so‘zlar' },
   ru: { prefiks: 'Префикс на русском', title: 'Заголовок на русском', subtitle: 'Подзаголовок на русском', reference: 'Примечания на русском', keywords: 'Ключевые слова на русском' },
@@ -177,16 +159,6 @@ const changeTab = (code) => {
   form.reference[tab.value] = articlesView?.value?.reference[tab.value] || ''
   form.keywords[tab.value] = articlesView?.value?.keywords[tab.value] || []
 }
-
-// watchEffect(() => {
-//   if (articlesView.value) {
-//     form.prefiks[tab.value] = articlesView.value?.prefiks[tab.value] || ''
-//     form.title[tab.value] = articlesView.value?.title[tab.value] || ''
-//     form.subtitle[tab.value] = articlesView.value?.subtitle[tab.value] || ''
-//     form.reference[tab.value] = articlesView.value?.reference[tab.value] || ''
-//     form.keywords[tab.value] = articlesView.value?.keywords[tab.value] || []
-//   }
-// })
 
 const handleEditModal = (id) => {
   const collaborator = articlesView.value.collaborators.find((element) => element.id === id)

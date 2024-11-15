@@ -48,7 +48,6 @@ export const useApi = () => {
           isRefreshing.value = true
           try {
             const response = await refreshAccessToken()
-            console.log(response, 'sasasas')
             accessTokenCookie.value = response.accessToken
             refreshTokenCookie.value = response.refreshToken
             isRefreshing.value = false
