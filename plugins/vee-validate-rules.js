@@ -9,20 +9,25 @@ export default defineNuxtPlugin(() => {
     return true
   })
 
+  defineRule('phone', (value) => {
+    if (!value || !value.length) {
+      return true
+    }
+    if (!/^\+?\d{9,}$/g.test(value)) {
+      return "Telefon raqam to'g'ri formatda emas"
+    }
+    return true
+  })
+
   // Email validation
   defineRule('email', (value) => {
     if (!value || !value.length) {
       return true
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
     if (!emailRegex.test(value)) {
       return "Email manzilning to'g'ri formatda bo'lishi kerak!"
-    }
-
-    const domain = value.split('@')[1]
-    const allowedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com']
-    if (!allowedDomains.includes(domain)) {
-      return 'Faqat gmail.com, yahoo.com, hotmail.com dominlariga ruxsat berilgan!'
     }
 
     return true

@@ -42,9 +42,21 @@ const { data, refresh } = await useAsyncData(
   { watch: [search] },
 )
 
-watch(search, async (newSearch) => {
-  router.push({ query: { ...route.query, search: newSearch } })
-})
+watch(
+  search,
+  async (newSearch) => {
+    router.push({ query: { ...route.query, search: newSearch } })
+  },
+  { immediate: true },
+)
+
+watch(
+  () => route.query.search,
+  async (newSearch) => {
+    search.value = newSearch || ''
+  },
+  { immediate: true },
+)
 
 const fetchArticles = () => {
   refresh()

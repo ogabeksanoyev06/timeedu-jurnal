@@ -24,10 +24,11 @@
               </FormGroup>
             </VField>
           </div>
+
           <div class="col-span-12 sm:col-span-6">
             <VField name="countryId" rules="required" v-model="form.countryId">
               <FormGroup label="Mamlakatingiz" for-id="countryId">
-                <FormSelect :options="countries?.content" label-key="name" value-key="id" placeholder="Mamlakatingizni tanlang" id="countryId" v-model="form.countryId" :error="errors.countryId" />
+                <FormSelect :options="countries?.content" labelKey="name" value-key="id" placeholder="Mamlakatingizni tanlang" id="countryId" v-model="form.countryId" :error="errors.countryId" />
               </FormGroup>
             </VField>
           </div>

@@ -1,12 +1,5 @@
 <script setup>
-import { useCountriesStore } from '@/stores/countries.js'
-
 const localePath = useLocalePath()
-
-const countriesStore = useCountriesStore()
-const { getCountries } = countriesStore
-
-const { data } = await useAsyncData('countries', () => getCountries())
 </script>
 
 <template>

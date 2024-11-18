@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.API_BASE_URL || 'https://tmijournals.ndc-agency.uz/api',
+      apiBaseUrl: process.env.API_BASE_URL || 'https://tmiadmin.ndc-agency.uz/api',
     },
   },
   build: {

@@ -80,7 +80,7 @@
           </div>
         </div>
         <div class="w-full flex max-sm:flex-col sm:justify-end gap-3">
-          <UIButton type="button" text="Bekor qilish" variant="outline" wrapper-class="sm:max-w-[167px] w-full" />
+          <UIButton @click="$router.push(localePath('/auth/login'))" type="button" text="Kirish" variant="outline" wrapper-class="sm:max-w-[167px] w-full" />
           <UIButton :loading type="submit" text="Ro'yhatdan o'tish" wrapper-class="sm:max-w-[167px] w-full" />
         </div>
       </div>
@@ -97,6 +97,7 @@ import { useCustomToast } from '@/composables/useCustomToast.js'
 definePageMeta({
   layout: 'auth',
 })
+
 const localePath = useLocalePath()
 const router = useRouter()
 
@@ -108,6 +109,7 @@ const countriesStore = useCountriesStore()
 const { register } = authStore
 const { loading } = storeToRefs(authStore)
 const { countries } = storeToRefs(countriesStore)
+const { getCountries } = countriesStore
 
 const form = reactive({
   firstName: '',
@@ -160,4 +162,6 @@ const registerToSystem = async () => {
     loading.value = false
   }
 }
+
+const { data } = await useAsyncData('countries', () => getCountries())
 </script>

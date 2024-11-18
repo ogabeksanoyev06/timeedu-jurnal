@@ -30,6 +30,7 @@ export const useApi = () => {
 
   api.interceptors.request.use(
     (reqConfig) => {
+      reqConfig.headers['Language'] = nuxtApp.$i18n.locale.value
       const token = accessTokenCookie.value
       if (token) {
         reqConfig.headers['Authorization'] = `Bearer ${token}`
@@ -68,7 +69,6 @@ export const useApi = () => {
           })
         })
       }
-
       return Promise.reject(error)
     },
   )

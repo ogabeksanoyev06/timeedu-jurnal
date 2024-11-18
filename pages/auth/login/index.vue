@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="w-full flex max-sm:flex-col sm:justify-end gap-3">
-          <UIButton text="Bekor qilish" variant="outline" wrapper-class="sm:max-w-[167px] w-full" />
+          <UIButton @click="$router.push(localePath('/auth/register'))" text="Ro'yxatdan o'tish" variant="outline" wrapper-class="sm:max-w-[167px] w-full" />
           <UIButton :loading type="submit" text="Kirish" wrapper-class="sm:max-w-[167px] w-full" />
         </div>
       </div>
@@ -64,7 +64,8 @@ const showPassword = ref(false)
 const isModal = ref(false)
 
 const loginToSystem = async () => {
-  loading.value = true
+  console.log('response')
+
   try {
     const response = await login(form)
     accessTokenCookie.value = response.accessToken
@@ -76,11 +77,7 @@ const loginToSystem = async () => {
       Object.values(errorMessages).forEach((message) => {
         showToast(message, 'error')
       })
-    } else {
-      showToast('Anqlanmgan xatolik', 'error')
     }
-  } finally {
-    loading.value = false
   }
 }
 </script>

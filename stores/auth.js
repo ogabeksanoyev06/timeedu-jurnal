@@ -85,7 +85,7 @@ export const useAuthStore = defineStore('auth', () => {
   const logout = () => {
     accessTokenCookie.value = null
     refreshTokenCookie.value = null
-    router.push(localePath('/'))
+    router.push(localePath('/auth/login'))
     showToast('Muvaffaqiyatli chiqdingiz!', 'info')
   }
 
