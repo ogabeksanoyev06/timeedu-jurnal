@@ -2,7 +2,6 @@
   <div>
     <UIBreadcrumb :breadcrumb="breadcrumb" />
     <SectionHeroBanner :background-image="data.issue?.journal?.image" :title="data?.issue?.journal?.name" :description="data?.issue?.journal?.description" :button-slug="data?.issue?.journal?.slug" class="mb-10" />
-
     <section class="container">
       <div class="grid lg:grid-cols-12 gap-6">
         <div class="lg:col-span-3">
@@ -62,5 +61,11 @@ const { getArticleInner } = journalStore
 
 const { data } = await useAsyncData('article-id', async () => {
   return await getArticleInner(route.params.articleInner)
+})
+
+watchEffect(() => {
+  if (data.value) {
+    breadcrumb[0].title = data.value.title
+  }
 })
 </script>

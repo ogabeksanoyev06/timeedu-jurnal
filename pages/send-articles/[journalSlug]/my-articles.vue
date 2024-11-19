@@ -9,7 +9,7 @@
             <th class="p-3 text-left text-neutral font-medium text-sm uppercase">#</th>
             <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Nomi</th>
             <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Qadam</th>
-            <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Qadam</th>
+            <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Status</th>
             <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Yaratilgan</th>
             <th class="p-3 text-left text-neutral font-medium text-sm uppercase">O'zgartirilgan</th>
           </tr>
