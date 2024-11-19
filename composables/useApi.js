@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 
 export const useApi = () => {
+  const nuxtApp = useNuxtApp()
   const config = useRuntimeConfig()
   const authStore = useAuthStore()
   const { logout, refreshAccessToken } = authStore

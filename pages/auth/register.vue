@@ -97,7 +97,6 @@ import { useCustomToast } from '@/composables/useCustomToast.js'
 definePageMeta({
   layout: 'auth',
 })
-
 const localePath = useLocalePath()
 const router = useRouter()
 
@@ -109,7 +108,6 @@ const countriesStore = useCountriesStore()
 const { register } = authStore
 const { loading } = storeToRefs(authStore)
 const { countries } = storeToRefs(countriesStore)
-const { getCountries } = countriesStore
 
 const form = reactive({
   firstName: '',
@@ -162,6 +160,4 @@ const registerToSystem = async () => {
     loading.value = false
   }
 }
-
-const { data } = await useAsyncData('countries', () => getCountries())
 </script>

@@ -64,20 +64,22 @@ const showPassword = ref(false)
 const isModal = ref(false)
 
 const loginToSystem = async () => {
-  console.log('response')
-
+  loading.value = true
   try {
     const response = await login(form)
     accessTokenCookie.value = response.accessToken
     refreshTokenCookie.value = response.refreshToken
     router.push(localePath('/'))
   } catch (error) {
+    console.log(error)
     if (error.response && error.response.data && error.response.data.error) {
       const errorMessages = error.response.data.error
       Object.values(errorMessages).forEach((message) => {
         showToast(message, 'error')
       })
     }
+  } finally {
+    loading.value = false
   }
 }
 </script>

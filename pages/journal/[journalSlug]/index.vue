@@ -44,7 +44,7 @@
           <h3 class="text-xl mb-4 font-medium">Maqolalar</h3>
           <div class="grid gap-4">
             <CardArticle v-for="(article, i) in data?.articles?.content" :key="i" :article="article" />
-            <UIButton text="Yana yuklash" wrapper-class="mt-10" />
+            <!-- <UIButton text="Yana yuklash" wrapper-class="mt-10" /> -->
           </div>
         </section>
       </div>

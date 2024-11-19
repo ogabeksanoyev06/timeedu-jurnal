@@ -1,8 +1,8 @@
 <template>
   <div class="rounded-2xl bg-white border border-gray-4 p-4 md:p-6 flex flex-col items-start transition-300 hover:shadow-card h-full">
-    <p class="leading-150 text-neutral mb-2">
+    <NuxtLink :to="localePath(`/journal/${route.params.journalSlug}/${article.id}`)" class="leading-150 text-neutral mb-2">
       <span v-for="(collaborator, index) in article?.collaborators" :key="index"> {{ collaborator }}<span v-if="index < article.collaborators?.length - 1">, </span> </span>
-    </p>
+    </NuxtLink>
     <h3 class="text-lg md:text-xl text-secondary leading-140 font-semibold mb-4">
       {{ article.title }}
     </h3>
@@ -37,6 +37,9 @@ import { useJournalStore } from '@/stores/journals.js'
 const journalStore = useJournalStore()
 
 const { countDownload } = journalStore
+
+const localePath = useLocalePath()
+const route = useRoute()
 
 defineProps({
   article: Object,
