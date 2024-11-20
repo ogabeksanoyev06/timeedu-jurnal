@@ -13,6 +13,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
   }
 
   if (accessTokenCookie.value && publicPaths.includes(to.path)) {
-    return navigateTo('/')
+    return navigateTo(localePath('/'))
   }
 })

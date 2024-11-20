@@ -66,12 +66,12 @@ const handleSubmitForm = async () => {
       showToast('Tizimga kirdingiz', 'success')
     }
   } catch (error) {
-    // if (error.response && error.response.data && error.response.data.error) {
-    //   const errorMessages = error.response.data.error
-    //   Object.values(errorMessages).forEach((message) => {
-    //     showToast(message, 'error')
-    //   })
-    // }
+    if (error.response && error.response.data && error.response.data.error) {
+      const errorMessages = error.response.data.error
+      Object.values(errorMessages).forEach((message) => {
+        showToast(message, 'error')
+      })
+    }
     console.log(error)
   } finally {
     loading.value = false
