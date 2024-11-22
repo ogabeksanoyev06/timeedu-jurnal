@@ -66,7 +66,11 @@
     @apply flex justify-end;
   }
 }
-
+@layer components {
+  .container {
+    @apply max-w-[1480px];
+  }
+}
 /* Loading animations */
 .shimmer {
   background-color: #f6f7f8;

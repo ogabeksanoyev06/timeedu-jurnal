@@ -156,12 +156,23 @@ const editActiveModal = ref(null)
 const deleteActiveModal = ref(null)
 
 const addKeyword = (tag) => {
+  // Form.keywords obyektini tekshiramiz va yaratamiz
+  if (!form.keywords) {
+    form.keywords = {}
+  }
+
+  // Joriy tab uchun array ni tekshiramiz va yaratamiz
   if (!form.keywords[tab.value]) {
     form.keywords[tab.value] = []
   }
 
-  if (tag.trim() && !form.keywords[tab.value].includes(tag)) {
-    form.keywords[tab.value] = [...form.keywords[tab.value], tag]
+  // Tag ni qo'shishdan oldin validatsiya
+  const trimmedTag = tag.trim()
+  
+  // Tag bo'sh bo'lmasa va avval qo'shilmagan bo'lsa
+  if (trimmedTag && !form.keywords[tab.value].includes(trimmedTag)) {
+    // Yangi array yaratamiz va reactive o'zgarishni ta'minlaymiz
+    form.keywords[tab.value] = [...form.keywords[tab.value], trimmedTag]
   }
 }
 

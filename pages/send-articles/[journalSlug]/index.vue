@@ -107,11 +107,6 @@ watch(
   { immediate: true },
 )
 
-onBeforeRouteLeave((to, from) => {
-  cookieStep.value = 1
-  cookieId.value = null
-})
-
 const { data } = await useAsyncData('language', async () => {
   return await getLanguages()
 })
