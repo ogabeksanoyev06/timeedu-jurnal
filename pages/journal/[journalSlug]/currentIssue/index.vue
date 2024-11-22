@@ -18,7 +18,7 @@
         </section>
         <section class="mt-10 border-b pb-4">
           <h3 class="text-xl mb-4 font-medium">To'liq son</h3>
-          <a :href="data.file" target="_blank">
+          <a :href="data?.file" target="_blank">
             <UIButton text="Faylni yuklang" icon-left="icon-file text-xl leading-5" wrapper-class=" !bg-secondary" />
           </a>
         </section>

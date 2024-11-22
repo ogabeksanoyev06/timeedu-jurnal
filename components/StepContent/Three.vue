@@ -25,7 +25,6 @@
             </FormGroup>
           </VField>
 
-          <!-- Authors table remains unchanged -->
           <div class="border grid gap-6 p-4 rounded-xl">
             <div class="flex items-center justify-between gap-4">
               <h3 class="text-base font-medium">Mualliflar ro'yxati</h3>
@@ -81,25 +80,29 @@
           <div class="relative" ref="keywordsContainer">
             <VField :name="`keywords.${tab}`" rules="required" v-model="form.keywords[tab]">
               <FormGroup label="Qo'shimcha tushuntirishlar Kalit so'zlar" for-id="keywords">
-                <FormInputTag suffix :placeholder="placeholders[tab]?.keywords" id="keywords" v-model="form.keywords[tab]" :error="errors[`keywords.${tab}`]" @focus="showKeywordsDropdown">
-                  <template #suffix>
+                <FormInputTag :placeholder="placeholders[tab]?.keywords" id="keywords" v-model="form.keywords[tab]" :error="errors[`keywords.${tab}`]" @update:model-value="updateKeywords" @focus="showKeywordsDropdown" @enter="addKeyword" />
+              </FormGroup>
+            </VField>
+            <!-- <template #suffix>
                     <transition name="fade">
-                      <div v-if="showingKeywordsDropdown" class="absolute w-full top-full bg-white border rounded-md shadow-xl z-50">
+                      <div v-if="keywordsDropdownVisible" class="absolute w-full top-full left-0 bg-white border rounded-md shadow-xl z-50">
                         <ul class="max-h-40 overflow-auto">
-                          <li class="p-3 cursor-pointer hover:bg-gray-1" :key="keyword" v-for="(keyword, i) in keywordsList" :class="{ 'font-medium text-primary': selectedKeyword === keyword }" @click="selectKeyword(keyword)">
-                            {{ keyword }}
+                          <li @click="addNewKeyword(keyword)" class="p-3 cursor-pointer hover:bg-gray-1" :key="keyword" v-for="(keyword, i) in filteredKeywords" :class="{ 'font-medium text-primary': selectedKeyword === keyword.keyword }">
+                            {{ keyword.keyword }}
                           </li>
                         </ul>
                       </div>
                     </transition>
-                  </template>
-                </FormInputTag>
-              </FormGroup>
-            </VField>
+                  </template> -->
           </div>
+        </div>
+        <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
+          <UIButton text="Bekor qilish" variant="outline" />
+          <UIButton :loading type="submit" :disabled="!isFormComplete || cookieStep === 5" text="Saqlash va davom ettirish" />
         </div>
       </VForm>
     </transition>
+    <ModalAddContributor v-model="isModals" />
   </div>
 </template>
 
@@ -126,6 +129,7 @@ const editModal = ref(false)
 
 const keywordsDropdownVisible = ref(false)
 const keywordsContainer = ref(null)
+const selectedKeyword = ref(null)
 
 const tabList = [
   { name: 'O‘zbek', id: 'uz' },
@@ -151,13 +155,40 @@ const tab = ref(tabList[0].id)
 const editActiveModal = ref(null)
 const deleteActiveModal = ref(null)
 
+const addKeyword = (tag) => {
+  if (!form.keywords[tab.value]) {
+    form.keywords[tab.value] = []
+  }
+
+  if (tag.trim() && !form.keywords[tab.value].includes(tag)) {
+    form.keywords[tab.value] = [...form.keywords[tab.value], tag]
+  }
+}
+
+// const addNewKeyword = (keyword) => {
+//   form.value.keywords[tab] = keyword
+//   keywordsDropdownVisible.value = false
+// }
+
+// watch(
+//   () => form.value.keywords[tab],
+//   (newValue) => {
+//     if (!newValue.trim()) {
+//       keywordsDropdownVisible.value = false
+//     } else {
+//       keywordsDropdownVisible.value = true
+//     }
+//   },
+// )
+
 const changeTab = (code) => {
   tab.value = code
-  form.prefiks[tab.value] = articlesView?.value?.prefiks[tab.value] || ''
-  form.title[tab.value] = articlesView?.value?.title[tab.value] || ''
-  form.subtitle[tab.value] = articlesView?.value?.subtitle[tab.value] || ''
-  form.reference[tab.value] = articlesView?.value?.reference[tab.value] || ''
-  form.keywords[tab.value] = articlesView?.value?.keywords[tab.value] || []
+  const currentData = articlesView.value || {}
+  form.prefiks[tab.value] = currentData.prefiks?.[tab.value] || ''
+  form.title[tab.value] = currentData.title?.[tab.value] || ''
+  form.subtitle[tab.value] = currentData.subtitle?.[tab.value] || ''
+  form.reference[tab.value] = currentData.reference?.[tab.value] || ''
+  form.keywords[tab.value] = currentData.keywords?.[tab.value] || []
 }
 
 const handleEditModal = (id) => {
@@ -228,6 +259,7 @@ const handleSubmitForm = async () => {
       },
     })
     cookieStep.value = res.state + 1
+    showToast('Muvaffaqiyatli', 'success')
   } catch (error) {
     if (error.response?.data?.error) {
       const errors = error.response.data.error
@@ -239,6 +271,10 @@ const handleSubmitForm = async () => {
     loading.value = false
   }
 }
+
+const isFormComplete = computed(() => {
+  return ['uz', 'ru', 'en'].every((lang) => form.prefiks[lang] && form.title[lang] && form.subtitle[lang] && form.reference[lang])
+})
 
 getArticlesView(cookieId.value, 3)
 getKeywords()

@@ -7,7 +7,7 @@ export const useJournalStore = defineStore('journals', () => {
   const journals = ref([])
   const journalAbout = ref({})
 
-  const keywords = ref([])
+  const keywords = ref({})
   const articlesView = ref({})
 
   const handleApiRequest = async (method, url, params = {}) => {
@@ -137,10 +137,15 @@ export const useJournalStore = defineStore('journals', () => {
 
   // keywords
 
-  const getKeywords = () => {
-    const response = api.get(`/keywords`)
-    keywords.value = response.data?.content
-    return response.data
+  const getKeywords = async () => {
+    try {
+      const response = await api.get(`/keywords`)
+      keywords.value = response.data
+      console.log(response)
+      return response.data
+    } catch (error) {
+      throw error
+    }
   }
 
   const countDownload = (id) => {

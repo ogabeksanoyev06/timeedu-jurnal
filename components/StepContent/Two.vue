@@ -10,7 +10,7 @@
         </VField>
         <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
           <UIButton v-if="articlesView.name" text="Bekor qilish" variant="outline" />
-          <UIButton :loading type="submit" text="Saqlash va davom ettirish" />
+          <UIButton :loading :disabled="cookieStep === 5" type="submit" text="Saqlash va davom ettirish" />
         </div>
       </VForm>
       <div class="flex flex-col gap-2" v-else>
@@ -39,6 +39,9 @@
 <script setup>
 import { useFileStore } from '@/stores/file.js'
 import { useJournalStore } from '@/stores/journals.js'
+import { useCustomToast } from '@/composables/useCustomToast.js'
+
+const { showToast } = useCustomToast()
 
 const route = useRoute()
 
@@ -70,6 +73,7 @@ const handleSubmitForm = async () => {
       filePath: fileRes.filePath,
     })
     cookieStep.value = res.state + 1
+    showToast('Muvaffaqiyatli', 'success')
   } catch (error) {
     console.log(error)
   } finally {

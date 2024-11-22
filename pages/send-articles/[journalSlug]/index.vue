@@ -3,7 +3,7 @@
     <UIBreadcrumb :breadcrumb="breadcrumb" class="mb-10" />
     <div class="container max-w-[952px]">
       <h2 class="section-title text-center mb-4">Maqola tayyorlash</h2>
-      <NuxtLink class="mb-12 block text-center underline text-primary text-base mx-auto" :to="localePath(`/send-articles/${route.params.journalSlug}/my-articles`)">Mening maqolalarim</NuxtLink>
+      <NuxtLink class="mb-12 block text-center underline text-primary text-base mx-auto" :to="localePath(`/send-articles/${route.params.journalSlug}/my-articles`)"> Mening maqolalarim</NuxtLink>
       <ul class="flex items-center justify-between overflow-x-auto relative w-full overflow-hidden">
         <li v-for="(step, index) in steps" :key="index" class="flex items-center gap-1 transition-300 group relative cursor-pointer" @click="handleStepChange(index + 1)">
           <button class="inline-flex flex-col items-center gap-2">
@@ -106,6 +106,11 @@ watch(
   },
   { immediate: true },
 )
+
+onBeforeRouteLeave((to, from) => {
+  cookieStep.value = 1
+  cookieId.value = null
+})
 
 const { data } = await useAsyncData('language', async () => {
   return await getLanguages()

@@ -34,9 +34,9 @@
           </div>
         </VField>
 
-        <VField name="commnets" rules="required" v-model="form.commnets">
-          <FormGroup label="Muharrir uchun sharhlar" for-id="commnets">
-            <FormTextarea rows="6" suffix placeholder="Sharh" id="commnets" v-model="form.commnets" :error="errors.commnets" />
+        <VField name="comment" rules="required" v-model="form.comment">
+          <FormGroup label="Muharrir uchun sharhlar" for-id="comment">
+            <FormTextarea rows="6" suffix placeholder="Sharh" id="comment" v-model="form.comment" :error="errors.comment" />
           </FormGroup>
         </VField>
 
@@ -46,7 +46,7 @@
       </div>
       <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
         <UIButton text="Bekor qilish" variant="outline" />
-        <UIButton :loading type="submit" text="Saqlash va davom ettirish" />
+        <UIButton :loading :disabled="cookieStep === 5" type="submit" text="Saqlash va davom ettirish" />
       </div>
     </VForm>
   </div>
@@ -55,6 +55,9 @@
 <script setup>
 import { useCommonStore } from '@/stores/common.js'
 import { useJournalStore } from '@/stores/journals.js'
+import { useCustomToast } from '@/composables/useCustomToast.js'
+
+const { showToast } = useCustomToast()
 
 const route = useRoute()
 
@@ -73,30 +76,39 @@ const { createArticles } = journalStore
 
 const form = reactive({
   lang: 1,
-  commnets: '',
+  comment: '',
   requirements: false,
   privacyConsent: false,
 })
-
-if (articlesView.value) {
-  form.languageId = articlesView.value.languageId
-  form.commnets = articlesView.value.commentForEditor
-  form.requirements = true
-  form.privacyConsent = true
-}
 
 const handleSubmitForm = async () => {
   try {
     const res = await createArticles(route.params.journalSlug, {
       languageId: form.lang,
-      commentForEditor: form.commnets,
+      commentForEditor: form.comment,
     })
     cookieId.value = res.id
     cookieStep.value = res.state + 1
+    showToast('Muvaffaqiyatli', 'success')
   } catch (error) {
     console.log(error)
   }
 }
 
-getArticlesView(cookieId.value, 1)
+watch(
+  () => articlesView.value,
+  (newVal) => {
+    if (newVal.id) {
+      form.lang = newVal.languageId || 1
+      form.comment = newVal.commentForEditor || ''
+      form.requirements = true
+      form.privacyConsent = true
+    }
+  },
+  { immediate: true },
+)
+
+if (cookieId.value) {
+  getArticlesView(cookieId.value, 1)
+}
 </script>

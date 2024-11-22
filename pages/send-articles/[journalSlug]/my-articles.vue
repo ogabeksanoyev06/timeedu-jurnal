@@ -12,6 +12,7 @@
             <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Status</th>
             <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Yaratilgan</th>
             <th class="p-3 text-left text-neutral font-medium text-sm uppercase">O'zgartirilgan</th>
+            <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Amaliyot</th>
           </tr>
         </thead>
         <tbody>
@@ -22,6 +23,10 @@
             <td class="p-3 text-left" :class="item.isActive ? ' text-green-500' : ''">{{ getArticleStatus(item.state) }}</td>
             <td>{{ dayjs(item.createdAt).format('DD.MM.YYYY - hh:mm:ss') }}</td>
             <td>{{ dayjs(item.updatedAt).format('DD.MM.YYYY - hh:mm:ss') }}</td>
+            <td class="p-3 text-left cursor-pointer text-primary flex items-center gap-1" @click="goToLink(item.id, item.state)">
+              <span class="icon-eye text-sm leading-4"></span>
+              Ko'rish
+            </td>
           </tr>
         </tbody>
       </table>
@@ -35,11 +40,16 @@ import dayjs from 'dayjs'
 
 const breadcrumb = [{ title: 'Mening maqolalarim', link: '' }]
 
+const cookieId = useCookie('id')
+const cookieStep = useCookie('step')
+
+const route = useRoute()
+const router = useRouter()
+const localePath = useLocalePath()
+
 const journalStore = useJournalStore()
 
 const { getMyArticles } = journalStore
-
-const route = useRoute()
 
 const getArticleStatus = (state) => {
   switch (state) {
@@ -54,6 +64,12 @@ const getArticleStatus = (state) => {
     default:
       return 'Noma’lum holat'
   }
+}
+
+const goToLink = (id, state) => {
+  cookieId.value = id
+  cookieStep.value = state + 1
+  router.push(localePath(`/send-articles/${route.params.journalSlug}`))
 }
 
 const { data } = await useAsyncData('my-articles', async () => {
