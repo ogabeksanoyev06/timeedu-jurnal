@@ -20,9 +20,6 @@
         Shaxsiy hisobingizga qayting
       </NuxtLink>
     </nav>
-    <!-- <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
-      <UIButton text="Yakunlash" @click="handleComplete" />
-    </div> -->
   </div>
 </template>
 

@@ -86,7 +86,7 @@
           </div>
         </div>
         <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
-          <UIButton text="Bekor qilish" variant="outline" />
+          <!-- <UIButton text="Bekor qilish" variant="outline" /> -->
           <UIButton :loading type="submit" :disabled="!isFormComplete || cookieStep === 5" text="Saqlash va davom ettirish" />
         </div>
       </VForm>

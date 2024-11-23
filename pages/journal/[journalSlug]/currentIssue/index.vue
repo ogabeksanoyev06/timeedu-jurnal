@@ -25,7 +25,7 @@
           </a>
         </section>
         <section class="mt-10">
-          <h3 class="text-xl mb-4 font-medium">{{ translatins['main.articles'] }}</h3>
+          <h3 class="text-xl mb-4 font-medium">{{ translations['main.articles'] }}</h3>
           <div class="grid gap-4">
             <CardArticle v-for="(article, i) in data?.articles?.content" :key="i" :article="article" />
             <!-- <UIButton text="Yana yuklash" wrapper-class="mt-10" /> -->

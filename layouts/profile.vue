@@ -42,8 +42,8 @@ const { data } = await useAsyncData(
   <div class="flex min-h-screen flex-col">
     <LayoutHeader />
     <div class="container relative md:grid md:grid-cols-[260px_minmax(0,1fr)] my-10 md:gap-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-10">
-      <aside class=" max-md:mb-10 md:top-[154px] z-30 md:h-[calc(100vh-154px)] w-full shrink-0 md:sticky">
-        <div class="relative overflow-y-auto max-h-[calc(100vh-154px)]">
+      <aside class="max-md:mb-10 md:top-[154px] z-30 md:h-[calc(100vh-154px)] w-full shrink-0 md:sticky">
+        <div class="relative md:overflow-y-auto md:max-h-[calc(100vh-154px)]">
           <nav class="grid gap-1 p-1 bg-gray-1 text-sm rounded-lg">
             <NuxtLink :to="localePath('/profile')" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-300 hover:text-primary hover:bg-white [&.router-link-active]:bg-white [&.router-link-active]:text-primary">
               {{ translations['profile.main-data'] }}

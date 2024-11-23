@@ -13,7 +13,7 @@
           :class="{
             'pointer-events-none !text-gray-5': index === breadcrumb?.length - 1,
           }"
-          class="transition-300 flex cursor-pointer items-center text-white leading-4 text-sm min-w-max group-last:min-w-[100px] sm:group-last:min-w-[200px] breadcrumb-menu !line-clamp-1 hover:text-blue"
+          class="transition-300 flex cursor-pointer items-center text-white leading-4 text-sm min-w-max group-last:min-w-[100px] sm:group-last:min-w-[200px] breadcrumb-menu hover:text-blue"
         >
           {{ item.title }}
         </NuxtLink>
