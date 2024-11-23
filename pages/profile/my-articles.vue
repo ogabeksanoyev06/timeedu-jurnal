@@ -46,8 +46,8 @@ import dayjs from 'dayjs'
 
 definePageMeta({
   layout: 'profile',
+  middleware: 'auth',
 })
-
 const route = useRoute()
 const router = useRouter()
 const localePath = useLocalePath()

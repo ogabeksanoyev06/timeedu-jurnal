@@ -1,10 +1,10 @@
 <template>
   <div class="border rounded-lg p-6">
     <p>
-      Ваш материал был загружен на сервер и готов к отправке. Вы можете вернуться назад, чтобы проверить и откорректировать любую информацию, которую вы ввели, перед тем как продолжить. Когда вы будете готовы, щелкните на кнопке «Завершить отправку».
+      {{ translations['addacticles.materials'] }}
     </p>
     <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
-      <UIButton @click="handleSubmitForm" :disabled="cookieStep === 5" text="Davom etish" />
+      <UIButton @click="handleSubmitForm" :disabled="cookieStep === 5" :text="translations['profile.continue']" />
     </div>
   </div>
 </template>
@@ -12,12 +12,15 @@
 <script setup>
 import { useJournalStore } from '@/stores/journals.js'
 import { useCustomToast } from '@/composables/useCustomToast.js'
+import { useCommonStore } from '@/stores/common.js'
 
 const { showToast } = useCustomToast()
 
 const journalStore = useJournalStore()
+const commonStore = useCommonStore()
 
 const { createArticlesSaveState } = journalStore
+const { translations } = storeToRefs(commonStore)
 
 const cookieStep = useCookie('step')
 const cookieId = useCookie('id')

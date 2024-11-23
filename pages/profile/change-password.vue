@@ -51,8 +51,8 @@ import { useCustomToast } from '@/composables/useCustomToast.js'
 
 definePageMeta({
   layout: 'profile',
+  middleware: 'auth',
 })
-
 const { showToast } = useCustomToast()
 
 const profileStore = useProfileStore()

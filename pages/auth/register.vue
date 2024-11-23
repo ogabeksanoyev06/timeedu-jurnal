@@ -85,6 +85,7 @@
         </div>
       </div>
     </VForm>
+    <ModalRegisterInfo v-model="isModal" />
   </div>
 </template>
 
@@ -100,6 +101,8 @@ definePageMeta({
 })
 const localePath = useLocalePath()
 const router = useRouter()
+
+const isModal = ref(false)
 
 const { showToast } = useCustomToast()
 
@@ -143,12 +146,8 @@ const registerToSystem = async () => {
       countryId: form.countryId,
       interests: form.interests,
     })
-    console.log(response)
-    if (response.message === 'success')
-      // accessTokenCookie.value = response.accessToken
-      // refreshTokenCookie.value = response.refreshToken
-      // router.push(localePath('/auth/login'))
-      showToast('Pochtangizga tasdiqlash so`rovi yuborildi', 'success')
+    isModal.value = true
+    showToast('Pochtangizga tasdiqlash so`rovi yuborildi', 'success')
   } catch (error) {
     if (error.response && error.response.data && error.response.data.error) {
       const errorMessages = error.response.data.error

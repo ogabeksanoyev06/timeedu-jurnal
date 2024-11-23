@@ -39,6 +39,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.js'
+import { useProfileStore } from '@/stores/profile.js'
 import { useCommonStore } from '@/stores/common.js'
 
 definePageMeta({
@@ -51,9 +52,11 @@ const router = useRouter()
 const { showToast } = useCustomToast()
 
 const authStore = useAuthStore()
+const profileStore = useProfileStore()
 const commonStore = useCommonStore()
 
 const { login } = authStore
+const { getProfile } = profileStore
 const { loading, accessTokenCookie, refreshTokenCookie } = storeToRefs(authStore)
 const { translations } = storeToRefs(commonStore)
 
@@ -72,6 +75,7 @@ const loginToSystem = async () => {
     const response = await login(form)
     accessTokenCookie.value = response.accessToken
     refreshTokenCookie.value = response.refreshToken
+    await getProfile()
     router.push(localePath('/'))
     showToast('Profilga kirdingiz', 'success')
   } catch (error) {

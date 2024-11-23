@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="container max-w-[952px] mt-10">
-      <h2 class="section-title text-center mb-4">Maqola tayyorlash</h2>
-      <NuxtLink class="mb-12 block text-center underline text-primary text-base mx-auto" :to="localePath(`/send-articles/${route.params.journalSlug}/my-articles`)"> Mening maqolalarim</NuxtLink>
+      <h2 class="section-title text-center mb-4">{{ translations['addacticles.article-preparation'] }}</h2>
+      <NuxtLink class="mb-12 block text-center underline text-primary text-base mx-auto" :to="localePath(`/send-articles/${route.params.journalSlug}/my-articles`)"> {{ translations['addacticles.my-acrticles'] }}</NuxtLink>
       <ul class="flex items-center invisible-scroll justify-between gap-6 text-nowrap overflow-x-auto relative w-full overflow-hidden">
         <li v-for="(step, index) in steps" :key="index" class="flex items-center gap-1 transition-300 group relative cursor-pointer" @click="handleStepChange(index + 1)">
           <button class="inline-flex flex-col items-center gap-2">
@@ -22,9 +22,7 @@
           </button>
         </li>
       </ul>
-
       <div class="my-10 w-full bg-gray-4 h-0.5"></div>
-
       <transition :name="transitionName" mode="out-in">
         <component :is="currentStepContent" />
       </transition>
@@ -33,7 +31,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useCommonStore } from '@/stores/common.js'
 import StepContentOne from '@/components/StepContent/One.vue'
 import StepContentTwo from '@/components/StepContent/Two.vue'
@@ -41,13 +39,17 @@ import StepContentThree from '@/components/StepContent/Three.vue'
 import StepContentFour from '@/components/StepContent/Four.vue'
 import StepContentFive from '@/components/StepContent/Five.vue'
 
-const breadcrumb = [{ title: 'Maqola yaratish', link: '' }]
+definePageMeta({
+  middleware: 'auth',
+})
 
 const localePath = useLocalePath()
-
 const route = useRoute()
 
-const steps = ref([
+const commonStore = useCommonStore()
+const { translations } = storeToRefs(commonStore)
+
+const steps = reactive([
   { title: 'Boshlash', status: false },
   { title: 'Materialni yuklash', status: false },
   { title: 'Metadata kiritish', status: false },
@@ -81,10 +83,6 @@ const currentStepContent = computed(() => {
   }
 })
 
-const commonStore = useCommonStore()
-
-const { getLanguages } = commonStore
-
 function handleStepChange(step) {
   if (step <= cookieStep.value) {
     cookieStepTab.value = step
@@ -93,15 +91,28 @@ function handleStepChange(step) {
     updateStepsStatus()
   }
 }
+
 function updateStepsStatus() {
-  steps.value.forEach((step, index) => {
+  steps.forEach((step, index) => {
     step.status = index < currentStep.value - 1
   })
 }
+
+watch(
+  () => translations.value,
+  (newTranslations) => {
+    steps[0].title = newTranslations['addacticles.start'] || 'Boshlash'
+    steps[1].title = newTranslations['addacticles.upload'] || 'Materialni yuklash'
+    steps[2].title = newTranslations['addacticles.metadata'] || 'Metadata kiritish'
+    steps[3].title = newTranslations['addacticles.confirm'] || 'Tasdiqlash'
+    steps[4].title = newTranslations['addacticles.nextSteps'] || 'Keyingi qadamlar'
+  },
+  { immediate: true },
+)
+
 watch(
   () => [cookieStep.value],
   ([newStep]) => {
-    // Avvalgi qiymatlar bilan ishlash
     currentStep.value = newStep
     updateStepsStatus()
   },
@@ -109,7 +120,7 @@ watch(
 )
 
 const { data } = await useAsyncData('language', async () => {
-  return await getLanguages()
+  return await commonStore.getLanguages()
 })
 </script>
 

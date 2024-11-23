@@ -77,6 +77,7 @@ import { useCommonStore } from '@/stores/common.js'
 
 definePageMeta({
   layout: 'profile',
+  middleware: 'auth',
 })
 
 const { showToast } = useCustomToast()

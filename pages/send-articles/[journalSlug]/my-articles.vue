@@ -2,18 +2,18 @@
   <div>
     <UIBreadcrumb :breadcrumb="breadcrumb" class="mb-10" />
     <div class="container max-w-[952px]">
-      <h2 class="section-title text-center mb-4">Mening maqolalarim</h2>
+      <h2 class="section-title text-center mb-4">{{ translations['articles.title'] }}</h2>
       <div class="overflow-x-auto invisible-scroll">
         <table class="w-full">
           <thead>
             <tr class="border-b">
               <th class="p-3 text-left text-neutral font-medium text-sm uppercase">#</th>
-              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Nomi</th>
-              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Qadam</th>
-              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Status</th>
-              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Yaratilgan</th>
-              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">O'zgartirilgan</th>
-              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Amaliyot</th>
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">{{ translations['articles.name'] }}</th>
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">{{ translations['articles.step'] }}</th>
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">{{ translations['articles.status'] }}</th>
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">{{ translations['articles.created'] }}</th>
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">{{ translations['articles.changed'] }}</th>
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">{{ translations['articles.practice'] }}</th>
             </tr>
           </thead>
           <tbody>
@@ -22,7 +22,7 @@
               <td class="p-3 text-left">{{ item.title }}</td>
               <td class="p-3 text-left">{{ item.state }}</td>
               <td class="p-3 text-left" v-if="!item.isActive">{{ getArticleStatus(item.state) }}</td>
-              <td class="p-3 text-left" v-else :class="item.isActive ? ' text-green-500' : ''">Tasdiqlangan</td>
+              <td class="p-3 text-left" v-else :class="item.isActive ? ' text-green-500' : ''">{{ translations['articles.banned'] }}</td>
               <td>{{ dayjs(item.createdAt).format('DD.MM.YYYY - hh:mm:ss') }}</td>
               <td>{{ dayjs(item.updatedAt).format('DD.MM.YYYY - hh:mm:ss') }}</td>
               <td class="p-3 text-left cursor-pointer text-primary flex items-center gap-1" @click="goToLink(item.id, item.state)">
@@ -38,10 +38,37 @@
 </template>
 
 <script setup>
+import { useCommonStore } from '@/stores/common.js'
 import { useJournalStore } from '@/stores/journals.js'
 import dayjs from 'dayjs'
 
-const breadcrumb = [{ title: 'Mening maqolalarim', link: '' }]
+definePageMeta({
+  middleware: 'auth',
+})
+
+const commonStore = useCommonStore()
+
+const { translations } = storeToRefs(commonStore)
+
+const breadcrumb = computed(() => [
+  {
+    title: translations.value['articles.title'],
+    link: '',
+  },
+])
+
+watch(
+  () => translations.value,
+  (newTranslations) => {
+    breadcrumb.value = [
+      {
+        title: newTranslations['articles.title'],
+        link: '',
+      },
+    ]
+  },
+  { deep: true },
+)
 
 const cookieId = useCookie('id')
 const cookieStep = useCookie('step')
@@ -57,13 +84,11 @@ const { getMyArticles } = journalStore
 const getArticleStatus = (state) => {
   switch (state) {
     case 1:
-      return 'Yakunlanmagan'
     case 2:
-      return 'Yakunlanmagan'
     case 3:
-      return 'Yakunlanmagan'
+      return translations.value['articles.unfinished']
     case 4:
-      return 'Tugallangan'
+      return translations.value['articles.completed']
     default:
       return 'Noma’lum holat'
   }

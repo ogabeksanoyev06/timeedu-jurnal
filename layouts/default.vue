@@ -15,15 +15,13 @@ const { getProfile } = profileStore
 const { getJournals } = journalStore
 const { getTranslations } = commonStore
 
-const { translations } = storeToRefs(commonStore)
-
 const dark = computed(() => y.value > 30)
 
 const { data } = await useAsyncData(
   'layout',
   async () => {
-    const [profile, journals, translation] = await Promise.all([getProfile(), getJournals(), getTranslations()])
-    return { profile, journals, translation }
+    const [journals, translation] = await Promise.all([getJournals(), getTranslations()])
+    return { journals, translation }
   },
   { watch: [locale] },
 )

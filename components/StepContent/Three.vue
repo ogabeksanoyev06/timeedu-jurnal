@@ -5,7 +5,7 @@
       <VForm @submit="handleSubmitForm" v-slot="{ errors }" :key="tab">
         <div class="grid gap-6">
           <VField :name="`prefiks.${tab}`" rules="required" v-model="form.prefiks[tab]">
-            <FormGroup label="Prefiks" for-id="prefiks">
+            <FormGroup :label="translations['addacticles.prefix']" for-id="prefiks">
               <FormInput :placeholder="placeholders[tab]?.prefiks" id="prefiks" v-model="form.prefiks[tab]" :error="errors[`prefiks.${tab}`]" />
             </FormGroup>
           </VField>
@@ -27,18 +27,18 @@
 
           <div class="border grid gap-6 p-4 rounded-xl">
             <div class="flex items-center justify-between gap-4">
-              <h3 class="text-base font-medium">Mualliflar ro'yxati</h3>
-              <button type="button" class="text-primary" @click="isModals = true">Muallif qo‘shish</button>
+              <h3 class="text-base font-medium">{{ translations['addacticles.list-of-authors'] }}</h3>
+              <button type="button" class="text-primary" @click="isModals = true">{{ translations['addacticles.add-author'] }}</button>
             </div>
             <div class="w-full h-[1px] bg-gray-4"></div>
             <table class="w-full text-primary">
               <thead>
                 <tr class="border-b">
                   <th class="p-3 text-left text-neutral font-medium text-sm uppercase">#</th>
-                  <th class="p-3 text-left text-neutral font-medium text-sm uppercase">ISMI</th>
-                  <th class="p-3 text-left text-neutral font-medium text-sm uppercase">ELEKTRON POCHTASI</th>
-                  <th class="p-3 text-left text-neutral font-medium text-sm uppercase">ROLI</th>
-                  <th class="p-3 text-left text-neutral font-medium text-sm uppercase">AMALLAR</th>
+                  <th class="p-3 text-left text-neutral font-medium text-sm uppercase">{{ translations['profile.name'] }}</th>
+                  <th class="p-3 text-left text-neutral font-medium text-sm uppercase">{{ translations['profile.email'] }}</th>
+                  <th class="p-3 text-left text-neutral font-medium text-sm uppercase">{{ translations['profile.user-role'] }}</th>
+                  <th class="p-3 text-left text-neutral font-medium text-sm uppercase">{{ translations['addacticles.actions'] }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -79,7 +79,7 @@
           </div>
           <div class="relative" ref="keywordsContainer">
             <VField :name="`keywords.${tab}`" rules="required" v-model="form.keywords[tab]">
-              <FormGroup label="Qo'shimcha tushuntirishlar Kalit so'zlar" for-id="keywords">
+              <FormGroup :label="translations['addacticles.keywords']" for-id="keywords">
                 <FormInputTag :tags="form.keywords[tab]" :placeholder="placeholders[tab]?.keywords" id="keywords" v-model="form.keywords[tab]" :error="errors[`keywords.${tab}`]" @focus="showKeywordsDropdown" @enter="addKeyword" />
               </FormGroup>
             </VField>
@@ -87,7 +87,7 @@
         </div>
         <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
           <!-- <UIButton text="Bekor qilish" variant="outline" /> -->
-          <UIButton :loading type="submit" :disabled="!isFormComplete || cookieStep === 5" text="Saqlash va davom ettirish" />
+          <UIButton :loading type="submit" :disabled="!isFormComplete || cookieStep === 5" :text="translations['addacticles.save-continue']" />
         </div>
       </VForm>
     </transition>
@@ -100,12 +100,15 @@ import { ref, reactive } from 'vue'
 import { useJournalStore } from '@/stores/journals.js'
 import { onClickOutside } from '@vueuse/core'
 import { useCustomToast } from '@/composables/useCustomToast.js'
+import { useCommonStore } from '@/stores/common.js'
 
 const journalStore = useJournalStore()
+const commonStore = useCommonStore()
 
 const { createArticlesSaveState, getArticlesView, getKeywords } = journalStore
 
 const { loading, keywords, articlesView } = storeToRefs(journalStore)
+const { translations } = storeToRefs(commonStore)
 
 const { showToast } = useCustomToast()
 

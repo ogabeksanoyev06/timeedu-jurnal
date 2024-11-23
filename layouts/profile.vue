@@ -5,6 +5,10 @@ import { useCountriesStore } from '@/stores/countries.js'
 import { useJournalStore } from '@/stores/journals.js'
 import { useCommonStore } from '@/stores/common.js'
 
+definePageMeta({
+  middleware: 'auth',
+})
+
 const localePath = useLocalePath()
 
 const { y } = useWindowScroll()

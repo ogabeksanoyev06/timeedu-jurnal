@@ -1,17 +1,17 @@
 <template>
   <div>
-      <VForm id="200" @submit="handleSubmitForm" v-slot="{ errors }">
-        <VField name="file" rules="required" v-model="form.file">
-          <FormFileInput @fileUpload="fileUpload" v-model="form.file" @error="isMaxSize = $event" :error="errors.file || isMaxSize" />
-          <p class="text-primary mt-1">Muharrirlar sizning zaharingizni baholashi kerak bo'lgan barcha fayllarni yuklang</p>
-        </VField>
-        <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
-          <UIButton v-if="articlesView.name" text="Bekor qilish" variant="outline" />
-          <UIButton :loading :disabled="cookieStep === 5" type="submit" text="Saqlash va davom ettirish" />
-        </div>
-      </VForm>
+    <VForm id="200" @submit="handleSubmitForm" v-slot="{ errors }">
+      <VField name="file" rules="required" v-model="form.file">
+        <FormFileInput @fileUpload="fileUpload" v-model="form.file" @error="isMaxSize = $event" :error="errors.file || isMaxSize" />
+        <p class="text-primary mt-1">{{ translations['addacticles.step-two-filetext'] }}</p>
+      </VField>
+      <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
+        <UIButton v-if="articlesView.name" text="Bekor qilish" variant="outline" />
+        <UIButton :loading :disabled="cookieStep === 5" type="submit" :text="translations['addacticles.save-continue']" />
+      </div>
+    </VForm>
     <section class="mt-10" v-if="fileArr.length > 0">
-      <h2 class="text-lg font-medium mb-2">Yuklangan fayllar</h2>
+      <h2 class="text-lg font-medium mb-2">{{ translations['addacticles.updated-files'] }}</h2>
       <ul class="flex flex-col gap-2">
         <li @click="deleteFileUpload(item)" class="flex items-center justify-between gap-2 bg-gray-1 rounded px-2 py-3 group" v-for="(item, i) in fileArr" :key="i">
           <a class="group-hover:text-primary" :href="item.file" target="_blank">
@@ -30,7 +30,7 @@
       </ul>
     </section>
     <section class="mt-10">
-      <h2 class="text-lg font-medium mb-2">Mening fayllarim</h2>
+      <h2 class="text-lg font-medium mb-2">{{ translations['addacticles.my-files'] }}</h2>
       <ul class="flex flex-col gap-2">
         <li @click="articleFileDelete(item.id)" class="flex items-center justify-between gap-2 bg-gray-1 rounded px-2 py-3 group" v-for="(item, i) in articlesView.files" :key="i">
           <a class="group-hover:text-primary" :href="item.file" target="_blank">
@@ -55,6 +55,7 @@
 import { useFileStore } from '@/stores/file.js'
 import { useJournalStore } from '@/stores/journals.js'
 import { useCustomToast } from '@/composables/useCustomToast.js'
+import { useCommonStore } from '@/stores/common.js'
 
 const { showToast } = useCustomToast()
 
@@ -68,10 +69,11 @@ const isArticles = ref(false)
 
 const fileStore = useFileStore()
 const journalStore = useJournalStore()
+const commonStore = useCommonStore()
 
 const { uploadFile, deletFile, deletFileArticle } = fileStore
 const { createArticlesSaveState, getArticlesView, getKeywords } = journalStore
-
+const { translations } = storeToRefs(commonStore)
 const { articlesView } = storeToRefs(journalStore)
 
 const cookieId = useCookie('id')
@@ -88,7 +90,6 @@ const fileUpload = async (file) => {
   data.append('file', file)
   const fileRes = await uploadFile(data)
   fileArr.value.push(fileRes.filePath)
-
 }
 
 const handleSubmitForm = async () => {

@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ translations }}
     <VForm @submit="handleSubmitForm" v-slot="{ errors }">
       <div class="grid gap-10">
         <VField name="lang" rules="required" v-model="form.lang">
@@ -96,7 +95,6 @@ const handleSubmitForm = async () => {
         commentForEditor: form.comment,
       })
     }
-
     cookieId.value = res.id
     cookieStep.value = res.state + 1
     cookieStepTab.value += 1
