@@ -32,6 +32,8 @@ import { useAuthStore } from '@/stores/auth.js'
 
 definePageMeta({
   layout: 'auth',
+  middleware: [],
+  
 })
 
 const accessTokenCookie = useCookie('access_token')
@@ -59,12 +61,10 @@ const handleSubmitForm = async () => {
   loading.value = true
   try {
     const response = await confirmEmail(route.params.slug, form)
-    if (response.message === 'success') {
-      accessTokenCookie.value = response.accessToken
-      refreshTokenCookie.value = response.refreshToken
-      router.push(localePath('/'))
-      showToast('Tizimga kirdingiz', 'success')
-    }
+    accessTokenCookie.value = response.accessToken
+    refreshTokenCookie.value = response.refreshToken
+    router.push(localePath('/'))
+    showToast('Tizimga kirdingiz', 'success')
   } catch (error) {
     if (error.response && error.response.data && error.response.data.error) {
       const errorMessages = error.response.data.error

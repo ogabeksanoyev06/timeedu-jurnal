@@ -1,6 +1,7 @@
 <script setup>
 import { useJournalStore } from '@/stores/journals.js'
 import { useCustomToast } from '@/composables/useCustomToast.js'
+import { useCommonStore } from '@/stores/common.js'
 
 const props = defineProps({
   modelValue: {
@@ -15,10 +16,12 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'create-collaborator'])
 
 const journalStore = useJournalStore()
+const commonStore = useCommonStore()
 
 const { updateCollaborator, getArticlesView, collaboratorId } = journalStore
 
 const { loading } = storeToRefs(journalStore)
+const { translations } = storeToRefs(commonStore)
 
 const { showToast } = useCustomToast()
 
@@ -68,26 +71,26 @@ const handleSubmitForm = async () => {
 </script>
 
 <template>
-  <UIModal title="Ishtirokchi qo'shish" :model-value="modelValue" @update:model-value="emit('update:modelValue', $event)" body-class="lg:!max-w-[480px]">
+  <UIModal :title="translations['profile.add-people']" :model-value="modelValue" @update:model-value="emit('update:modelValue', $event)" body-class="lg:!max-w-[480px]">
     <div class="pt-4 p-5">
       <VForm @submit="handleSubmitForm" v-slot="{ errors }">
         <div class="grid gap-4">
           <VField name="name" rules="required" v-model="form.name">
-            <FormGroup label="Foydalanuvchi ismi" for-id="name">
-              <FormInput placeholder="Foydalanuvchi ismi" id="prefiks" v-model="form.name" :error="errors.name" />
+            <FormGroup :label="translations['profile.name']" for-id="name">
+              <FormInput :placeholder="translations['profile.name']" id="prefiks" v-model="form.name" :error="errors.name" />
             </FormGroup>
           </VField>
           <VField name="email" rules="required|email" v-model="form.email">
-            <FormGroup label="Elektron pochtangizni kiriting" for-id="email">
-              <FormInput id="email" v-model="form.email" placeholder="Elektron pochtangizni kiriting" type="email" :error="errors.email" />
+            <FormGroup :label="translations['profile.email']" for-id="email">
+              <FormInput id="email" v-model="form.email" :placeholder="translations['profile.email']" type="email" :error="errors.email" />
             </FormGroup>
           </VField>
           <VField name="role" rules="required" v-model="form.role">
-            <FormGroup label="Foydalanuvchi roli" for-id="role">
-              <FormSelect :options="roleList" label-key="name" value-key="id" placeholder="Foydalanuvchi rolini tanlang" id="role" v-model="form.role" :error="errors.role" />
+            <FormGroup :label="translations['profile.user-role']" for-id="role">
+              <FormSelect :options="roleList" label-key="name" value-key="id" :placeholder="translations['profile.user-role']" id="role" v-model="form.role" :error="errors.role" />
             </FormGroup>
           </VField>
-          <UIButton :loading="loading" type="submit" class="w-full mt-4" text="Saqlash" />
+          <UIButton :loading="loading" type="submit" class="w-full mt-4" :text="translations['profile.save-button']" />
         </div>
       </VForm>
     </div>

@@ -4,11 +4,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
   const publicPaths = [localePath('/auth/login'), localePath('/auth/register')]
 
-  const exceptionPaths = [localePath('/auth/reset-password/'), localePath('/confirmEmail/')]
-
-  const isException = exceptionPaths.some((path) => to.path.startsWith(path))
-
-  if (!accessTokenCookie.value && !publicPaths.includes(to.path) && !isException) {
+  if (!accessTokenCookie.value && !publicPaths.includes(to.path)) {
     return navigateTo(localePath('/auth/login'))
   }
 

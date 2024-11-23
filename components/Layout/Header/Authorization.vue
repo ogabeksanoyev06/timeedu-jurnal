@@ -13,12 +13,12 @@
     <template #body>
       <NuxtLink :to="localePath('/profile')" class="flex items-center gap-2 p-3 cursor-pointer transition-300 hover:bg-gray-1">
         <span class="icon-user text-xl leading-5"></span>
-        <div class="flex items-center gap-2">Mening ma'lumotlarim</div>
+        <div class="flex items-center gap-2">{{ translations['profile.my-data'] }}</div>
       </NuxtLink>
       <hr class="w-full border-none h-px bg-gray-1" />
       <div class="flex items-center gap-2 p-3 cursor-pointer transition-300 hover:text-red-500 hover:bg-gray-1" @click="logout">
         <span class="icon-logout text-xl leading-5 rotate-180 text-red-500"></span>
-        <div class="flex items-center gap-2">Hisobdan chiqish</div>
+        <div class="flex items-center gap-2">{{ translations['profile.logout'] }}</div>
       </div>
     </template>
   </UIDropdown>
@@ -27,12 +27,16 @@
 <script setup>
 import { useAuthStore } from '@/stores/auth.js'
 import { useProfileStore } from '@/stores/profile.js'
+import { useCommonStore } from '@/stores/common.js'
 
 const localePath = useLocalePath()
 const route = useRoute()
 
 const authStore = useAuthStore()
 const profileStore = useProfileStore()
+const commonStore = useCommonStore()
+
+const { translations } = storeToRefs(commonStore)
 
 const { checkAuth, logout } = authStore
 const { userInitials } = profileStore

@@ -6,7 +6,6 @@ export const useFileStore = defineStore('file', () => {
   const loading = ref(false)
 
   const uploadFile = async (form) => {
-    loading.value = true
     try {
       const response = await api.post('/files/upload', form, {
         headers: {
@@ -16,8 +15,6 @@ export const useFileStore = defineStore('file', () => {
       return response.data
     } catch (error) {
       throw error
-    } finally {
-      loading.value = false
     }
   }
 
@@ -34,5 +31,14 @@ export const useFileStore = defineStore('file', () => {
     }
   }
 
-  return { uploadFile, deletFile, loading }
+  const deletFileArticle = async (id) => {
+    try {
+      const response = await api.delete(`/articles/create/deleteFile/${id}`)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  }
+
+  return { uploadFile, deletFile, deletFileArticle, loading }
 })

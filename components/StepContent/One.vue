@@ -63,6 +63,7 @@ const route = useRoute()
 
 const cookieId = useCookie('id')
 const cookieStep = useCookie('step')
+const cookieStepTab = useCookie('stepTab')
 
 const commonStore = useCommonStore()
 const journalStore = useJournalStore()
@@ -89,6 +90,7 @@ const handleSubmitForm = async () => {
     })
     cookieId.value = res.id
     cookieStep.value = res.state + 1
+    cookieStepTab.value = cookieStepTab.value + 1
     showToast('Muvaffaqiyatli', 'success')
   } catch (error) {
     console.log(error)
@@ -110,5 +112,10 @@ watch(
 
 if (cookieId.value) {
   getArticlesView(cookieId.value, 1)
+} else {
+  form.lang = 1
+  form.comment = ''
+  form.requirements = false
+  form.privacyConsent = false
 }
 </script>

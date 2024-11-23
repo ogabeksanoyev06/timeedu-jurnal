@@ -31,6 +31,7 @@ const localePath = useLocalePath()
 
 const cookieId = useCookie('id')
 const cookieStep = useCookie('step')
+const cookieStepTab = useCookie('stepTab')
 
 const route = useRoute()
 

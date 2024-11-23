@@ -5,7 +5,7 @@
 
     <div class="container grid lg:grid-cols-12 gap-6">
       <div class="lg:col-span-8">
-        <h3 class="section-title mb-6">Kontaktlar</h3>
+        <h3 class="section-title mb-6">{{ translations['main.contacts'] }}</h3>
         <div class="text-sm mb-4" v-html="data?.contact"></div>
       </div>
       <CommonAboutSidebar />
@@ -15,14 +15,32 @@
 
 <script setup>
 import { useJournalStore } from '@/stores/journals.js'
+import { useCommonStore } from '@/stores/common.js'
 import { useRoute } from 'vue-router'
 
-const breadcrumb = [
+const commonStore = useCommonStore()
+const { translations } = storeToRefs(commonStore)
+
+const breadcrumb = computed(() => [
   {
-    title: 'Kontaktlar',
+    title: translations.value['main.contacts'],
     link: '',
   },
-]
+])
+
+watch(
+  () => translations.value,
+  (newTranslations) => {
+    breadcrumb.value = [
+      {
+        title: newTranslations['main.contacts'],
+        link: '',
+      },
+    ]
+  },
+  { deep: true },
+)
+
 const route = useRoute()
 
 const journalStore = useJournalStore()

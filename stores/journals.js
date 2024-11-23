@@ -30,8 +30,8 @@ export const useJournalStore = defineStore('journals', () => {
     return response.data
   }
 
-  const getArticles = async ({ params }) => {
-    return await handleApiRequest('get', '/articles/view/', { params })
+  const getArticles = async (params) => {
+    return await handleApiRequest('get', '/articles/view/', params)
   }
 
   const getArticleInner = async (id) => {
@@ -51,11 +51,24 @@ export const useJournalStore = defineStore('journals', () => {
     return await handleApiRequest('get', `/journals/${slug}/currentIssue`)
   }
 
+  const getInnerIssue = async (id) => {
+    return await handleApiRequest('get', `/issues/${id}`)
+  }
+
   // create articles
 
   const getMyArticles = async (slug) => {
     const response = await api.get(`/articles/create/${slug}/mySubmissions`)
     return response.data
+  }
+
+  const getMyProfileArticles = async () => {
+    try {
+      const response = await api.get(`/profile/myArticles`)
+      return response.data
+    } catch (error) {
+      throw error
+    }
   }
 
   const getArticlesView = async (id, step) => {
@@ -161,10 +174,12 @@ export const useJournalStore = defineStore('journals', () => {
     getJournals,
     getJournalInner,
     getArticles,
+    getMyProfileArticles,
     getArticleInner,
     getArchive,
     getJournalAbout,
     getCurrentIssue,
+    getInnerIssue,
     journals,
     journalAbout,
 

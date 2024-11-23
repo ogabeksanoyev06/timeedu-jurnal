@@ -21,11 +21,13 @@ const { createArticlesSaveState } = journalStore
 
 const cookieStep = useCookie('step')
 const cookieId = useCookie('id')
+const cookieStepTab = useCookie('stepTab')
 
 const handleSubmitForm = async () => {
   try {
     const res = await createArticlesSaveState(cookieId.value, 'Four')
     cookieStep.value = res.state + 1
+    cookieStepTab.value = cookieStepTab.value + 1
   } catch (error) {
     if (error.response && error.response.data && error.response.data.error) {
       const errorMessages = error.response.data.error

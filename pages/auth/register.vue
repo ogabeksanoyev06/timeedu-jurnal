@@ -1,48 +1,48 @@
 <template>
   <div>
-    <h3 class="section-title mb-10">Ro'yhatdan o'tish</h3>
+    <h3 class="section-title mb-10">{{ translations['profile.register'] }}</h3>
     <VForm @submit="registerToSystem" v-slot="{ errors }">
       <div class="grid gap-10">
         <div class="grid gap-6">
-          <h3 class="text-xl font-medium text-secondary">Profilingiz ma'lumotlari</h3>
+          <h3 class="text-xl font-medium text-secondary">{{ translations['profile.profile-information'] }}</h3>
           <div class="grid grid-cols-12 gap-6">
             <div class="col-span-12 sm:col-span-6">
               <VField name="firstName" rules="required" v-model="form.firstName">
-                <FormGroup label="Ismingiz" for-id="firstName">
-                  <FormInput placeholder="Ismingizni kiriting" id="firstName" v-model="form.firstName" :error="errors.firstName" />
+                <FormGroup :label="translations['profile.name']" for-id="firstName">
+                  <FormInput :placeholder="translations['profile.name']" id="firstName" v-model="form.firstName" :error="errors.firstName" />
                 </FormGroup>
               </VField>
             </div>
             <div class="col-span-12 sm:col-span-6">
               <VField name="lastName" rules="required" v-model="form.lastName">
-                <FormGroup label="Familyangiz" for-id="lastName">
-                  <FormInput placeholder="Familyangizni kiriting" id="lastName" v-model="form.lastName" :error="errors.lastName" />
+                <FormGroup :label="translations['profile.surname']" for-id="lastName">
+                  <FormInput :placeholder="translations['profile.surname']" id="lastName" v-model="form.lastName" :error="errors.lastName" />
                 </FormGroup>
               </VField>
             </div>
             <div class="col-span-12 sm:col-span-6">
               <VField name="companyName" rules="required" v-model="form.companyName">
-                <FormGroup label="Tashkilotingiz" for-id="companyName">
-                  <FormInput placeholder="Tashkilotingizni kiriting" id="companyName" v-model="form.companyName" :error="errors.companyName" />
+                <FormGroup :label="translations['profile.company-name']" for-id="companyName">
+                  <FormInput :placeholder="translations['profile.company-name']" id="companyName" v-model="form.companyName" :error="errors.companyName" />
                 </FormGroup>
               </VField>
             </div>
             <div class="col-span-12 sm:col-span-6">
               <VField name="countryId" rules="required" v-model="form.countryId">
-                <FormGroup label="Mamlakatingiz" for-id="countryId">
-                  <FormSelect :options="countries?.content" label-key="name" value-key="id" placeholder="Mamlakatingizni tanlang" id="countryId" v-model="form.countryId" :error="errors.countryId" />
+                <FormGroup :label="translations['profile.state']" for-id="countryId">
+                  <FormSelect :options="countries?.content" label-key="name" value-key="id" :placeholder="translations['profile.state']" id="countryId" v-model="form.countryId" :error="errors.countryId" />
                 </FormGroup>
               </VField>
             </div>
           </div>
         </div>
         <div class="grid gap-6">
-          <h3 class="text-xl font-medium text-secondary">Kirish uchun ma'lumotlari</h3>
+          <h3 class="text-xl font-medium text-secondary">{{ translations['profile.login-information'] }}</h3>
           <div class="grid grid-cols-12 gap-6">
             <div class="col-span-12 sm:col-span-6">
               <VField name="phone" rules="required|phone" v-model="form.phone">
-                <FormGroup label="Telefon raqamingiz" for-id="phone">
-                  <FormInput prefix placeholder="Telefon raqamingizni kiriting" id="phone" v-model="form.phone" :error="errors.phone" v-maska="'#########'">
+                <FormGroup :label="translations['profile.phone']" for-id="phone">
+                  <FormInput prefix :placeholder="translations['profile.phone']" id="phone" v-model="form.phone" :error="errors.phone" v-maska="'#########'">
                     <template #prefix>+998</template>
                   </FormInput>
                 </FormGroup>
@@ -50,15 +50,15 @@
             </div>
             <div class="col-span-12 sm:col-span-6">
               <VField name="email" rules="required|email" v-model="form.email">
-                <FormGroup label="Elektron pochtangiz" for-id="email">
-                  <FormInput placeholder="E-pochtangizni kiriting" id="email" type="email" v-model="form.email" :error="errors.email" />
+                <FormGroup :label="translations['profile.email']" for-id="email">
+                  <FormInput :placeholder="translations['profile.email']" id="email" type="email" v-model="form.email" :error="errors.email" />
                 </FormGroup>
               </VField>
             </div>
             <div class="col-span-12 sm:col-span-6">
               <VField name="password" rules="required" v-model="form.password">
-                <FormGroup label="Parol" for-id="password">
-                  <FormInput suffix placeholder="Parol" id="password" :type="showPassword ? 'text' : 'password'" v-model="form.password" :error="errors.password">
+                <FormGroup :label="translations['profile.password']" for-id="password">
+                  <FormInput suffix :placeholder="translations['profile.password']" id="password" :type="showPassword ? 'text' : 'password'" v-model="form.password" :error="errors.password">
                     <template #suffix>
                       <span :class="['icon', showPassword ? 'icon-eye' : 'icon-eye-off']" @click="showPassword = !showPassword"></span>
                     </template>
@@ -68,8 +68,8 @@
             </div>
             <div class="col-span-12 sm:col-span-6">
               <VField name="passwordConfirm" rules="required|confirmed:@password" v-model="form.passwordConfirm">
-                <FormGroup label="Parolni takrorlang" for-id="passwordConfirm">
-                  <FormInput suffix placeholder="Parolni takrorlang" id="passwordConfirm" :type="showConfirmPassword ? 'text' : 'password'" v-model="form.passwordConfirm" :error="errors.passwordConfirm">
+                <FormGroup :label="translations['profile.repeat-pass']" for-id="passwordConfirm">
+                  <FormInput suffix :placeholder="translations['profile.repeat-pass']" id="passwordConfirm" :type="showConfirmPassword ? 'text' : 'password'" v-model="form.passwordConfirm" :error="errors.passwordConfirm">
                     <template #suffix>
                       <span :class="['icon', showConfirmPassword ? 'icon-eye' : 'icon-eye-off']" @click="showConfirmPassword = !showConfirmPassword"></span>
                     </template>
@@ -80,8 +80,8 @@
           </div>
         </div>
         <div class="w-full flex max-sm:flex-col sm:justify-end gap-3">
-          <UIButton @click="$router.push(localePath('/auth/login'))" type="button" text="Kirish" variant="outline" wrapper-class="sm:max-w-[167px] w-full" />
-          <UIButton :loading type="submit" text="Ro'yhatdan o'tish" wrapper-class="sm:max-w-[167px] w-full" />
+          <UIButton @click="$router.push(localePath('/auth/login'))" type="button" :text="translations['profile.login']" variant="outline" wrapper-class="sm:max-w-[167px] w-full" />
+          <UIButton :loading type="submit" :text="translations['profile.register']" wrapper-class="sm:max-w-[167px] w-full" />
         </div>
       </div>
     </VForm>
@@ -93,6 +93,7 @@ import { reactive } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCountriesStore } from '@/stores/countries.js'
 import { useCustomToast } from '@/composables/useCustomToast.js'
+import { useCommonStore } from '@/stores/common.js'
 
 definePageMeta({
   layout: 'auth',
@@ -104,10 +105,12 @@ const { showToast } = useCustomToast()
 
 const authStore = useAuthStore()
 const countriesStore = useCountriesStore()
+const commonStore = useCommonStore()
 
 const { register } = authStore
 const { loading } = storeToRefs(authStore)
 const { countries } = storeToRefs(countriesStore)
+const { translations } = storeToRefs(commonStore)
 
 const form = reactive({
   firstName: '',

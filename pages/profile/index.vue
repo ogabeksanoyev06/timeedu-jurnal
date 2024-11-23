@@ -5,38 +5,39 @@
         <div class="grid grid-cols-12 gap-6">
           <div class="col-span-12 sm:col-span-6">
             <VField name="firstName" rules="required" v-model="form.firstName">
-              <FormGroup label="Ism" for-id="firstName">
-                <FormInput placeholder="Ism" id="firstName" v-model="form.firstName" :error="errors.firstName" />
+              <FormGroup :label="translations['profile.surname']" for-id="firstName">
+                <FormInput :placeholder="translations['profile.name']" id="firstName" v-model="form.firstName" :error="errors.firstName" />
               </FormGroup>
             </VField>
           </div>
           <div class="col-span-12 sm:col-span-6">
             <VField name="lastName" rules="required" v-model="form.lastName">
-              <FormGroup label="Familiya" for-id="lastName">
-                <FormInput placeholder="Familiya" id="lastName" v-model="form.lastName" :error="errors.lastName" />
+              <FormGroup :label="translations['profile.surname']" for-id="lastName">
+                <FormInput :placeholder="translations['profile.surname']" id="lastName" v-model="form.lastName" :error="errors.lastName" />
               </FormGroup>
             </VField>
           </div>
+
           <div class="col-span-12 sm:col-span-6">
             <VField name="companyName" rules="required" v-model="form.companyName">
-              <FormGroup label="Tashkilotingiz" for-id="companyName">
-                <FormInput placeholder="Tashkilotingiz" id="companyName" v-model="form.companyName" :error="errors.companyName" />
+              <FormGroup :label="translations['profile.company-name']" for-id="companyName">
+                <FormInput :placeholder="translations['profile.company-name']" id="companyName" v-model="form.companyName" :error="errors.companyName" />
               </FormGroup>
             </VField>
           </div>
 
           <div class="col-span-12 sm:col-span-6">
             <VField name="countryId" rules="required" v-model="form.countryId">
-              <FormGroup label="Mamlakatingiz" for-id="countryId">
-                <FormSelect :options="countries?.content" labelKey="name" value-key="id" placeholder="Mamlakatingizni tanlang" id="countryId" v-model="form.countryId" :error="errors.countryId" />
+              <FormGroup :label="translations['profile.state']" for-id="countryId">
+                <FormSelect :options="countries?.content" labelKey="name" value-key="id" :placeholder="translations['profile.state']" id="countryId" v-model="form.countryId" :error="errors.countryId" />
               </FormGroup>
             </VField>
           </div>
 
           <div class="col-span-12 sm:col-span-6">
             <VField name="phone" rules="required" v-model="form.phone">
-              <FormGroup label="Telefon raqamingiz" for-id="phone">
-                <FormInput prefix placeholder="Telefon raqamingizni kiriting" id="phone" v-model="form.phone" :error="errors.phone" v-maska="'#########'">
+              <FormGroup :label="translations['profile.phone']" for-id="phone">
+                <FormInput prefix :placeholder="translations['profile.phone']" id="phone" v-model="form.phone" :error="errors.phone" v-maska="'#########'">
                   <template #prefix>+998</template>
                 </FormInput>
               </FormGroup>
@@ -44,15 +45,15 @@
           </div>
           <div class="col-span-12 sm:col-span-6">
             <VField name="email" rules="required|email" v-model="form.email">
-              <FormGroup label="Elektron pochtangiz" for-id="email">
-                <FormInput disabled placeholder="E-pochtangizni kiriting" id="email" type="email" v-model="form.email" :error="errors.email"> </FormInput>
+              <FormGroup :label="translations['profile.email']" for-id="email">
+                <FormInput disabled :placeholder="translations['profile.email']" id="email" type="email" v-model="form.email" :error="errors.email"> </FormInput>
               </FormGroup>
             </VField>
           </div>
           <div class="col-span-12">
             <VField name="interests" rules="required" v-model="form.interests">
-              <FormGroup label="Ma'lumot" for-id="interests">
-                <FormTextarea rows="6" suffix placeholder="Ma'lumot" id="interests" v-model="form.interests" :error="errors.interests" />
+              <FormGroup :label="translations['profile.data']" for-id="interests">
+                <FormTextarea rows="6" suffix :placeholder="translations['profile.data']" id="interests" v-model="form.interests" :error="errors.interests" />
               </FormGroup>
             </VField>
           </div>
@@ -72,6 +73,7 @@ import { useProfileStore } from '@/stores/profile.js'
 import { useCustomToast } from '@/composables/useCustomToast.js'
 import { useCountriesStore } from '@/stores/countries.js'
 import { useJournalStore } from '@/stores/journals.js'
+import { useCommonStore } from '@/stores/common.js'
 
 definePageMeta({
   layout: 'profile',
@@ -81,7 +83,9 @@ const { showToast } = useCustomToast()
 const profileStore = useProfileStore()
 const countriesStore = useCountriesStore()
 const journalStore = useJournalStore()
+const commonStore = useCommonStore()
 
+const { translations } = storeToRefs(commonStore)
 const { getProfile, updateProfile } = profileStore
 const { user, loading } = storeToRefs(profileStore)
 const { countries } = storeToRefs(countriesStore)

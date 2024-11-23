@@ -1,10 +1,9 @@
 <template>
   <div>
-    <UIBreadcrumb :breadcrumb="breadcrumb" class="mb-10" />
-    <div class="container max-w-[952px]">
+    <div class="container max-w-[952px] mt-10">
       <h2 class="section-title text-center mb-4">Maqola tayyorlash</h2>
       <NuxtLink class="mb-12 block text-center underline text-primary text-base mx-auto" :to="localePath(`/send-articles/${route.params.journalSlug}/my-articles`)"> Mening maqolalarim</NuxtLink>
-      <ul class="flex items-center justify-between overflow-x-auto relative w-full overflow-hidden">
+      <ul class="flex items-center invisible-scroll justify-between gap-6 text-nowrap overflow-x-auto relative w-full overflow-hidden">
         <li v-for="(step, index) in steps" :key="index" class="flex items-center gap-1 transition-300 group relative cursor-pointer" @click="handleStepChange(index + 1)">
           <button class="inline-flex flex-col items-center gap-2">
             <span
@@ -57,6 +56,7 @@ const steps = ref([
 ])
 
 const cookieStep = useCookie('step', { default: () => 1 })
+const cookieStepTab = useCookie('stepTab', { default: () => 1 })
 const currentStep = ref(cookieStep.value)
 const direction = ref('next')
 
@@ -65,7 +65,7 @@ const transitionName = computed(() => {
 })
 
 const currentStepContent = computed(() => {
-  switch (currentStep.value) {
+  switch (currentStep.value || cookieStepTab.value) {
     case 1:
       return StepContentOne
     case 2:
@@ -87,6 +87,7 @@ const { getLanguages } = commonStore
 
 function handleStepChange(step) {
   if (step <= cookieStep.value) {
+    cookieStepTab.value = step
     direction.value = currentStep.value < step ? 'next' : 'prev'
     currentStep.value = step
     updateStepsStatus()
@@ -97,10 +98,10 @@ function updateStepsStatus() {
     step.status = index < currentStep.value - 1
   })
 }
-
 watch(
-  () => cookieStep.value,
-  (newStep) => {
+  () => [cookieStep.value],
+  ([newStep]) => {
+    // Avvalgi qiymatlar bilan ishlash
     currentStep.value = newStep
     updateStepsStatus()
   },

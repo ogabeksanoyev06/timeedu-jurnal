@@ -5,9 +5,7 @@
         <div class="flex flex-col h-full items-start justify-center gap-6 max-w-[650px] text-white">
           <h2 class="text-2xl md:text-4xl lg:text-5xl xl:text-6xl leading-110 font-bold">{{ title }}</h2>
           <div class="sm:text-base" v-html="description" />
-          <NuxtLink :to="`/send-articles/${route.params.journalSlug}`">
-            <UIButton text="Maqola yuborish" />
-          </NuxtLink>
+          <UIButton :text="translations['main.submit-article']" @click="clearCookies" />
         </div>
       </div>
     </div>
@@ -17,6 +15,11 @@
 
 <script setup>
 import { defineProps } from 'vue'
+import { useCommonStore } from '@/stores/common.js'
+
+const commonStore = useCommonStore()
+
+const { translations } = storeToRefs(commonStore)
 
 defineProps({
   backgroundImage: {
@@ -39,4 +42,15 @@ defineProps({
 })
 
 const route = useRoute()
+const router = useRouter()
+const localePath = useLocalePath()
+
+const cookieId = useCookie('id')
+const cookieStep = useCookie('step')
+
+const clearCookies = () => {
+  router.push(localePath(`/send-articles/${route.params.journalSlug}`))
+  cookieStep.value = 1
+  cookieId.value = null
+}
 </script>

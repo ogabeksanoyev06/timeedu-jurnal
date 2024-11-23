@@ -80,20 +80,9 @@
           <div class="relative" ref="keywordsContainer">
             <VField :name="`keywords.${tab}`" rules="required" v-model="form.keywords[tab]">
               <FormGroup label="Qo'shimcha tushuntirishlar Kalit so'zlar" for-id="keywords">
-                <FormInputTag :placeholder="placeholders[tab]?.keywords" id="keywords" v-model="form.keywords[tab]" :error="errors[`keywords.${tab}`]" @update:model-value="updateKeywords" @focus="showKeywordsDropdown" @enter="addKeyword" />
+                <FormInputTag :tags="form.keywords[tab]" :placeholder="placeholders[tab]?.keywords" id="keywords" v-model="form.keywords[tab]" :error="errors[`keywords.${tab}`]" @focus="showKeywordsDropdown" @enter="addKeyword" />
               </FormGroup>
             </VField>
-            <!-- <template #suffix>
-                    <transition name="fade">
-                      <div v-if="keywordsDropdownVisible" class="absolute w-full top-full left-0 bg-white border rounded-md shadow-xl z-50">
-                        <ul class="max-h-40 overflow-auto">
-                          <li @click="addNewKeyword(keyword)" class="p-3 cursor-pointer hover:bg-gray-1" :key="keyword" v-for="(keyword, i) in filteredKeywords" :class="{ 'font-medium text-primary': selectedKeyword === keyword.keyword }">
-                            {{ keyword.keyword }}
-                          </li>
-                        </ul>
-                      </div>
-                    </transition>
-                  </template> -->
           </div>
         </div>
         <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
@@ -122,6 +111,7 @@ const { showToast } = useCustomToast()
 
 const cookieId = useCookie('id')
 const cookieStep = useCookie('step')
+const cookieStepTab = useCookie('stepTab')
 
 const isModals = ref(false)
 const deleteModal = ref(false)
@@ -129,12 +119,11 @@ const editModal = ref(false)
 
 const keywordsDropdownVisible = ref(false)
 const keywordsContainer = ref(null)
-const selectedKeyword = ref(null)
 
 const tabList = [
-  { name: 'O‘zbek', id: 'uz' },
-  { name: 'Русский', id: 'ru' },
-  { name: 'English', id: 'en' },
+  { name: 'O‘zbek', id: 'uz', code: 3 },
+  { name: 'Русский', id: 'ru', code: 1 },
+  { name: 'English', id: 'en', code: 2 },
 ]
 
 const form = reactive({
@@ -151,55 +140,44 @@ const placeholders = {
   en: { prefiks: 'English prefix', title: 'English title', subtitle: 'English subtitle', reference: 'English reference', keywords: 'English keywords' },
 }
 
+onClickOutside(keywordsContainer, () => {
+  keywordsDropdownVisible.value = false
+})
+
 const tab = ref(tabList[0].id)
 const editActiveModal = ref(null)
 const deleteActiveModal = ref(null)
 
 const addKeyword = (tag) => {
-  // Form.keywords obyektini tekshiramiz va yaratamiz
-  if (!form.keywords) {
-    form.keywords = {}
+  const currentTab = tab.value
+  if (!form.keywords[currentTab]) {
+    form.keywords[currentTab] = []
   }
 
-  // Joriy tab uchun array ni tekshiramiz va yaratamiz
-  if (!form.keywords[tab.value]) {
-    form.keywords[tab.value] = []
-  }
-
-  // Tag ni qo'shishdan oldin validatsiya
-  const trimmedTag = tag.trim()
-  
-  // Tag bo'sh bo'lmasa va avval qo'shilmagan bo'lsa
-  if (trimmedTag && !form.keywords[tab.value].includes(trimmedTag)) {
-    // Yangi array yaratamiz va reactive o'zgarishni ta'minlaymiz
-    form.keywords[tab.value] = [...form.keywords[tab.value], trimmedTag]
+  const tagTrimmed = tag.trim()
+  if (tagTrimmed && !form.keywords[currentTab].includes(tagTrimmed)) {
+    form.keywords[currentTab] = [...form.keywords[currentTab], tagTrimmed]
   }
 }
 
-// const addNewKeyword = (keyword) => {
-//   form.value.keywords[tab] = keyword
-//   keywordsDropdownVisible.value = false
-// }
-
-// watch(
-//   () => form.value.keywords[tab],
-//   (newValue) => {
-//     if (!newValue.trim()) {
-//       keywordsDropdownVisible.value = false
-//     } else {
-//       keywordsDropdownVisible.value = true
-//     }
-//   },
-// )
-
 const changeTab = (code) => {
   tab.value = code
+
+  console.log(articlesView.value)
+
   const currentData = articlesView.value || {}
-  form.prefiks[tab.value] = currentData.prefiks?.[tab.value] || ''
-  form.title[tab.value] = currentData.title?.[tab.value] || ''
-  form.subtitle[tab.value] = currentData.subtitle?.[tab.value] || ''
-  form.reference[tab.value] = currentData.reference?.[tab.value] || ''
-  form.keywords[tab.value] = currentData.keywords?.[tab.value] || []
+
+  form.prefiks[tab.value] = currentData.prefiks?.[tab.value] || form.prefiks[tab.value]
+  form.title[tab.value] = currentData.title?.[tab.value] || form.title[tab.value]
+  form.subtitle[tab.value] = currentData.subtitle?.[tab.value] || form.subtitle[tab.value]
+  form.reference[tab.value] = currentData.reference?.[tab.value] || form.reference[tab.value]
+  const languageKeywords = currentData.keywords?.find((lang) => lang.language.code === tab.value)
+  if (languageKeywords) {
+    console.log(languageKeywords)
+    form.keywords[tab.value] = languageKeywords.keywords.map((k) => k.keyword) || []
+  } else {
+    form.keywords[tab.value] = form.keywords[tab.value] || []
+  }
 }
 
 const handleEditModal = (id) => {
@@ -222,34 +200,25 @@ const showKeywordsDropdown = () => {
   keywordsDropdownVisible.value = true
 }
 
-const formatExistingKeywords = computed(() => {
-  return keywords.value.map((item) => item.id)
-})
-
 const formatNewKeywords = computed(() => {
   const newKeywords = []
 
-  Object.keys(form.keywords).forEach((lang) => {
-    const existingKeywordsForLang = keywords?.value[lang] || []
-    const formKeywordsForLang = form.keywords[lang] || []
+  const languageKeywords = form.keywords[tab.value] || []
 
-    const newLangKeywords = formKeywordsForLang.filter((keyword) => {
-      return !existingKeywordsForLang.some((existingKeyword) => existingKeyword.name === keyword)
-    })
+  if (languageKeywords.length > 0) {
+    const existingLanguage = newKeywords.find((item) => item.languageId === (tab.value === 'uz' ? 3 : tab.value === 'ru' ? 1 : 2))
 
-    if (newLangKeywords.length > 0) {
+    if (existingLanguage) {
+      existingLanguage.keywords = [...new Set([...existingLanguage.keywords, ...languageKeywords])]
+    } else {
       newKeywords.push({
-        languageId: lang === 'uz' ? 1 : lang === 'ru' ? 2 : 3,
-        keywords: newLangKeywords,
+        languageId: tab.value === 'uz' ? 3 : tab.value === 'ru' ? 1 : 2,
+        keywords: languageKeywords,
       })
     }
-  })
+  }
 
   return newKeywords
-})
-
-onClickOutside(keywordsContainer, () => {
-  keywordsDropdownVisible.value = false
 })
 
 const handleSubmitForm = async () => {
@@ -260,22 +229,19 @@ const handleSubmitForm = async () => {
       subtitle: form.subtitle,
       reference: form.reference,
       keywords: {
-        newKeywords: [
-          {
-            languageId: 1,
-            keywords: ['999000', 'key2'],
-          },
-        ],
+        newKeywords: formatNewKeywords.value,
         existingKeywords: [],
       },
     })
     cookieStep.value = res.state + 1
+    cookieStepTab.value = cookieStepTab.value + 1
     showToast('Muvaffaqiyatli', 'success')
   } catch (error) {
+    console.log(error)
     if (error.response?.data?.error) {
       const errors = error.response.data.error
       Object.keys(errors).forEach((key) => {
-        showToast(`${key}: ${errors[key]}`, 'error')
+        showToast(key, 'error')
       })
     }
   } finally {
@@ -289,4 +255,5 @@ const isFormComplete = computed(() => {
 
 getArticlesView(cookieId.value, 3)
 getKeywords()
+console.log(formatNewKeywords.value)
 </script>

@@ -1,6 +1,7 @@
 <script setup>
 import { useJournalStore } from '@/stores/journals.js'
 import { useCustomToast } from '@/composables/useCustomToast.js'
+import { useCommonStore } from '@/stores/common.js'
 
 const props = defineProps({
   modelValue: Boolean,
@@ -15,9 +16,10 @@ const cookieId = useCookie('id')
 const emit = defineEmits(['update:modelValue', 'create-collaborator'])
 
 const journalStore = useJournalStore()
+const commonStore = useCommonStore()
 
 const { deleteCollaborator, getArticlesView } = journalStore
-
+const { translations } = storeToRefs(commonStore)
 const { loading } = storeToRefs(journalStore)
 
 const { showToast } = useCustomToast()
@@ -40,10 +42,10 @@ const handleCloseModal = () => {
 </script>
 
 <template>
-  <UIModal title="Malumotni ochirishni xohlaysizmi" :model-value="modelValue" @update:model-value="emit('update:modelValue', $event)" body-class="lg:!max-w-[480px]">
+  <UIModal :title="translations['profile.data-delete']" :model-value="modelValue" @update:model-value="emit('update:modelValue', $event)" body-class="lg:!max-w-[480px]">
     <div class="pt-4 p-5 flex justify-end gap-4">
-      <UIButton class="" text="Yoq" wrapper-class="!bg-red-500" @click="handleCloseModal" />
-      <UIButton :loading="loading" class="" text="Ha" @click="handleSubmitForm" />
+      <UIButton class="" :text="translations['profile.no']" wrapper-class="!bg-red-500" @click="handleCloseModal" />
+      <UIButton :loading="loading" class="" :text="translations['profile.yes']" @click="handleSubmitForm" />
     </div>
   </UIModal>
 </template>

@@ -1,6 +1,7 @@
 <script setup>
 import { useJournalStore } from '@/stores/journals.js'
 import { useProfileStore } from '@/stores/profile.js'
+import { useCommonStore } from '@/stores/common.js'
 
 const { y } = useWindowScroll()
 
@@ -8,17 +9,21 @@ const { locale } = useI18n()
 
 const profileStore = useProfileStore()
 const journalStore = useJournalStore()
+const commonStore = useCommonStore()
 
 const { getProfile } = profileStore
 const { getJournals } = journalStore
+const { getTranslations } = commonStore
+
+const { translations } = storeToRefs(commonStore)
 
 const dark = computed(() => y.value > 30)
 
 const { data } = await useAsyncData(
   'layout',
   async () => {
-    const [profile, journals] = await Promise.all([getProfile(), getJournals()])
-    return { profile, journals }
+    const [profile, journals, translation] = await Promise.all([getProfile(), getJournals(), getTranslations()])
+    return { profile, journals, translation }
   },
   { watch: [locale] },
 )

@@ -20,7 +20,7 @@
       class="w-full h-full text-sm py-3 px-4 text-dark bg-transparent placeholder:text-gray-6 placeholder:text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50"
       :value="modelValue"
       :class="[inputClass, suffix ? '!pr-2' : '', prefix ? '!pl-2' : '']"
-      @keyup.enter="handleEnter"
+      @keydown.enter.prevent="handleEnter"
       @input="handleInput"
       @blur="$emit('blur')"
       @focusout="$emit('focusout')"
@@ -47,8 +47,8 @@ const props = defineProps({
   min: Number,
   inputClass: [String, Array],
   wrapperClass: { type: [String, Array], default: '' },
-  prefix: { type: Boolean, default: false }, // Prefix uchun sinf
-  suffix: { type: Boolean, default: false }, // Suffix uchun sinf
+  prefix: { type: Boolean, default: false },
+  suffix: { type: Boolean, default: false },
   autocomplete: { type: String, default: 'new-password' },
   id: String,
   readonly: { type: Boolean, default: false },

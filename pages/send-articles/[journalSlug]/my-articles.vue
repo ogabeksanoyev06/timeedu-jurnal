@@ -3,33 +3,36 @@
     <UIBreadcrumb :breadcrumb="breadcrumb" class="mb-10" />
     <div class="container max-w-[952px]">
       <h2 class="section-title text-center mb-4">Mening maqolalarim</h2>
-      <table class="w-full">
-        <thead>
-          <tr class="border-b">
-            <th class="p-3 text-left text-neutral font-medium text-sm uppercase">#</th>
-            <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Nomi</th>
-            <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Qadam</th>
-            <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Status</th>
-            <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Yaratilgan</th>
-            <th class="p-3 text-left text-neutral font-medium text-sm uppercase">O'zgartirilgan</th>
-            <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Amaliyot</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="border-b" v-for="(item, i) in data?.content" :key="i">
-            <td class="p-3 text-left">{{ i + 1 }}</td>
-            <td class="p-3 text-left">{{ item.title }}</td>
-            <td class="p-3 text-left">{{ item.state }}</td>
-            <td class="p-3 text-left" :class="item.isActive ? ' text-green-500' : ''">{{ getArticleStatus(item.state) }}</td>
-            <td>{{ dayjs(item.createdAt).format('DD.MM.YYYY - hh:mm:ss') }}</td>
-            <td>{{ dayjs(item.updatedAt).format('DD.MM.YYYY - hh:mm:ss') }}</td>
-            <td class="p-3 text-left cursor-pointer text-primary flex items-center gap-1" @click="goToLink(item.id, item.state)">
-              <span class="icon-eye text-sm leading-4"></span>
-              Ko'rish
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="overflow-x-auto invisible-scroll">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b">
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">#</th>
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Nomi</th>
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Qadam</th>
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Status</th>
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Yaratilgan</th>
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">O'zgartirilgan</th>
+              <th class="p-3 text-left text-neutral font-medium text-sm uppercase">Amaliyot</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b" v-for="(item, i) in data?.content" :key="i">
+              <td class="p-3 text-left">{{ i + 1 }}</td>
+              <td class="p-3 text-left">{{ item.title }}</td>
+              <td class="p-3 text-left">{{ item.state }}</td>
+              <td class="p-3 text-left" v-if="!item.isActive">{{ getArticleStatus(item.state) }}</td>
+              <td class="p-3 text-left" v-else :class="item.isActive ? ' text-green-500' : ''">Tasdiqlangan</td>
+              <td>{{ dayjs(item.createdAt).format('DD.MM.YYYY - hh:mm:ss') }}</td>
+              <td>{{ dayjs(item.updatedAt).format('DD.MM.YYYY - hh:mm:ss') }}</td>
+              <td class="p-3 text-left cursor-pointer text-primary flex items-center gap-1" @click="goToLink(item.id, item.state)">
+                <span class="icon-eye text-sm leading-4"></span>
+                Ko'rish
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -54,11 +57,11 @@ const { getMyArticles } = journalStore
 const getArticleStatus = (state) => {
   switch (state) {
     case 1:
-      return 'Boshlang‘ich'
+      return 'Yakunlanmagan'
     case 2:
-      return 'Ish jarayonida'
+      return 'Yakunlanmagan'
     case 3:
-      return 'Tekshirishda'
+      return 'Yakunlanmagan'
     case 4:
       return 'Tugallangan'
     default:

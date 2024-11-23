@@ -42,7 +42,9 @@
 <script setup>
 definePageMeta({
   layout: 'auth',
+  middleware: [],
 })
+
 
 const localePath = useLocalePath()
 const router = useRouter()

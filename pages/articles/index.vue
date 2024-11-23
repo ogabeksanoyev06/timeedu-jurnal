@@ -2,8 +2,8 @@
   <div>
     <UIBreadcrumb :breadcrumb="breadcrumb" class="mb-10" />
     <div class="container max-w-[960px]">
-      <h3 class="section-title mb-6">Maqolalar</h3>
-      <FormInput v-model="search" suffix inputClass="" wrapperClass="!max-w-[460px] mb-10 !w-full" placeholder="Qidiring yoki toping">
+      <h3 class="section-title mb-6">{{ translations['main.articles'] }}</h3>
+      <FormInput v-model="search" suffix inputClass="" wrapperClass="!max-w-[460px] mb-10 !w-full" :placeholder="translations['header.search-text']">
         <template #suffix>
           <span class="icon-search text-xl leading-5" @click="fetchArticles"></span>
         </template>
@@ -18,6 +18,8 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useJournalStore } from '@/stores/journals.js'
+import { useCommonStore } from '@/stores/common.js'
+
 import { useRoute, useRouter } from 'vue-router'
 
 const breadcrumb = [
@@ -32,6 +34,9 @@ const router = useRouter()
 const search = ref(route.query.search || '')
 
 const journalStore = useJournalStore()
+const commonStore = useCommonStore()
+
+const { translations } = storeToRefs(commonStore)
 const { getArticles } = journalStore
 
 const { data, refresh } = await useAsyncData(

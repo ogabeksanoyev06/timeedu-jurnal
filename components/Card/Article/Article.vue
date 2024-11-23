@@ -24,8 +24,8 @@
           {{ article.downloads }}
         </li>
       </ul>
-      <a :href="article.file" target="_blank" @click="countDownload(article.id)">
-        <UIButton text="Maqolani yuklash" icon="icon-download text-xl leading-5" wrapper-class="max-md:w-full"></UIButton>
+      <a :href="article.file || file" target="_blank" @click="countDownload(article.id)">
+        <UIButton :text="translations['main.upload-article']" icon="icon-download text-xl leading-5" wrapper-class="max-md:w-full"></UIButton>
       </a>
     </div>
   </div>
@@ -33,15 +33,19 @@
 
 <script setup>
 import { useJournalStore } from '@/stores/journals.js'
+import { useCommonStore } from '@/stores/common.js'
 
 const journalStore = useJournalStore()
+const commonStore = useCommonStore()
 
 const { countDownload } = journalStore
+const { translations } = storeToRefs(commonStore)
 
 const localePath = useLocalePath()
 const route = useRoute()
 
 defineProps({
   article: Object,
+  file: String,
 })
 </script>

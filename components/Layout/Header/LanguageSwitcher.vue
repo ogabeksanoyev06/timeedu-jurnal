@@ -2,9 +2,9 @@
   <UIDropdown :show="showDropdown" :head-class="['flex items-center flex-shrink-0 gap-1 text-gray-5 cursor-pointer transition-300 ', {}]" body-class="!w-[160px]" @toggle="handleDropdownToggle">
     <template #head>
       <img src="/assets/svg/flags/uz.svg" alt="" class="w-5 h-4" />
-      <span class="text-sm text-white leading-150"> {{ currentLanguage?.name }} </span>
+      <span :class="isAuthLayout ? 'text-dark' : 'text-white'" class="text-sm leading-150"> {{ currentLanguage?.name }} </span>
       <svg class="transition-300" :class="showDropdown ? ' rotate-180' : ''" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M16 10L12 14L8 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M16 10L12 14L8 10" :stroke="isAuthLayout ? 'black' : 'white'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </template>
     <template #body>
@@ -25,11 +25,16 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher'
+
+const route = useRoute()
 
 const { changeLocale, currentLanguage, languagesList } = useLanguageSwitcher()
 
 const showDropdown = ref(false)
+
+const isAuthLayout = computed(() => route.name?.startsWith('auth'))
 
 function handleDropdownToggle(val) {
   showDropdown.value = val

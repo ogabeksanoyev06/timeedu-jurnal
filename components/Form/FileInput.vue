@@ -11,17 +11,9 @@
       ]"
       @click="getFile"
     >
-      <Transition name="fade" mode="out-in">
-        <span v-if="media.file" class="icon-file text-2xl leading-6 text-primary" />
-      </Transition>
+      
       <div class="flex-center-between flex-1 gap-2">
-        <div v-if="media.file" class="flex-y-center">
-          <p class="font-medium text-dark leading-130 text-sm transition-300">
-            {{ media.media }}
-          </p>
-        </div>
         <div
-          v-else
           class="font-medium text-primary leading-130 text-sm transition-300 flex flex-col items-center justify-center mx-auto gap-2"
           :class="{
             '!text-red': dragging,
@@ -36,7 +28,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          {{ modelValue || dragging ? 'Faylni shu yerga torting' : 'Fayl biriktiring' }}
+          Fayl biriktiring
         </div>
         <!-- <button v-if="modelValue" type="button" class="duration-200 transition-all group w-5 h-5 flex items-center justify-center rounded cursor-pointer border border-transparent hover:scale-110">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
@@ -77,7 +69,6 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'error', 'fileUpload'])
 
-
 const isMaxSize = ref(false)
 const mediaInput = ref(null)
 const btnClearer = ref(false)
@@ -100,7 +91,6 @@ const handleFile = async (event) => {
 
 const handleUploader = (target) => {
   const file = target.files?.[0]
-  console.log(file)
   if (file?.size > props.maxSize) {
     isMaxSize.value = true
     emit('error', true)
@@ -119,7 +109,7 @@ const handleUploader = (target) => {
       media.media = file?.name
       media.file = file
       emit('update:modelValue', file)
-      emit('fileUpload', file) // Emit the file for upload
+      emit('fileUpload', file)
     })
     .catch((err) => {
       console.log(err)
