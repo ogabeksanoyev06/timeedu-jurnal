@@ -1,7 +1,7 @@
 <template>
   <UIDropdown :show="showDropdown" :head-class="['flex items-center flex-shrink-0 gap-1 text-gray-5 cursor-pointer transition-300 ', {}]" body-class="!w-[160px]" @toggle="handleDropdownToggle">
     <template #head>
-      <img src="/assets/svg/flags/uz.svg" alt="" class="w-5 h-4" />
+      <img :src="currentLanguage.flag" alt="" class="w-5 h-4" />
       <span :class="isAuthLayout ? 'text-dark' : 'text-white'" class="text-sm leading-150"> {{ currentLanguage?.name }} </span>
       <svg class="transition-300" :class="showDropdown ? ' rotate-180' : ''" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path d="M16 10L12 14L8 10" :stroke="isAuthLayout ? 'black' : 'white'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />

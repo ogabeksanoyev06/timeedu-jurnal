@@ -1,5 +1,8 @@
 <template>
   <div>
+    <NuxtLink :to="localePath('/')" class="header-left flex flex-col gap-1 mx-auto max-w-[150px] transition-300 mb-6">
+      <img src="/assets/svg/logo-dark.svg" class="w-full flex-shrink-0" alt="timeedu.uz" />
+    </NuxtLink>
     <h3 class="section-title mb-10">{{ translations['profile.register'] }}</h3>
     <VForm @submit="registerToSystem" v-slot="{ errors }">
       <div class="grid gap-10">

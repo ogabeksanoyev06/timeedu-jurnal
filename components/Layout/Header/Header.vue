@@ -97,7 +97,7 @@
                 <h3 class="px-2 text-lg font-medium text-ellipsis overflow-hidden break-all pt-3 pb-2">Qidiruv</h3>
               </span>
             </div>
-            <FormInput @focus="router.push(localePath('/articles'))" v-model="search" suffix inputClass="!text-gray-3  placeholder:text-white" wrapperClass="!bg-[#3E3F7A] !border-accent-1  !w-full" placeholder="Qidiring yoki toping">
+            <FormInput @focus="router.push(localePath('/articles'))" v-model="search" suffix inputClass="!text-gray-3  placeholder:text-white" wrapperClass="!bg-[#3E3F7A] !border-accent-1  !w-full" :placeholder="translations['header.search-text']">
               <template #suffix>
                 <span class="icon-search text-xl leading-5 text-white"></span>
               </template>
@@ -160,6 +160,27 @@
               </a>
             </nav>
           </div>
+          <div class="relative mb-4 grid gap-2">
+            <div class="sticky bg-white top-0 z-20">
+              <span class="flex h-9 items-center">
+                <h3 class="px-2 text-lg font-medium text-ellipsis overflow-hidden break-all pt-3 pb-2">Til</h3>
+              </span>
+            </div>
+            <div class="grid items-start gap-1">
+              <button @click="onChangeLocale('uz')" :class="{ '!border-primary': currentLanguage.code === 'uz' }" class="flex justify-between items-center border rounded-lg border-gray-200 hover:border-primary transition-300 p-2">
+                O'zbekcha
+                <span class="w-3 h-3 bg-gray-200 rounded-full" :class="{ '!bg-primary': currentLanguage.code === 'uz' }"></span>
+              </button>
+              <button @click="onChangeLocale('ru')" :class="{ '!border-primary': currentLanguage.code === 'ru' }" class="flex justify-between items-center border rounded-lg border-gray-200 hover:border-primary transition-300 p-2">
+                Русский
+                <span :class="{ '!bg-primary': currentLanguage.code === 'ru' }" class="w-3 h-3 bg-gray-200 rounded-full"></span>
+              </button>
+              <button @click="onChangeLocale('en')" :class="{ '!border-primary': currentLanguage.code === 'en' }" class="flex justify-between items-center border rounded-lg border-gray-200 hover:border-primary transition-300 p-2">
+                English
+                <span :class="{ '!bg-primary': currentLanguage.code === 'en' }" class="w-3 h-3 bg-gray-200 rounded-full"></span>
+              </button>
+            </div>
+          </div>
         </div>
       </Teleport>
     </header>
@@ -170,6 +191,7 @@
 import { useJournalStore } from '@/stores/journals.js'
 import { useCommonStore } from '@/stores/common.js'
 import { useRouter, useRoute } from 'vue-router'
+import { useLanguageSwitcher } from '@/composables/useLanguageSwitcher'
 
 const localePath = useLocalePath()
 const router = useRouter()
@@ -180,6 +202,15 @@ const commonStore = useCommonStore()
 
 const { journals } = storeToRefs(journalStore)
 const { translations } = storeToRefs(commonStore)
+
+const { currentLanguage, changeLocale } = useLanguageSwitcher()
+
+function onChangeLocale(code) {
+  if (currentLanguage.value?.code !== code) {
+    showFullMenu.value = false
+    changeLocale(code)
+  }
+}
 
 const search = ref(route.query.search)
 

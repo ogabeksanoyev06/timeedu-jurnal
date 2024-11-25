@@ -9,6 +9,7 @@ definePageMeta({
   middleware: 'auth',
 })
 
+
 const localePath = useLocalePath()
 
 const { y } = useWindowScroll()

@@ -23,9 +23,11 @@
         </li>
       </ul>
       <div class="my-10 w-full bg-gray-4 h-0.5"></div>
-      <transition :name="transitionName" mode="out-in">
-        <component :is="currentStepContent" />
-      </transition>
+      <div class="overflow-x-hidden">
+        <transition :name="transitionName" mode="out-in">
+          <component :is="currentStepContent" />
+        </transition>
+      </div>
     </div>
   </div>
 </template>

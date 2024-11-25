@@ -1,5 +1,8 @@
 <template>
   <div>
+    <NuxtLink :to="localePath('/')" class="header-left flex flex-col gap-1 mx-auto max-w-[150px] transition-300 mb-6">
+      <img src="/assets/svg/logo-dark.svg" class="w-full flex-shrink-0" alt="timeedu.uz" />
+    </NuxtLink>
     <div class="flex-center-between gap-2 mb-10">
       <h3 class="section-title">{{ translations['profile.login'] }}</h3>
       <button class="text-primary" @click="isModal = true">{{ translations['profile.change-password'] }}</button>
@@ -75,7 +78,6 @@ const loginToSystem = async () => {
     const response = await login(form)
     accessTokenCookie.value = response.accessToken
     refreshTokenCookie.value = response.refreshToken
-    await getProfile()
     router.push(localePath('/'))
     showToast('Profilga kirdingiz', 'success')
   } catch (error) {

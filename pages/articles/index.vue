@@ -8,9 +8,15 @@
           <span class="icon-search text-xl leading-5" @click="fetchArticles"></span>
         </template>
       </FormInput>
-      <div v-if="data">
-        <CardArticle v-for="(article, i) in data?.content" :key="i" :article="article" />
-      </div>
+      <Transition name="fade" mode="out-in">
+        <div v-if="data.content.length > 0">
+          <CardArticle v-for="(article, i) in data?.content" :key="i" :article="article" />
+        </div>
+        <div v-else class="py-8 flex flex-col items-center">
+          <img src="/assets/images/no-searches.png" class="mx-auto min-h-[157px] h-full max-w-[150px] w-full object-contain" alt="no-data-image" loading="lazy" />
+          <p class="text-lg leading-130 font-bold text-dark text-center mx-auto mt-6 md:max-w-[50%]">Sizga kerakli narsani hali topa olmadik shekilli.</p>
+        </div>
+      </Transition>
     </div>
   </div>
 </template>

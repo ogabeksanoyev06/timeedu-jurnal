@@ -1,7 +1,7 @@
 <template>
-  <footer class="bg-secondary pt-8 sm:pt-10 transition-300">
+  <footer class="bg-secondary transition-300">
     <div class="container">
-      <div class="grid lg:grid-cols-[162px_minmax(0,1fr)] gap-10 lg:gap-20">
+      <!-- <div class="grid lg:grid-cols-[162px_minmax(0,1fr)] gap-10 lg:gap-20">
         <NuxtLink :to="localePath('/')">
           <img src="/assets/svg/logo.svg" class="w-full max-w-[162px]" alt="timeedu.uz" />
         </NuxtLink>
@@ -41,8 +41,8 @@
             </nav>
           </li>
         </ul>
-      </div>
-      <div class="flex-center-between max-lg:flex-col border-t border-accent-1 py-4 sm:py-8 mt-8 sm:mt-10 gap-4 text-center">
+      </div> -->
+      <div class="flex-center-between max-lg:flex-col py-4 sm:py-10 gap-4 text-center">
         <p class="text-gray-3 text-sm leading-150">© Copyright 2024 Iqtisodiy taraqqiyot va tahlil All Rights Reserved</p>
         <nav class="flex-center flex-wrap gap-2 sm:gap-6 leading-150">
           <a href="#" target="_blank" class="flex-center gap-2 transition-300 text-white hover:text-gray-5 group">

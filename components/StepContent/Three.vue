@@ -86,7 +86,6 @@
           </div>
         </div>
         <div class="flex items-center justify-end sm:flex-row flex-col gap-3 mt-10">
-          <!-- <UIButton text="Bekor qilish" variant="outline" /> -->
           <UIButton :loading type="submit" :disabled="!isFormComplete || cookieStep === 5" :text="translations['addacticles.save-continue']" />
         </div>
       </VForm>
@@ -165,22 +164,6 @@ const addKeyword = (tag) => {
 
 const changeTab = (code) => {
   tab.value = code
-
-  console.log(articlesView.value)
-
-  const currentData = articlesView.value || {}
-
-  form.prefiks[tab.value] = currentData.prefiks?.[tab.value] || form.prefiks[tab.value]
-  form.title[tab.value] = currentData.title?.[tab.value] || form.title[tab.value]
-  form.subtitle[tab.value] = currentData.subtitle?.[tab.value] || form.subtitle[tab.value]
-  form.reference[tab.value] = currentData.reference?.[tab.value] || form.reference[tab.value]
-  const languageKeywords = currentData.keywords?.find((lang) => lang.language.code === tab.value)
-  if (languageKeywords) {
-    console.log(languageKeywords)
-    form.keywords[tab.value] = languageKeywords.keywords.map((k) => k.keyword) || []
-  } else {
-    form.keywords[tab.value] = form.keywords[tab.value] || []
-  }
 }
 
 const handleEditModal = (id) => {
@@ -206,20 +189,33 @@ const showKeywordsDropdown = () => {
 const formatNewKeywords = computed(() => {
   const newKeywords = []
 
-  const languageKeywords = form.keywords[tab.value] || []
+  const languageKeywords = Object.keys(form.keywords).reduce((acc, lang) => {
+    acc[lang] = form.keywords[lang] || []
+    return acc
+  }, {})
 
-  if (languageKeywords.length > 0) {
-    const existingLanguage = newKeywords.find((item) => item.languageId === (tab.value === 'uz' ? 3 : tab.value === 'ru' ? 1 : 2))
+  const existingKeywords = keywords.value.content?.map((item) => item.keyword) || []
 
-    if (existingLanguage) {
-      existingLanguage.keywords = [...new Set([...existingLanguage.keywords, ...languageKeywords])]
-    } else {
+  const languageMap = {
+    uz: 3,
+    ru: 1,
+    en: 2,
+  }
+
+  Object.keys(languageKeywords).forEach((lang) => {
+    const currentLanguageId = languageMap[lang]
+
+    if (!currentLanguageId) return
+
+    const filteredKeywords = languageKeywords[lang].filter((word) => !existingKeywords.includes(word))
+
+    if (filteredKeywords.length) {
       newKeywords.push({
-        languageId: tab.value === 'uz' ? 3 : tab.value === 'ru' ? 1 : 2,
-        keywords: languageKeywords,
+        languageId: currentLanguageId,
+        keywords: filteredKeywords,
       })
     }
-  }
+  })
 
   return newKeywords
 })
@@ -256,7 +252,27 @@ const isFormComplete = computed(() => {
   return ['uz', 'ru', 'en'].every((lang) => form.prefiks[lang] && form.title[lang] && form.subtitle[lang] && form.reference[lang])
 })
 
+watch(
+  articlesView,
+  () => {
+    const currentData = articlesView.value || {}
+    form.prefiks = currentData.prefiks || form.prefiks
+    form.title = currentData.title || form.title
+    form.subtitle = currentData.subtitle || form.subtitle
+    form.reference = currentData.reference || form.reference
+    currentData.keywords?.forEach((item) => {
+      if (item.language.code === 'uz') {
+        form.keywords.uz = item.keywords.map((k) => k.keyword) || []
+      } else if (item.language.code === 'ru') {
+        form.keywords.ru = item.keywords.map((k) => k.keyword) || []
+      } else if (item.language.code === 'en') {
+        form.keywords.en = item.keywords.map((k) => k.keyword) || []
+      }
+    })
+  },
+  { immediate: true },
+)
+
 getArticlesView(cookieId.value, 3)
 getKeywords()
-console.log(formatNewKeywords.value)
 </script>
