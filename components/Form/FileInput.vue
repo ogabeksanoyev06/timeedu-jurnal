@@ -11,7 +11,6 @@
       ]"
       @click="getFile"
     >
-      
       <div class="flex-center-between flex-1 gap-2">
         <div
           class="font-medium text-primary leading-130 text-sm transition-300 flex flex-col items-center justify-center mx-auto gap-2"
@@ -56,7 +55,7 @@ const props = defineProps({
   modelValue: [Object, String, File],
   accept: {
     type: String,
-    default: 'image/*, pdf/*',
+    default: 'image/*, pdf/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   },
   error: Boolean,
   dashed: Boolean,

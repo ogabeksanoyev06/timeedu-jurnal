@@ -24,9 +24,8 @@
           {{ article.downloads }}
         </li>
       </ul>
-      <a :href="article.file || file" target="_blank" @click="countDownload(article.id)">
-        <UIButton :text="translations['main.upload-article']" icon="icon-download text-xl leading-5" wrapper-class="max-md:w-full"></UIButton>
-      </a>
+
+      <UIButton @click="downloadAllFiles(article.id, article.files)" :loading :text="translations['main.upload-article']" icon="icon-download text-xl leading-5" wrapper-class="max-md:w-full"></UIButton>
     </div>
   </div>
 </template>
@@ -48,4 +47,30 @@ defineProps({
   article: Object,
   file: String,
 })
+
+const loading = ref(false)
+
+const downloadAllFiles = async (id, files) => {
+  loading.value = true
+  for (const file of files) {
+    try {
+      const { file: fileUrl } = file
+      const response = await fetch(fileUrl)
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', fileUrl.split('/').pop())
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Faylni yuklashda xatolik:', error)
+    } finally {
+      loading.value = false
+    }
+  }
+  countDownload(id)
+}
 </script>

@@ -11,3 +11,14 @@ export const getInitials = (firstName, lastName) => {
   const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : ''
   return firstInitial + lastInitial
 }
+export const downloadFiles = (files) => {
+  files.forEach((file) => {
+    const { file: fileUrl } = file
+    const link = document.createElement('a')
+    link.href = fileUrl
+    link.setAttribute('download', fileUrl.split('/').pop())
+    link.setAttribute('target', '_blank')
+    link.click()
+    link.remove()
+  })
+}

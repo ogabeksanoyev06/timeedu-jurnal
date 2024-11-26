@@ -24,7 +24,6 @@
 </template>
 
 <script setup>
-
 import { useCommonStore } from '@/stores/common.js'
 
 const commonStore = useCommonStore()
