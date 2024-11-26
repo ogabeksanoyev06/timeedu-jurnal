@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ data.icon }}
     <UIBreadcrumb :breadcrumb="breadcrumb" />
     <SectionHeroBanner :background-image="data?.image" :title="data?.name" :description="data?.description" :button-slug="data?.slug" class="mb-10" />
     <div class="container grid lg:grid-cols-12 gap-6">
@@ -18,7 +19,7 @@ import { useCommonStore } from '@/stores/common.js'
 import { useRoute } from 'vue-router'
 
 const commonStore = useCommonStore()
-const { translations } = storeToRefs(commonStore)
+const { translations, icon } = storeToRefs(commonStore)
 
 const breadcrumb = computed(() => [
   {
@@ -48,4 +49,5 @@ const { getJournalAbout } = journalStore
 const { data } = await useAsyncData('about', async () => {
   return await getJournalAbout(route.params.journalSlug)
 })
+icon.value = data.value?.icon
 </script>

@@ -2,12 +2,17 @@ import { defineStore } from 'pinia'
 import { useApi } from '@/composables/useApi'
 import { useCustomToast } from '@/composables/useCustomToast.js'
 import { useRouter } from 'vue-router'
+import { useCommonStore } from '@/stores/common.js'
 
 export const useAuthStore = defineStore('auth', () => {
   const api = useApi()
   const localePath = useLocalePath()
   const router = useRouter()
   const { showToast } = useCustomToast()
+
+  const commonStore = useCommonStore()
+
+  const { translations } = storeToRefs(commonStore)
 
   const loading = ref(false)
   const accessTokenCookie = useCookie('access_token')
@@ -86,7 +91,7 @@ export const useAuthStore = defineStore('auth', () => {
     accessTokenCookie.value = null
     refreshTokenCookie.value = null
     router.push(localePath('/auth/login'))
-    showToast('Muvaffaqiyatli chiqdingiz!', 'info')
+    showToast(translations.value['alert.logout'], 'info')
   }
 
   const checkAuth = () => !!accessTokenCookie.value

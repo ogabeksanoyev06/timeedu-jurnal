@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { useApi } from '@/composables/useApi'
 
-export const useCommonStore = defineStore('languages', () => {
+export const useCommonStore = defineStore('common', () => {
   const api = useApi()
   const languages = ref([])
   const translations = ref({})
+  const icon = ref('')
 
   const getLanguages = async () => {
     try {
@@ -31,5 +32,6 @@ export const useCommonStore = defineStore('languages', () => {
     getTranslations,
     translations,
     languages,
+    icon,
   }
 })

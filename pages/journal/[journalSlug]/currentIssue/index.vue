@@ -56,12 +56,13 @@ const route = useRoute()
 const journalStore = useJournalStore()
 const commonStore = useCommonStore()
 
-const { translations } = storeToRefs(commonStore)
+const { translations, icon } = storeToRefs(commonStore)
 const { getCurrentIssue } = journalStore
 
 const { data } = await useAsyncData('currentIssue', async () => {
   return await getCurrentIssue(route.params.journalSlug)
 })
+icon.value = data.value?.journal?.icon
 
 watchEffect(() => {
   if (data.value) {

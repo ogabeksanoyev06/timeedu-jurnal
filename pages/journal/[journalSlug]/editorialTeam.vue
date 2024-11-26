@@ -19,7 +19,7 @@ import { useCommonStore } from '@/stores/common.js'
 import { useRoute } from 'vue-router'
 
 const commonStore = useCommonStore()
-const { translations } = storeToRefs(commonStore)
+const { translations, icon } = storeToRefs(commonStore)
 
 const breadcrumb = computed(() => [
   {
@@ -50,4 +50,5 @@ const { getJournalAbout } = journalStore
 const { data } = await useAsyncData('about', async () => {
   return await getJournalAbout(route.params.journalSlug)
 })
+icon.value = data.value?.icon
 </script>

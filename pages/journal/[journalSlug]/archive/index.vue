@@ -31,7 +31,7 @@ import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 
 const commonStore = useCommonStore()
-const { translations } = storeToRefs(commonStore)
+const { translations, icon } = storeToRefs(commonStore)
 const route = useRoute()
 
 const currentBreadcrumb = computed(() => [
@@ -60,4 +60,5 @@ const formatDate = (date, format) => {
 
 const journalStore = useJournalStore()
 const { data: archiveData } = await useAsyncData('archive', () => journalStore.getArchive(route.params.journalSlug))
+icon.value = archiveData.value?.icon
 </script>

@@ -13,7 +13,7 @@
         </div>
         <div class="flex items-end justify-between gap-6 mt-6 sm:mt-10 lg:mt-auto">
           <p class="text-neutral sm:text-base">e-ISSN: {{ journal.eissn }}</p>
-          <img src="/assets/svg/logo-dark.svg" alt="" class="max-sm:max-w-[120px]" />
+          <img :src="journal.icon" alt="" class="max-w-[150px]" />
         </div>
       </div>
     </div>

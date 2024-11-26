@@ -68,7 +68,7 @@ const localePath = useLocalePath()
 // Store initialization
 const journalStore = useJournalStore()
 const commonStore = useCommonStore()
-const { translations } = storeToRefs(commonStore)
+const { translations, icon } = storeToRefs(commonStore)
 
 const breadcrumbData = ref({
   title: '',
@@ -83,6 +83,8 @@ const breadcrumb = computed(() => [
 ])
 
 const { data } = await useAsyncData('journal-inner', () => journalStore.getJournalInner(route.params.journalSlug))
+
+icon.value = data.value?.icon
 
 watchEffect(() => {
   if (data.value) {

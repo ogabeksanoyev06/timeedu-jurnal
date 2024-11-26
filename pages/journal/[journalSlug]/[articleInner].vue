@@ -52,6 +52,7 @@
 
 <script setup>
 import { useJournalStore } from '@/stores/journals.js'
+import { useCommonStore } from '@/stores/common.js'
 import { useRoute } from 'vue-router'
 import dayjs from 'dayjs'
 
@@ -64,12 +65,16 @@ const breadcrumb = [
 const route = useRoute()
 
 const journalStore = useJournalStore()
+const commonStore = useCommonStore()
+
+const { translations, icon } = storeToRefs(commonStore)
 
 const { getArticleInner } = journalStore
 
 const { data } = await useAsyncData('article-id', async () => {
   return await getArticleInner(route.params.articleInner)
 })
+icon.value = data.value?.issue?.journal?.icon
 
 watchEffect(() => {
   if (data.value) {

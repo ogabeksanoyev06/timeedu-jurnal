@@ -65,11 +65,12 @@ const journalStore = useJournalStore()
 const commonStore = useCommonStore()
 
 const { getInnerIssue } = journalStore
-const { translations } = storeToRefs(commonStore)
+const { translations, icon } = storeToRefs(commonStore)
 
 const route = useRoute()
 
 const { data } = await useAsyncData('innerIssue', async () => {
   return await getInnerIssue(route.params.slug)
 })
+icon.value = data.value?.journal?.icon
 </script>

@@ -79,7 +79,7 @@ const loginToSystem = async () => {
     accessTokenCookie.value = response.accessToken
     refreshTokenCookie.value = response.refreshToken
     router.push(localePath('/'))
-    showToast('Profilga kirdingiz', 'success')
+    showToast(translations.value['alert.login'], 'success')
   } catch (error) {
     console.log(error)
     if (error.response && error.response.data && error.response.data.error) {
