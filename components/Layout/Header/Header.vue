@@ -68,6 +68,15 @@
                 ]"
               />
               <LayoutHeaderNavbarDropdown
+                v-if="!isHiddenPage"
+                title="Muallif uchun"
+                :items="[
+                  { title: 'Talablar', path: localePath(`/journal/${route.params.journalSlug}/requirements`) },
+                  { title: 'Taqriz', path: localePath(`/journal/${route.params.journalSlug}/reviewer`) },
+                  { title: 'To`lov', path: localePath(`/journal/${route.params.journalSlug}/paymentInfo`) },
+                ]"
+              />
+              <LayoutHeaderNavbarDropdown
                 v-if="route.path !== localePath('/profile') && route.path !== localePath('/profile/change-password') && route.path !== localePath('/profile/my-articles')"
                 :title="translations['main.journals-website']"
                 :items="mappedJournals"

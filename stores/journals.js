@@ -43,6 +43,10 @@ export const useJournalStore = defineStore('journals', () => {
     return journalAbout.value
   }
 
+  const getJournalAuthorInfo = async (slug) => {
+    return await handleApiRequest('get', `/journals/${slug}/authorInfo`)
+  }
+
   const getArchive = async (slug) => {
     return await handleApiRequest('get', `/journals/${slug}/issues`)
   }
@@ -182,6 +186,7 @@ export const useJournalStore = defineStore('journals', () => {
     getInnerIssue,
     journals,
     journalAbout,
+    getJournalAuthorInfo,
 
     getMyArticles,
     getArticlesView,

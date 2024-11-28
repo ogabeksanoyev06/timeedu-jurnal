@@ -28,7 +28,7 @@
       </div>
     </NuxtLink>
     <div class="flex md:justify-end gap-3 w-full mt-4">
-      <UIButton @click="downloadAllFiles(article.id, article.files)" :loading :text="translations['main.upload-article']" icon="icon-download text-xl leading-5" wrapper-class="max-md:w-full"></UIButton>
+      <UIButton @click="downloadFile(article.id, article.files)" :loading :text="translations['main.upload-article']" icon="icon-download text-xl leading-5" wrapper-class="max-md:w-full"></UIButton>
     </div>
   </div>
 </template>
@@ -36,6 +36,7 @@
 <script setup>
 import { useJournalStore } from '@/stores/journals.js'
 import { useCommonStore } from '@/stores/common.js'
+import axios from 'axios'
 
 const journalStore = useJournalStore()
 const commonStore = useCommonStore()
@@ -53,15 +54,23 @@ defineProps({
 
 const loading = ref(false)
 
-const downloadAllFiles = (id, files) => {
+const downloadFile = async (id, files) => {
   try {
     const { file: fileUrl } = files[0]
+    const response = await axios({
+      url: fileUrl,
+      method: 'GET',
+      responseType: 'blob',
+    })
+    const blob = await response.blob()
+    const url = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
-    link.href = fileUrl
-    link.target = '_blank'
+    link.href = url
+    link.setAttribute('download', fileUrl.split('/').pop())
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
   } catch (error) {
     console.error('xatooooo:', error)
   }
