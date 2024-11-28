@@ -139,6 +139,12 @@
                   {{ item.title }}
                 </NuxtLink>
               </li>
+              <li class="mb-2">
+                <h4 class="text-sm mb-1 font-medium">Muallif ma'lumolari</h4>
+                <NuxtLink :to="localePath(`/journal/${route.params.journalSlug}/requirements`)" class="group flex items-center rounded-md border border-transparent py-1 hover:underline text-gray-600" to="/"> Talablar </NuxtLink>
+                <NuxtLink :to="localePath(`/journal/${route.params.journalSlug}/reviewer`)" class="group flex items-center rounded-md border border-transparent py-1 hover:underline text-gray-600" to="/"> Taqriz </NuxtLink>
+                <NuxtLink :to="localePath(`/journal/${route.params.journalSlug}/paymentInfo`)" class="group flex items-center rounded-md border border-transparent py-1 hover:underline text-gray-600" to="/"> To'lov </NuxtLink>
+              </li>
               <li v-if="!isHiddenPage">
                 <NuxtLink :to="localePath(`/journal/${route.params.journalSlug}/archive`)" class="group flex items-center rounded-md border border-transparent py-1 hover:underline text-gray-600">{{ translations['main.archives'] }}</NuxtLink>
               </li>
