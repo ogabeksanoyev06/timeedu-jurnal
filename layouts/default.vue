@@ -16,8 +16,6 @@ const { getProfile } = profileStore
 const { getJournals } = journalStore
 const { getTranslations } = commonStore
 
-const dark = computed(() => y.value > 30)
-
 if (accessTokenCookie.value) {
   getProfile()
 }

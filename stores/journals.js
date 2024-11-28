@@ -20,7 +20,7 @@ export const useJournalStore = defineStore('journals', () => {
   }
 
   const getJournals = async () => {
-    const response = await api.get(`/journals`)
+    const response = await api.get('/journals')
     journals.value = response.data
     return response.data
   }

@@ -2,13 +2,11 @@
 import { useAuthStore } from '@/stores/auth.js'
 import { useProfileStore } from '@/stores/profile.js'
 import { useCountriesStore } from '@/stores/countries.js'
-import { useJournalStore } from '@/stores/journals.js'
 import { useCommonStore } from '@/stores/common.js'
 
 definePageMeta({
   middleware: 'auth',
 })
-
 
 const localePath = useLocalePath()
 
@@ -19,25 +17,20 @@ const { locale } = useI18n()
 const authStore = useAuthStore()
 const profileStore = useProfileStore()
 const countriesStore = useCountriesStore()
-const journalStore = useJournalStore()
 const commonStore = useCommonStore()
 
 const { logout } = authStore
 const { getProfile } = profileStore
 const { getCountries } = countriesStore
-const { getJournals } = journalStore
 const { getTranslations } = commonStore
 
-const { journals } = storeToRefs(journalStore)
 const { translations } = storeToRefs(commonStore)
-
-const dark = computed(() => y.value > 30)
 
 const { data } = await useAsyncData(
   'layout',
   async () => {
-    const [profile, countries, journals, translation] = await Promise.all([getProfile(), getCountries(), getJournals(), getTranslations()])
-    return { profile, countries, journals, translation }
+    const [profile, countries, translation] = await Promise.all([getProfile(), getCountries(), getTranslations()])
+    return { profile, countries, translation }
   },
   { watch: [locale] },
 )

@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ data.icon }}
     <UIBreadcrumb :breadcrumb="breadcrumb" />
     <SectionHeroBanner :background-image="data?.image" :title="data?.name" :description="data?.description" :button-slug="data?.slug" class="mb-10" />
     <div class="container grid lg:grid-cols-12 gap-6">

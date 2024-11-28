@@ -50,26 +50,17 @@ defineProps({
 
 const loading = ref(false)
 
-const downloadAllFiles = async (id, files) => {
-  loading.value = true
-  for (const file of files) {
-    try {
-      const { file: fileUrl } = file
-      const response = await fetch(fileUrl)
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', fileUrl.split('/').pop())
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      window.URL.revokeObjectURL(url)
-    } catch (error) {
-      console.error('Faylni yuklashda xatolik:', error)
-    } finally {
-      loading.value = false
-    }
+const downloadAllFiles = (id, files) => {
+  try {
+    const { file: fileUrl } = files[0]
+    const link = document.createElement('a')
+    link.href = fileUrl
+    link.target = '_blank'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  } catch (error) {
+    console.error('xatooooo:', error)
   }
   countDownload(id)
 }
