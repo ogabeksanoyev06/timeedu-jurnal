@@ -28,7 +28,7 @@
       </div>
     </NuxtLink>
     <div class="flex md:justify-end gap-3 w-full mt-4">
-      <UIButton @click="downloadFile(article.id, article.files[0].file)" :text="translations['main.upload-article']" icon="icon-download text-xl leading-5" wrapper-class="max-md:w-full"></UIButton>
+      <UIButton @click="downloadFiles(article.id, article.files)" :loading="loading" :text="translations['main.upload-article']" icon="icon-download text-xl leading-5" wrapper-class="max-md:w-full"></UIButton>
     </div>
   </div>
 </template>
@@ -51,17 +51,18 @@ const props = defineProps({
   file: String,
 })
 
-const loading = ref(false) // Fayl yuklanayotganini tekshirish uchun
+const loading = ref(false)
 
-const downloadFile = async (id, fileUrl) => {
-  if (loading.value) return // Agar allaqachon yuklanayotgan bo'lsa, funksiya qaytadi
+const downloadFiles = async (id, files) => {
+  if (loading.value) return
 
   try {
-    loading.value = true // Yuklash jarayonini belgilash
-    if (props.article.id === id) {
-      const response = await fetch(fileUrl)
+    loading.value = true
+
+    for (const file of files) {
+      const response = await fetch(file.file)
       if (!response.ok) {
-        throw new Error("Faylni yuklab bo'lmadi")
+        throw new Error(`Faylni yuklab bo'lmadi: ${file.file}`)
       }
 
       const blob = await response.blob()
@@ -69,21 +70,20 @@ const downloadFile = async (id, fileUrl) => {
 
       const a = document.createElement('a')
       a.href = url
-      const fileName = fileUrl.split('/').pop()
+      const fileName = file.file.split('/').pop() // Fayl nomini olish
       a.download = fileName
 
       document.body.appendChild(a)
       a.click()
       a.remove()
-      window.URL.revokeObjectURL(url)
+      window.URL.revokeObjectURL(url) 
 
-      countDownload(id) // Yuklashni hisoblash uchun
+      countDownload(id) 
     }
   } catch (error) {
     console.error('Yuklashda xatolik yuz berdi:', error)
   } finally {
-    loading.value = false // Jarayon tugagach `loading`ni tiklash
+    loading.value = false 
   }
 }
 </script>
-
