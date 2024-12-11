@@ -29,7 +29,7 @@ const cookieId = useCookie('id')
 
 const roleList = [
   { name: 'Muallif', id: 'AUTHOR' },
-  { name: 'Tahrirchi', id: 'EDITOR' },
+  { name: 'Tahrirchi', id: 'TRANSLATOR' },
 ]
 
 const form = reactive({

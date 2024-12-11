@@ -24,7 +24,7 @@ const roleList = [
   },
   {
     name: 'Tahrirchi',
-    id: 'EDITOR',
+    id: 'TRANSLATOR',
   },
 ]
 
