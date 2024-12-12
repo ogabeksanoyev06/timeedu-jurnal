@@ -5,15 +5,15 @@
         <span class="icon-home text-base leading-4 text-white group-hover:text-blue"></span>
         <p class="transition-300 group-hover:text-blue leading-4">{{ translations['main.about'] }}</p>
       </NuxtLink>
-      <div v-for="(item, index) in breadcrumb" :key="index" class="flex items-center gap-3 last:max-w-[150px] sm:last:max-w-[300px] overflow-hidden group font-medium shrink-0">
-        <i class="w-1.5 h-1.5 bg-white rounded-full"></i>
+      <div v-for="(item, index) in breadcrumb" :key="index" class="flex items-center gap-3 last:max-w-[150px] sm:last:max-w-[500px] overflow-hidden group font-medium shrink-0">
+        <i class="w-1.5 h-1.5 bg-white rounded-full flex-shrink-0"></i>
 
         <NuxtLink
           :to="localePath(item?.link)"
           :class="{
             'pointer-events-none !text-gray-5': index === breadcrumb?.length - 1,
           }"
-          class="transition-300 flex cursor-pointer items-center text-white leading-4 text-sm min-w-max group-last:min-w-[100px] sm:group-last:min-w-[200px] breadcrumb-menu hover:text-blue"
+          class="!line-clamp-2 transition-300 flex cursor-pointer items-center text-white leading-4 text-sm min-w-max group-last:min-w-[100px] sm:group-last:min-w-[200px] breadcrumb-menu hover:text-blue"
         >
           {{ item.title }}
         </NuxtLink>

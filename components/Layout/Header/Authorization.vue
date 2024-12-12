@@ -1,7 +1,7 @@
 <template>
   <div class="flex-y-center gap-3" v-if="!checkAuth()">
     <UIButton text="Kirish" wrapper-class="!bg-secondary border !border-accent-1" @click="$router.push(localePath('/auth/login'))" />
-    <UIButton text="Ro‘yhatdan o‘tish" wrapper-class="!bg-[#EEE8F2] !text-secondary" @click="$router.push(localePath('/auth/register'))" />
+    <UIButton text="Ro‘yhatdan o‘tish" wrapper-class="!bg-[#EEE8F2] !text-secondary max-sm:hidden " @click="$router.push(localePath('/auth/register'))" />
   </div>
   <UIDropdown v-else :show="showDropdown" :head-class="['flex items-center flex-shrink-0 gap-1 text-gray-5 cursor-pointer transition-300 ', {}]" body-class="!w-[220px]" @toggle="handleDropdownToggle">
     <template #head>
