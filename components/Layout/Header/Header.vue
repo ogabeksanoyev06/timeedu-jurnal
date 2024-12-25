@@ -2,7 +2,7 @@
   <div class="sticky top-0 z-[90]">
     <header class="relative bg-secondary z-[100] w-full py-2 lg:py-4 transition-300">
       <div class="container flex-y-center gap-4">
-        <NuxtLink :to="localePath('/')" class="header-left flex flex-col gap-1 max-w-[150px] transition-300">
+        <NuxtLink :to="localePath('/')" class="header-left flex flex-col gap-1 max-w-[180px] transition-300">
           <img v-if="isHiddenPage" src="/assets/svg/logo.svg" class="w-full flex-shrink-0" alt="timeedu.uz" />
           <img v-if="!isHiddenPage && icon" :src="icon" class="w-full flex-shrink-0" alt="timeedu.uz" />
         </NuxtLink>
